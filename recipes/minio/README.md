@@ -34,7 +34,7 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/minio
 ```
 
-Configure the https://docs.min.io/docs/aws-cli-with-minio[MinIO Demo credentials] as environment variables:
+Configure the [MinIO Demo credentials](https://docs.min.io/docs/aws-cli-with-minio) as environment variables:
 
 ```bash
 export AWS_ACCESS_KEY_ID="Q3AM3UQ867SPQQA43P2F" 
