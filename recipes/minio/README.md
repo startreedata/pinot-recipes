@@ -21,7 +21,7 @@
   </tr>
         <tr>
     <td>Pre Requisites</td>
-    <td><a href="https://aws.amazon.com/cli/">AWS Command Line Interface</a></td>
+    <td>Install the <a href="https://aws.amazon.com/cli/">AWS Command Line Interface</a></td>
   </tr>
 </table>
 
