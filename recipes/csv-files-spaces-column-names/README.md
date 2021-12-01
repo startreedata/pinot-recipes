@@ -27,7 +27,7 @@ Clone this repsitory:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd recipes/csv-files-spaces-column-names
+cd pinot-recipes/recipes/csv-files-spaces-column-names
 ```
 
 Spin up a Pinot cluster using Docker Compose:
