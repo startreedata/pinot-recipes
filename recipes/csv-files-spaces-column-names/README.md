@@ -39,7 +39,7 @@ docker-compose up
 Add the `crimes` table:
 
 ```bash
-docker exec -it manual-pinot-controller bin/pinot-admin.sh AddTable   \
+docker exec -it manual-pinot-controller-csv bin/pinot-admin.sh AddTable   \
   -tableConfigFile /config/table.json   \
   -schemaFile /config/schema.json \
   -exec
@@ -48,7 +48,7 @@ docker exec -it manual-pinot-controller bin/pinot-admin.sh AddTable   \
 Import [data/ingest.csv](data/import.csv) into Pinot:
 
 ```bash
-docker exec -it manual-pinot-controller bin/pinot-admin.sh LaunchDataIngestionJob \
+docker exec -it manual-pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 
