@@ -1,0 +1,13 @@
+{
+    "schemaName": "crimes",
+    "dimensionFieldSpecs": [
+      {
+        "name": "ID",
+        "dataType": "INT"
+      },
+      {
+        "name": "CaseNumber",
+        "dataType": "STRING"
+      }
+    ]
+}
