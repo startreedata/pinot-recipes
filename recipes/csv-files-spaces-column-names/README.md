@@ -36,7 +36,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Add the `crimes` table:
+Open another tab to add the `crimes` table:
 
 ```bash
 docker exec -it manual-pinot-controller-csv bin/pinot-admin.sh AddTable   \
