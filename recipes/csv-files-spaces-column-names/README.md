@@ -1,6 +1,6 @@
 # Importing CSV files with columns containing spaces
 
-In this recipe we'll learn how to use transformation functions to ingest a CSV file whose column names contain spaces.
+> In this recipe we'll learn how to use transformation functions to ingest a CSV file whose column names contain spaces.
 
 <table>
   <tr>
