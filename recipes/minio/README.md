@@ -1,6 +1,6 @@
 # Using MinIO as Deep Store
 
-> In this recipe we'll learn how to [MinIO](https://docs.min.io/docs/aws-cli-with-minio) as a Pinot Deep Store.
+> In this recipe we'll learn how to use [MinIO](https://docs.min.io/docs/aws-cli-with-minio) as a Pinot Deep Store.
 
 <table>
   <tr>
