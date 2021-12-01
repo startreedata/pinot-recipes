@@ -82,3 +82,9 @@ Finally, run the following command to see a `tar.gz` file containing transcript 
 ```bash
 aws --endpoint-url https://play.min.io:9000 s3 ls s3://pinot-transcript-output
 ```
+
+You should see something like the following:
+
+```
+2021-12-01 16:51:57       1718 transcript_OFFLINE_0.tar.gz
+```
