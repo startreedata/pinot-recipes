@@ -44,7 +44,7 @@ export AWS_SECRET_ACCESS_KEY="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
 Create an S3 bucket called `pinot-transcript-output`:
 
 ```bash
-aws --profile minio --endpoint-url https://play.min.io:9000 s3 mb s3://pinot-transcript-output
+aws --endpoint-url https://play.min.io:9000 s3 mb s3://pinot-transcript-output
 ```
 
 Spin up a Pinot cluster using Docker Compose:
