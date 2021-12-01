@@ -1,0 +1,26 @@
+executionFrameworkSpec:
+  name: 'standalone'
+  segmentGenerationJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentGenerationJobRunner'
+  segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
+  segmentUriPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentUriPushJobRunner'
+jobType: SegmentCreationAndTarPush
+inputDirURI: '/data'
+includeFileNamePattern: 'glob:**/transcript.csv'
+outputDirURI: 's3://pinot-transcript-output/'
+overwriteOutput: true
+pinotFSSpecs:
+  - scheme: s3
+    className: org.apache.pinot.plugin.filesystem.S3PinotFS
+    configs:
+      region: 'us-east-1'
+      endpoint: 'https://play.min.io:9000'
+      accessKey: 'Q3AM3UQ867SPQQA43P2F'
+      secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
+recordReaderSpec:
+  dataFormat: 'csv'
+  className: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReader'
+  configClassName: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReaderConfig'
+tableSpec:
+  tableName: 'transcript'
+pinotClusterSpecs:
+  - controllerURI: 'http://localhost:9000'
