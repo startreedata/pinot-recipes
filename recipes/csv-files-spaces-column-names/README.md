@@ -23,7 +23,7 @@
 
 ***
 
-Clone this repsitory:
+Clone this repsitory and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
