@@ -65,15 +65,6 @@ docker exec -it manual-pinot-controller-minio bin/pinot-admin.sh AddTable   \
 Import [data/transcript.csv](data/transcript.csv) into Pinot:
 
 ```bash
-docker exec \
-  --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY} \
-  --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-  -it manual-pinot-controller-minio bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
-
-```
-
-```bash
 docker exec -it manual-pinot-controller-minio bin/pinot-admin.sh LaunchDataIngestionJob   \
   -jobSpecFile /config/job-spec.yml \
   -values ACCESS_KEY=${AWS_ACCESS_KEY_ID} SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
