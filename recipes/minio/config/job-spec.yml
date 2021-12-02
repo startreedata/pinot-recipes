@@ -14,8 +14,8 @@ pinotFSSpecs:
     configs:
       region: 'us-east-1'
       endpoint: 'https://play.min.io:9000'
-      accessKey: 'Q3AM3UQ867SPQQA43P2F'
-      secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
+      accessKey: ${ACCESS_KEY}
+      secretKey: ${SECRET_KEY}
 recordReaderSpec:
   dataFormat: 'csv'
   className: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReader'
