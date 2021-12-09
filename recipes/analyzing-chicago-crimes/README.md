@@ -65,7 +65,7 @@ docker exec -it manual-pinot-controller-chicago bin/pinot-admin.sh AddTable   \
   -exec
 ```
 
-Import [data/ingest.csv](data/import.csv) into Pinot:
+Import Chicago Crimes CSV file into Pinot:
 
 ```bash
 docker exec -it manual-pinot-controller-chicago bin/pinot-admin.sh LaunchDataIngestionJob \
