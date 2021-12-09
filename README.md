@@ -7,4 +7,4 @@ This repository contains recipes for Apache Pinot.
 
 ## Datasets
 
-* [Analyzing Chicago Crimes](recipes/analyzing-chicago-crimes)
+* [Chicago Crimes](recipes/analyzing-chicago-crimes)
