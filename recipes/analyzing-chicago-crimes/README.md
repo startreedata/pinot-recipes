@@ -1,7 +1,7 @@
 # Analyzing Chicago Crimes
 
 
-> In this recipe we'll learn how to use transformation functions to ingest a CSV file whose column names contain spaces.
+> In this recipe we'll learn how to analyze the Chicago Crimes dataset with Apache Pinot and Streamlit
 
 <table>
   <tr>
