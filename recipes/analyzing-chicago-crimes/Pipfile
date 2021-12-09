@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+pandas = "*"
+csvkit = "*"
+streamlit = "*"
+plotly = "==5.4.0"
+streamlit-tags = "*"
+
+[requires]
+python_version = "3.8"
