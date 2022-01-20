@@ -1,4 +1,4 @@
-# Using MinIO as Deep Store
+# Using MinIO as Deep Store for an Offline Table
 
 > In this recipe we'll learn how to use [MinIO](https://docs.min.io/docs/aws-cli-with-minio) as a Pinot Deep Store.
 
