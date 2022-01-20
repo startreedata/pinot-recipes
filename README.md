@@ -3,7 +3,7 @@
 This repository contains recipes for Apache Pinot.
 
 * [Importing CSV files with columns containing spaces](recipes/csv-files-spaces-column-names/)
-* [Using MinIO as Deep Store](recipes/minio)
+* [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Understanding Lookup-based Join Support](recipes/lookup-joins)
 
 ## Datasets
