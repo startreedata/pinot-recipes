@@ -1,0 +1,28 @@
+{
+    "schemaName": "customers",
+    "primaryKeyColumns": [
+        "customer_id"
+    ],
+    "dimensionFieldSpecs": [
+        {
+            "dataType": "INT",
+            "name": "customer_id"
+        },
+        {
+            "dataType": "STRING",
+            "name": "name"
+        },
+        {
+            "dataType": "STRING",
+            "name": "tier"
+        },
+        {
+            "dataType": "STRING",
+            "name": "country"
+        },
+        {
+            "dataType": "STRING",
+            "name": "dob"
+        }
+    ]
+}

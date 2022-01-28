@@ -1,0 +1,47 @@
+
+-- orders --
+
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh \
+--create --bootstrap-server kafka:9092 --topic orders
+
+docker exec -it pinot-controller /opt/pinot/bin/pinot-admin.sh AddTable \
+-tableConfigFile /config/orders_table.json \
+-schemaFile /config/orders_schema.json -exec
+
+docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh \
+--bootstrap-server kafka:9092 --topic orders
+
+-- customers --
+
+docker exec -it pinot-controller /opt/pinot/bin/pinot-admin.sh AddTable \
+-tableConfigFile /config/customers_table.json \
+-schemaFile /config/customers_schema.json -exec
+
+docker exec -it pinot-controller /opt/pinot/bin/pinot-admin.sh LaunchDataIngestionJob \
+-jobSpecFile /config/customers_job-spec.yml
+
+-- queries --
+
+SELECT
+    orders.order_id,
+    lookup('customers','name','customer_id',customer_id) as name,
+    lookup('customers','tier','customer_id',customer_id) as tier,
+    orders.amount
+FROM orders
+WHERE tier='Gold'
+LIMIT 10
+
+SELECT
+    lookup('customers','tier','customer_id',customer_id) as tier,
+    SUM(orders.amount) as sales_total
+FROM orders
+GROUP BY tier
+ORDER By sales_total DESC
+
+SELECT
+    lookup('customers','country','customer_id',customer_id) as country,
+    COUNT(*) as total_orders,
+    SUM(orders.amount) as sales_total
+FROM orders
+GROUP BY country
+ORDER By sales_total DESC
