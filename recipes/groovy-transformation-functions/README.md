@@ -41,7 +41,7 @@ docker exec -it pinot-controller-groovy bin/pinot-admin.sh AddTable   \
   -exec
 ```
 
-Add an event into Kafka
+Add events into Kafka
 
 ```bash
 printf '{"timestamp": "2019-10-09 21:25:25", "payload": {"firstName": "James", "lastName": "Smith", "before": {"id": 2}, "after": { "id": 3}}}
