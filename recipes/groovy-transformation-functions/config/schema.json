@@ -1,0 +1,19 @@
+{
+    "schemaName": "events",
+    "dimensionFieldSpecs": [
+      {
+        "name": "id",
+        "dataType": "INT"
+      },
+      {
+        "name": "name",
+        "dataType": "STRING"
+      }
+    ],
+    "dateTimeFieldSpecs": [{
+      "name": "timestamp",
+      "dataType": "TIMESTAMP",
+      "format" : "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }]
+}
