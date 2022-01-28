@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 pandas = "*"
-csvkit = "*"
 streamlit = "*"
 plotly = "==5.4.0"
 streamlit-tags = "*"
