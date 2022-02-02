@@ -29,20 +29,19 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/ingest-parquet-files-from-s3-using-spark
 ```
 
-## Launch Pinot Cluster
+Launch Pinot Cluster
 
 ```bash
 bin/quick-start-batch.sh
 ```
 
-
-## Launch Spark Shell
+Launch Spark Shell
 
 ```bash
 <SPARK_HOME>/bin/spark-shell
 ```
 
-## Convert CSV File to Parquet Format
+Convert CSV File to Parquet Format
 
 ```scala
 val df = spark.read.format("csv").option("header", true).load("/path/to/events.csv")
@@ -50,14 +49,14 @@ val df = spark.read.format("csv").option("header", true).load("/path/to/events.c
 df.write.option("compression","none").mode("overwrite").parquet("/path/to/output")
 ```
 
-## Upload Parquet Files
+Upload Parquet Files
 
 
 ```bash
 aws s3 cp /path/to/output s3://pinot-spark-demo/rawdata/ --recursive
 ```
 
-## Create Table and Schema
+Create Table and Schema
 
 ```bash
 ./pinot-admin.sh AddTable \
@@ -65,7 +64,7 @@ aws s3 cp /path/to/output s3://pinot-spark-demo/rawdata/ --recursive
   -schemaFile /path/to/events_schema.json -exec
 ```
 
-## Ingest Parquet
+Ingest Parquet
 
 ```bash
 export PINOT_VERSION=0.8.0
@@ -85,7 +84,7 @@ local://${PINOT_DISTRIBUTION_DIR}/lib/pinot-all-${PINOT_VERSION}-jar-with-depend
   -jobSpecFile '/Users/dunith/Work/ingestion-specs/events-s3.yml'
 ```
 
-## Query Pinot
+Query Pinot
 
 ```
 select ToDateTime(ts, 'yyyy-MM-dd') as t_date, count(distinct userId) as DAU
