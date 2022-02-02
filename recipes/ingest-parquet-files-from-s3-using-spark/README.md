@@ -1,5 +1,26 @@
 # Ingest Parquet Files from a S3 Bucket into Pinot Using Spark
 
+> In this recipe we'll learn how to ingest Parquet formatted data from an AWS S3 bucket into a Pinot cluster.
+
+<table>
+  <tr>
+    <td>Pinot Version</td>
+    <td>0.9.3</td>
+  </tr>
+  <tr>
+    <td>Schema</td>
+    <td><a href="config/events_schema.json">config/events_schema.json</a></td>
+  </tr>
+    <tr>
+    <td>Table Config</td>
+    <td><a href="config/events_table.json">config/events_table.json</a></td>
+  </tr>
+      <tr>
+    <td>Ingestion Job</td>
+    <td><a href="config/events-s3.yml">config/events-s3.yml</a></td>
+  </tr>
+</table>
+
 ## Launch Pinot Cluster
 
 ```bash
