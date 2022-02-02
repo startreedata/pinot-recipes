@@ -1,0 +1,48 @@
+{
+    "tableName": "dates",
+    "tableType": "REALTIME",
+    "segmentsConfig": {
+        "timeColumnName": "Date4",
+        "schemaName": "dates",
+        "replication": "1",
+        "replicasPerPartition": "1"
+    },
+    "ingestionConfig": {
+        "batchIngestionConfig": {
+            "segmentIngestionType": "APPEND",
+            "segmentIngestionFrequency": "DAILY"
+        },
+        "transformConfigs": [
+            {
+                "columnName": "Date1",
+                "transformFunction": "timestamp1"
+            },
+            {
+                "columnName": "Date2",
+                "transformFunction": "timestamp2"
+            },
+            {
+                "columnName": "Date3",
+                "transformFunction": "FromDateTime(timestamp3, 'MM/dd/yyyy HH:mm:ss')"
+            },
+            {
+                "columnName": "Date4",
+                "transformFunction": "timestamp1"
+            }
+        ]
+    },
+    "tableIndexConfig": {
+        "loadMode": "MMAP",
+        "streamConfigs": {
+            "streamType": "kafka",
+            "stream.kafka.topic.name": "dates",
+            "stream.kafka.broker.list": "kafka-datetime:9093",
+            "stream.kafka.consumer.type": "lowlevel",
+            "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+            "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+            "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder"
+        }
+    },
+    "tenants": {},
+    "metadata": {}
+}

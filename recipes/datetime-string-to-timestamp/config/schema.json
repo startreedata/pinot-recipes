@@ -1,0 +1,25 @@
+{
+  "schemaName": "dates",
+  "dimensionFieldSpecs": [
+    {
+      "name": "Date1",
+      "dataType": "TIMESTAMP"
+    },
+    {
+      "name": "Date2",
+      "dataType": "TIMESTAMP"
+    },
+    {
+      "name": "Date3",
+      "dataType": "TIMESTAMP"
+    }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "Date4",
+      "dataType": "TIMESTAMP",
+      "format" : "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}
