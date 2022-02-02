@@ -1,0 +1,19 @@
+{
+    "tableName": "events",
+    "segmentsConfig": {
+      "timeColumnName": "ts",
+      "timeType": "MILLISECONDS",
+      "replication": "1",
+      "schemaName": "events"
+    },
+    "tableIndexConfig": {
+      "invertedIndexColumns": [],
+      "loadMode": "MMAP"
+    },
+    "tenants": {
+      "broker": "DefaultTenant",
+      "server": "DefaultTenant"
+    },
+    "tableType": "OFFLINE",
+    "metadata": {}
+  }

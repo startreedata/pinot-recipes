@@ -1,0 +1,29 @@
+executionFrameworkSpec:
+  name: spark
+  segmentGenerationJobRunnerClassName: >-
+
+org.apache.pinot.plugin.ingestion.batch.spark.SparkSegmentGenerationJobRunner
+  segmentTarPushJobRunnerClassName: org.apache.pinot.plugin.ingestion.batch.spark.SparkSegmentTarPushJobRunner
+  segmentUriPushJobRunnerClassName: org.apache.pinot.plugin.ingestion.batch.spark.SparkSegmentUriPushJobRunner
+jobType: SegmentCreationAndMetadataPush
+inputDirURI: 's3://pinot-spark-demo/rawdata'
+outputDirURI: 's3://pinot-spark-demo/output/'
+overwriteOutput: true
+pinotFSSpecs:
+  - scheme: s3
+  className: org.apache.pinot.plugin.filesystem.S3PinotFS
+  configs:
+    region: us-east-1
+recordReaderSpec:
+  dataFormat: parquet
+  className: org.apache.pinot.plugin.inputformat.parquet.ParquetRecordReader
+tableSpec:
+  tableName: events
+  schemaURI: 'http://localhost:9000/tables/events/schema'
+  tableConfigURI: 'http://localhost:9000/tables/events'
+pinotClusterSpecs:
+  - controllerURI: 'http://localhost:9000'
+pushJobSpec:
+  pushParallelism: 2
+  pushAttempts: 2
+  pushRetryIntervalMillis: 1000

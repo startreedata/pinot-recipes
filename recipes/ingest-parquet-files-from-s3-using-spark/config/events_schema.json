@@ -1,0 +1,26 @@
+{
+    "schemaName": "events",
+    "dimensionFieldSpecs": [
+      {
+        "name": "eventId",
+        "dataType": "STRING"
+      },
+      {
+        "name": "userId",
+        "dataType": "INT"
+      },
+      {
+        "name": "eventType",
+        "dataType": "STRING"
+      }
+    ],
+    "metricFieldSpecs": [],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "ts",
+        "dataType": "LONG",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ]
+  }
