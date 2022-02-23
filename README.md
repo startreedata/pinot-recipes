@@ -8,7 +8,7 @@ This repository contains recipes for Apache Pinot.
 * [Ingest Parquet Files from a S3 Bucket into Pinot Using Spark](recipes/ingest-parquet-files-from-s3-using-spark/)
 * [Understanding Lookup-based Join Support](recipes/lookup-joins)
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
-
+* [Importing JSON files](recipes/ingest-json-files)
 
 ## Datasets
 
