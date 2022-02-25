@@ -1,4 +1,4 @@
-# Ingesting JSON files
+# JSON Transformation Functions
 
 > In this recipe we'll learn how to ingest JSON files.
 
@@ -27,7 +27,7 @@ Clone this repository and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/ingest-json-files
+cd pinot-recipes/recipes/json-transformation-functions
 ```
 
 Spin up a Pinot cluster using Docker Compose:

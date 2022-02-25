@@ -1,0 +1,23 @@
+{
+    "schemaName": "people",
+    "dimensionFieldSpecs": [
+      {
+        "name": "name",
+        "dataType": "STRING"
+      },
+      {
+        "name": "age",
+        "dataType": "INT"
+      },
+      {
+        "dataType": "STRING",
+        "name": "subjects",
+        "singleValueField": false
+      },
+      {
+        "dataType": "STRING",
+        "name": "grades",
+        "singleValueField": false
+      }
+    ]
+}
