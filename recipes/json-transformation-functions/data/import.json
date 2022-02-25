@@ -1,2 +1,2 @@
-{"name":"Pete", "age":24, "subjectsAndGrades":[{"name":"Maths", "grade":"A"}, {"name":"English", "grade":"B"}]}
-{"name":"John", "age":28, "subjectsAndGrades":[{"name":"Maths", "grade":"A"}, {"name":"Computer Science", "grade":"C"}]}
+{"name":"Pete", "meta": {"age":24}, "subjectsAndGrades":[{"name":"Maths", "grade":"A"}, {"name":"English", "grade":"B"}]}
+{"name":"John", "meta": {"age":28}, "subjectsAndGrades":[{"name":"Maths", "grade":"A"}, {"name":"Computer Science", "grade":"C"}]}

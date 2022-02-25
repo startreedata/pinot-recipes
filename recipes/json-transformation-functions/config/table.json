@@ -1,32 +1,36 @@
 {
-    "tableName": "people",
-    "tableType": "OFFLINE",
-    "segmentsConfig": {
-      "replication": 1,
-      "schemaName": "people"
+  "tableName":"people",
+  "tableType":"OFFLINE",
+  "segmentsConfig":{
+    "replication":1,
+    "schemaName":"people"
+  },
+  "tenants":{
+    "broker":"DefaultTenant",
+    "server":"DefaultTenant"
+  },
+  "tableIndexConfig":{
+    "loadMode":"MMAP"
+  },
+  "ingestionConfig":{
+    "batchIngestionConfig":{
+      "segmentIngestionType":"APPEND",
+      "segmentIngestionFrequency":"DAILY"
     },
-    "tenants": {
-      "broker":"DefaultTenant",
-      "server":"DefaultTenant"
-    },
-    "tableIndexConfig": {
-      "loadMode": "MMAP"
-    },
-    "ingestionConfig": {
-      "batchIngestionConfig": {
-        "segmentIngestionType": "APPEND",
-        "segmentIngestionFrequency": "DAILY"
+    "transformConfigs":[
+      {
+        "columnName":"subjects",
+        "transformFunction":"jsonPathArray(subjectsAndGrades, '$.[*].name')"
       },
-     "transformConfigs": [
-       {
-           "columnName": "subjects",
-           "transformFunction": "jsonPathArray(subjectsAndGrades, '$.[*].name')"
-       },
-       {
-           "columnName": "grades",
-           "transformFunction": "jsonPathArray(subjectsAndGrades, '$.[*].grade')"
-       }
-     ]
-    },
-    "metadata": {}
+      {
+        "columnName":"grades",
+        "transformFunction":"jsonPathArray(subjectsAndGrades, '$.[*].grade')"
+      },
+      {
+        "columnName":"age",
+        "transformFunction":"JSONPATHLONG(meta, '$.age')"
+      }
+    ]
+  },
+  "metadata":{}
 }
