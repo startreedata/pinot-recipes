@@ -1,0 +1,36 @@
+{
+  "tableName":"people",
+  "tableType":"OFFLINE",
+  "segmentsConfig":{
+    "replication":1,
+    "schemaName":"people"
+  },
+  "tenants":{
+    "broker":"DefaultTenant",
+    "server":"DefaultTenant"
+  },
+  "tableIndexConfig":{
+    "loadMode":"MMAP"
+  },
+  "ingestionConfig":{
+    "batchIngestionConfig":{
+      "segmentIngestionType":"APPEND",
+      "segmentIngestionFrequency":"DAILY"
+    },
+    "transformConfigs":[
+      {
+        "columnName":"userId",
+        "transformFunction":"jsonPathString(data, '$.userId')"
+      },
+      {
+        "columnName":"id",
+        "transformFunction":"Groovy({Long.valueOf(userId.split('__')[0])}, userId)"
+      },
+      {
+        "columnName":"name",
+        "transformFunction":"Groovy({userId.split('__')[1]}, userId)"
+      }
+    ]
+  },
+  "metadata":{}
+}

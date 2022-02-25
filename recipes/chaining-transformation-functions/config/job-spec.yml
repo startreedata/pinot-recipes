@@ -14,6 +14,6 @@ recordReaderSpec:
   dataFormat: 'json'
   className: 'org.apache.pinot.plugin.inputformat.json.JSONRecordReader'
 tableSpec:
-  tableName: 'movies'
+  tableName: 'people'
 pinotClusterSpecs:
   - controllerURI: 'http://localhost:9000'
