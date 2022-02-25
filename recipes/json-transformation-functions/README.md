@@ -56,6 +56,6 @@ Navigate to http://localhost:9000/#/query and run the following query:
 
 ```sql
 select * 
-from movies 
+from people 
 limit 10
 ```
