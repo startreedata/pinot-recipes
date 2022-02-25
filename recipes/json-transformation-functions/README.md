@@ -1,6 +1,6 @@
 # JSON Transformation Functions
 
-> In this recipe we'll learn how to ingest JSON files.
+> In this recipe we'll learn how to use JSON transformation functions to extract values from nested JSON documents.
 
 <table>
   <tr>
@@ -56,6 +56,6 @@ Navigate to http://localhost:9000/#/query and run the following query:
 
 ```sql
 select * 
-from movies 
+from people 
 limit 10
 ```
