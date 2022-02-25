@@ -2,7 +2,8 @@
     "tableName": "movies",
     "tableType": "OFFLINE",
     "segmentsConfig": {
-      "replication": 1
+      "replication": 1,
+      "schemaName": "movies"
     },
     "tenants": {
       "broker":"DefaultTenant",

@@ -2,8 +2,12 @@
     "schemaName": "movies",
     "dimensionFieldSpecs": [
       {
+        "name": "id",
+        "dataType": "LONG"
+      },
+      {
         "name": "title",
-        "dataType": "STRINGS"
+        "dataType": "STRING"
       },
       {
         "name": "genre",

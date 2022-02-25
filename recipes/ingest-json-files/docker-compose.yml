@@ -10,7 +10,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
   pinot-controller:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.9.3
     command: "StartController -zkAddress zookeeper-json:2181"
     container_name: "pinot-controller-json"
     volumes:
@@ -22,7 +22,7 @@ services:
     depends_on:
       - zookeeper
   pinot-broker:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.9.3
     command: "StartBroker -zkAddress zookeeper-json:2181"
     restart: unless-stopped
     container_name: "pinot-broker-json"
@@ -31,7 +31,7 @@ services:
     depends_on:
       - pinot-controller
   pinot-server:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.9.3
     command: "StartServer -zkAddress zookeeper-json:2181"
     restart: unless-stopped
     container_name: "pinot-server-json"
