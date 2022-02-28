@@ -13,6 +13,7 @@ This repository contains recipes for Apache Pinot.
 
 * [Groovy Transformation Functions](recipes/groovy-transformation-functions/)
 * [JSON Transformation Functions](recipes/json-transformation-functions/)
+* [Chaining Transformation Functions](recipes/chaining-transformation-functions/)
 
 ## Datasets
 
