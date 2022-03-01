@@ -41,10 +41,14 @@ docker exec -it pinot-controller-segment bin/pinot-admin.sh AddTable   \
 Import message into Kafka:
 
 ```bash
-printf '{"timestamp1": "2019-10-09 22:25:25", "timestamp2": "1570656325000", "timestamp3": "10/09/2019 22:25:25"}\n' |
-docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic dates
+while true; do
+  ts=`date +%s%N | cut -b1-13`;
+  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
+  count=$[ $RANDOM % 1000 + 0 ]
+  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
+done | docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
+    --bootstrap-server localhost:9092 \
+    --topic events
 ```
 
 Query Pinot:
