@@ -55,5 +55,5 @@ Query Pinot:
 
 ```sql
 select * 
-from dates
+from events
 ```
