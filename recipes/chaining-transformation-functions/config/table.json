@@ -20,7 +20,7 @@
     "transformConfigs":[
       {
         "columnName":"userId",
-        "transformFunction":"jsonPathString(data, '$.userId')"
+        "transformFunction":"jsonPathString(payload, '$.userId')"
       },
       {
         "columnName":"id",
