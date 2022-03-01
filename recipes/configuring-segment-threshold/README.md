@@ -1,6 +1,6 @@
 # Configuring segment threshold
 
-> In this recipe we'll learn how to config the segment threshold for real-time tables
+> In this recipe we'll learn how to configure the segment threshold for real-time tables
 
 <table>
   <tr>
