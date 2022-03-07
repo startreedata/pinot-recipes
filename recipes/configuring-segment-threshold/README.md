@@ -1,6 +1,6 @@
 # Configuring segment threshold
 
-> In this recipe we'll learn how to config the segment threshold for real-time tables
+> In this recipe we'll learn how to configure the segment threshold for real-time tables
 
 <table>
   <tr>
@@ -46,10 +46,9 @@ while true; do
   uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
   count=$[ $RANDOM % 1000 + 0 ]
   echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done |
-docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic events
+done | docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
+    --bootstrap-server localhost:9092 \
+    --topic events
 ```
 
 Query Pinot:
