@@ -1,0 +1,48 @@
+{
+  "tableName": "events",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "ts",
+    "schemaName": "events",
+    "replication": "1",
+    "replicasPerPartition": "1",
+    "retentionTimeUnit": "MINUTES",
+    "retentionTimeValue": "10"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "streamConfigs": {
+      "streamType": "kafka",
+      "stream.kafka.topic.name": "events",
+      "stream.kafka.broker.list": "kafka-rt:9093",
+      "stream.kafka.consumer.type": "lowlevel",
+      "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+      "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+      "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder",
+      "realtime.segment.flush.threshold.rows": "10000",
+      "realtime.segment.flush.threshold.time": "1h",
+      "realtime.segment.flush.threshold.segment.size": "5M"
+    }
+  },
+  "tenants": {},
+  "metadata": {},
+  "task": {
+    "taskTypeConfigsMap": {
+      "RealtimeToOfflineSegmentsTask": {
+        "bucketTimePeriod": "5m",
+        "bufferTimePeriod": "1m",
+        "roundBucketTimePeriod": "1m",
+        "schedule": "0 * * * * ?",
+        "mergeType": "rollup",
+        "count.aggregationType": "max",
+        "maxNumRecordsPerSegment": "100000"
+      }
+    }
+  }
+}

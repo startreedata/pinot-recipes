@@ -1,0 +1,21 @@
+{
+  "tableName": "events",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "timeColumnName": "ts",
+    "schemaName": "events",
+    "replication": "1",
+    "replicasPerPartition": "1"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "HOURLY"
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  "tenants": {},
+  "metadata": {}
+}

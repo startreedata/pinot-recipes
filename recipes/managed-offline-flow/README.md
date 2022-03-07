@@ -1,6 +1,6 @@
-# Configuring segment threshold
+# Real-Time to Offline 
 
-> In this recipe we'll learn how to config the segment threshold for real-time tables
+> In this recipe we'll learn how to use Pinot offline managed flow.
 
 <table>
   <tr>
@@ -21,7 +21,7 @@
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/configuring-segment-threshold
+cd pinot-recipes/recipes/real-time-to-offline
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -33,8 +33,14 @@ docker-compose up
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-segment bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
+docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
+  -tableConfigFile /config/table-realtime.json   \
+  -schemaFile /config/schema.json -exec
+```
+
+```bash
+docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
+  -tableConfigFile /config/table-offline.json   \
   -schemaFile /config/schema.json -exec
 ```
 
@@ -47,7 +53,7 @@ while true; do
   count=$[ $RANDOM % 1000 + 0 ]
   echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
 done |
-docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
+docker exec -i kafka-rt /opt/kafka/bin/kafka-console-producer.sh \
   --bootstrap-server localhost:9092 \
   --topic events
 ```
