@@ -1,4 +1,4 @@
-# Real-Time to Offline 
+# Managed Offline Flow
 
 > In this recipe we'll learn how to use Pinot offline managed flow.
 
@@ -21,7 +21,7 @@
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/real-time-to-offline
+cd pinot-recipes/recipes/managed-offline-flow
 ```
 
 Spin up a Pinot cluster using Docker Compose:
