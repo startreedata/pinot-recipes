@@ -33,3 +33,5 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -pinotSchemaName=github \
   -dimensions=""
 ```
+
+This will then write a schema file to [config/github.json](config/github.json).
