@@ -19,7 +19,7 @@ This repository contains recipes for Apache Pinot.
 ## Managed Offline Flow
 
 * [Managed Offline Flow](recipes/managed-offline-flow)
-* [Automatically schedule Managed Offline Flow](recipes/managed-offline-flow-automatically-schedule)
+* [Automatically schedule Managed Offline Flow](recipes/managed-offline-flow-automatic-scheduling)
 
 ## Datasets
 
