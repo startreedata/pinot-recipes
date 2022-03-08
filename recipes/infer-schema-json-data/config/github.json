@@ -1,0 +1,64 @@
+{
+  "schemaName" : "github",
+  "dimensionFieldSpecs" : [ {
+    "name" : "id",
+    "dataType" : "STRING"
+  }, {
+    "name" : "type",
+    "dataType" : "STRING"
+  }, {
+    "name" : "actor.id",
+    "dataType" : "INT"
+  }, {
+    "name" : "actor.login",
+    "dataType" : "STRING"
+  }, {
+    "name" : "actor.display_login",
+    "dataType" : "STRING"
+  }, {
+    "name" : "actor.gravatar_id",
+    "dataType" : "STRING"
+  }, {
+    "name" : "actor.url",
+    "dataType" : "STRING"
+  }, {
+    "name" : "actor.avatar_url",
+    "dataType" : "STRING"
+  }, {
+    "name" : "repo.id",
+    "dataType" : "INT"
+  }, {
+    "name" : "repo.name",
+    "dataType" : "STRING"
+  }, {
+    "name" : "repo.url",
+    "dataType" : "STRING"
+  }, {
+    "name" : "payload.push_id",
+    "dataType" : "LONG"
+  }, {
+    "name" : "payload.size",
+    "dataType" : "INT"
+  }, {
+    "name" : "payload.distinct_size",
+    "dataType" : "INT"
+  }, {
+    "name" : "payload.ref",
+    "dataType" : "STRING"
+  }, {
+    "name" : "payload.head",
+    "dataType" : "STRING"
+  }, {
+    "name" : "payload.before",
+    "dataType" : "STRING"
+  }, {
+    "name" : "payload.commits",
+    "dataType" : "STRING"
+  }, {
+    "name" : "public",
+    "dataType" : "BOOLEAN"
+  }, {
+    "name" : "created_at",
+    "dataType" : "STRING"
+  } ]
+}
