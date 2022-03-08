@@ -51,8 +51,8 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
-    environment:
-      JAVA_OPTS: -Dlog4j2.configurationFile=/config/log4j2.xml
+    # environment:
+    #   JAVA_OPTS: -Dlog4j2.configurationFile=/config/log4j2.xml
   pinot-server:
     image: apachepinot/pinot:0.9.3
     command: "StartServer -zkAddress zookeeper-rt:2181"
