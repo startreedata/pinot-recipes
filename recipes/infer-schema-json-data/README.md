@@ -44,4 +44,4 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -timeColumnName=created_at
 ```
 
-This will then write a schema file to [config/github.json](config/github_with_ts.json).
+This will then write a schema file to [config/github_with_ts.json](config/github_with_ts.json).
