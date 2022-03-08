@@ -8,6 +8,8 @@ This repository contains recipes for Apache Pinot.
 * [Understanding Lookup-based Join Support](recipes/lookup-joins)
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Importing JSON files](recipes/ingest-json-files)
+* [Full Upserts](recipes/full-upserts)
+* [Managed Offline Flow](recipes/managed-offline-flow)
 
 ## Transformation Functions
 
