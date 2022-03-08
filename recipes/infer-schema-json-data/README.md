@@ -45,3 +45,14 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
 ```
 
 This will write the schema file to [config/github_with_ts.json](config/github_with_ts.json).
+
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
+  -jsonFile=/data/github.json \
+  -outputDir=./config \
+  -pinotSchemaName=github_with_ts \
+  -timeColumnName=created_at \
+  -fieldsToUnnest=payload.commits
+```
+
+This will write the schema file to [config/github_unnest.json](config/github_unnest.json).
