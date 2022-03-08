@@ -9,13 +9,17 @@ This repository contains recipes for Apache Pinot.
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Importing JSON files](recipes/ingest-json-files)
 * [Full Upserts](recipes/full-upserts)
-* [Managed Offline Flow](recipes/managed-offline-flow)
 
 ## Transformation Functions
 
 * [Groovy Transformation Functions](recipes/groovy-transformation-functions/)
 * [JSON Transformation Functions](recipes/json-transformation-functions/)
 * [Chaining Transformation Functions](recipes/chaining-transformation-functions/)
+
+## Managed Offline Flow
+
+* [Managed Offline Flow](recipes/managed-offline-flow)
+* [Automatically schedule Managed Offline Flow](recipes/managed-offline-flow-automatic-scheduling)
 
 ## Datasets
 
