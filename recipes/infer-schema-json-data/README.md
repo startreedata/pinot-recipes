@@ -18,7 +18,7 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/infer-schema-json-data
 ```
 
-Spin up a Pinot cluster using Docker Compose:
+Spin up a Pinot Controller using Docker Compose:
 
 ```bash
 docker-compose up
