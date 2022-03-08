@@ -24,7 +24,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Import [data/ingest.json](data/import.json) into Pinot:
+Infer schema from  [data/github.json](data/github.json):
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
@@ -34,6 +34,8 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -dimensions=""
 ```
 
+This will then write a schema file to [config/github.json](config/github.json).
+
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -jsonFile=/data/github.json \
@@ -41,3 +43,5 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -pinotSchemaName=github_with_ts \
   -timeColumnName=created_at
 ```
+
+This will then write a schema file to [config/github.json](config/github_with_ts.json).
