@@ -33,3 +33,11 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -pinotSchemaName=github \
   -dimensions=""
 ```
+
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
+  -jsonFile=/data/github.json \
+  -outputDir=./config \
+  -pinotSchemaName=github_with_ts \
+  -timeColumnName=created_at
+```
