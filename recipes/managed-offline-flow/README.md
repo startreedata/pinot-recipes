@@ -1,4 +1,4 @@
-# Real-Time to Offline 
+# Managed Offline Flow
 
 > In this recipe we'll learn how to use Pinot offline managed flow.
 
@@ -21,7 +21,7 @@
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/real-time-to-offline
+cd pinot-recipes/recipes/managed-offline-flow
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -44,7 +44,7 @@ docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
   -schemaFile /config/schema.json -exec
 ```
 
-Import message into Kafka:
+Import messages into Kafka:
 
 ```bash
 while true; do
@@ -56,6 +56,13 @@ done |
 docker exec -i kafka-rt /opt/kafka/bin/kafka-console-producer.sh \
   --bootstrap-server localhost:9092 \
   --topic events
+```
+
+Run the Real-Time to Offline Job:
+
+```bash
+curl -X POST "http://localhost:9000/tasks/schedule?taskType=RealtimeToOfflineSegmentsTask&tableName=events_REALTIME" \
+  -H "accept: application/json" 2>/dev/null | jq '.'
 ```
 
 Query Pinot:
