@@ -24,7 +24,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Import [data/ingest.json](data/import.json) into Pinot:
+Infer schema from  [data/github.json](data/github.json):
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
