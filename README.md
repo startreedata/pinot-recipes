@@ -9,6 +9,7 @@ This repository contains recipes for Apache Pinot.
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Importing JSON files](recipes/ingest-json-files)
 * [Full Upserts](recipes/full-upserts)
+* [Infer schema from JSON data](recipes/infer-schema-json-data)
 
 ## Transformation Functions
 
