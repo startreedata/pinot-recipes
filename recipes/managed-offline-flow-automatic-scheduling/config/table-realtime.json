@@ -37,11 +37,7 @@
       "RealtimeToOfflineSegmentsTask": {
         "bucketTimePeriod": "5m",
         "bufferTimePeriod": "1m",
-        "roundBucketTimePeriod": "1m",
-        "schedule": "0 * * * * ?",
-        "mergeType": "rollup",
-        "count.aggregationType": "max",
-        "maxNumRecordsPerSegment": "100000"
+        "schedule": "0 * * * * ?"
       }
     }
   }
