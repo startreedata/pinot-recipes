@@ -45,7 +45,7 @@ docker exec -it pinot-controller-csv bin/pinot-admin.sh AddTable   \
   -exec
 ```
 
-Import the CSV files from the  [input](input) directory into Pinot:
+Import the CSV files from the [input](input) directory into Pinot:
 
 ```bash
 docker exec -it pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
@@ -56,6 +56,13 @@ Navigate to http://localhost:9000/#/query and run the following query:
 
 ```sql
 select * 
-from movies 
+from matches 
 limit 10
+```
+
+Run the Merge Roll Up Job:
+
+```bash
+curl -X POST "http://localhost:9000/tasks/schedule?taskType=MergeRollupTask&tableName=movies_OFFLINE" \
+  -H "accept: application/json" 2>/dev/null | jq '.'
 ```

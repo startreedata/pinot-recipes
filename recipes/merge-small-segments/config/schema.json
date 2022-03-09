@@ -1,21 +1,29 @@
 {
-    "schemaName": "movies",
+    "schemaName": "matches",
     "dimensionFieldSpecs": [
       {
-        "name": "id",
-        "dataType": "LONG"
-      },
-      {
-        "name": "title",
+        "name": "round",
         "dataType": "STRING"
       },
       {
-        "name": "genre",
+        "name": "winner",
         "dataType": "STRING"
       },
       {
-        "name": "year",
-        "dataType": "INT"
+        "name": "loser",
+        "dataType": "STRING"
+      },
+      {
+        "name": "score",
+        "dataType": "STRING"
+      }
+    ],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "matchTime",
+        "dataType": "TIMESTAMP",
+        "format" : "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
       }
     ]
 }

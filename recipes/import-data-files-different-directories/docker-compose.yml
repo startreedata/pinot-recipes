@@ -38,10 +38,3 @@ services:
     container_name: "pinot-server-csv"
     depends_on:
       - pinot-broker
-  pinot-minion:
-    image: apachepinot/pinot:0.9.3
-    command: "StartMinion -zkAddress zookeeper-csv:2181"
-    restart: unless-stopped
-    container_name: "pinot-minion-csv"
-    depends_on:
-      - pinot-server

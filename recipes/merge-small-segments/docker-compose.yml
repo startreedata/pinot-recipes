@@ -20,8 +20,11 @@ services:
     restart: unless-stopped
     ports:
       - "9000:9000"
+      - "5005:5005"
     depends_on:
       - zookeeper
+    # environment:
+    #   JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
   pinot-broker:
     image: apachepinot/pinot:0.9.3
     command: "StartBroker -zkAddress zookeeper-csv:2181"

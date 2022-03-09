@@ -14,6 +14,6 @@ recordReaderSpec:
   className: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReader'
   configClassName: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReaderConfig'
 tableSpec:
-  tableName: 'movies'
+  tableName: 'matches'
 pinotClusterSpecs:
   - controllerURI: 'http://localhost:9000'
