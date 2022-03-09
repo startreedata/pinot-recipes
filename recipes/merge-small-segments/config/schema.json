@@ -1,0 +1,21 @@
+{
+    "schemaName": "movies",
+    "dimensionFieldSpecs": [
+      {
+        "name": "id",
+        "dataType": "LONG"
+      },
+      {
+        "name": "title",
+        "dataType": "STRING"
+      },
+      {
+        "name": "genre",
+        "dataType": "STRING"
+      },
+      {
+        "name": "year",
+        "dataType": "INT"
+      }
+    ]
+}
