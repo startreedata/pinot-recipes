@@ -17,6 +17,3 @@ tableSpec:
   tableName: 'movies'
 pinotClusterSpecs:
   - controllerURI: 'http://localhost:9000'
-segmentNameGeneratorSpec:
-  configs:
-    use.global.directory.sequence.id: true

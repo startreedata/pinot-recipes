@@ -2,6 +2,9 @@ executionFrameworkSpec:
   name: 'standalone'
   segmentGenerationJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentGenerationJobRunner'
   segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
+segmentNameGeneratorSpec:
+  configs:
+    use.global.directory.sequence.id: true
 jobType: SegmentCreationAndTarPush
 inputDirURI: '/input'
 includeFileNamePattern: 'glob:**/*.csv'
@@ -17,6 +20,3 @@ tableSpec:
   tableName: 'movies'
 pinotClusterSpecs:
   - controllerURI: 'http://localhost:9000'
-segmentNameGeneratorSpec:
-  configs:
-    use.global.directory.sequence.id: true
