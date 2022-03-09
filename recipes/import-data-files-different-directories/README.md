@@ -1,6 +1,6 @@
-# Import CSV files from different directories
+# Import data files from different directories
 
-> In this recipe we'll learn how to import CSV files from different directories.
+> In this recipe we'll learn how to import data files from different directories.
 
 <table>
   <tr>
