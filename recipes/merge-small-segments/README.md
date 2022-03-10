@@ -63,6 +63,6 @@ limit 10
 Run the Merge Roll Up Job:
 
 ```bash
-curl -X POST "http://localhost:9000/tasks/schedule?taskType=MergeRollupTask&tableName=movies_OFFLINE" \
+curl -X POST "http://localhost:9000/tasks/schedule?taskType=MergeRollupTask&tableName=matches_OFFLINE" \
   -H "accept: application/json" 2>/dev/null | jq '.'
 ```

@@ -26,7 +26,7 @@
     "taskTypeConfigsMap": {
       "MergeRollupTask": {
         "1hour.mergeType": "concat",
-        "1hour.bucketTimePeriod": "1h",
+        "1hour.bucketTimePeriod": "1d",
         "1hour.bufferTimePeriod": "5m"
       }
     }
