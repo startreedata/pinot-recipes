@@ -21,6 +21,8 @@
   </tr>
 </table>
 
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/merge-small-segments
+
 ***
 
 Clone this repository and navigate to this recipe:
