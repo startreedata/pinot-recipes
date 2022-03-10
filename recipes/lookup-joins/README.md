@@ -21,6 +21,8 @@
   </tr>
 </table>
 
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/lookup-joins
+
 ***
 
 Clone this repository and navigate to this recipe:
