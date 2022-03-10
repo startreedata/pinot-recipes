@@ -2,10 +2,10 @@
   "tableName": "matches",
   "tableType": "OFFLINE",
   "segmentsConfig": {
-      "timeColumnName": "matchTime",
-      "schemaName": "matches",
-      "replication": "1",
-      "replicasPerPartition": "1"
+    "timeColumnName": "matchTime",
+    "schemaName": "matches",
+    "replication": "1",
+    "replicasPerPartition": "1"
   },
   "tenants": {
     "broker": "DefaultTenant",
@@ -25,9 +25,9 @@
   "task": {
     "taskTypeConfigsMap": {
       "MergeRollupTask": {
-        "1hour.mergeType": "concat",
-        "1hour.bucketTimePeriod": "1d",
-        "1hour.bufferTimePeriod": "5m"
+        "1day.mergeType": "concat",
+        "1day.bucketTimePeriod": "1d",
+        "1day.bufferTimePeriod": "5m"
       }
     }
   }
