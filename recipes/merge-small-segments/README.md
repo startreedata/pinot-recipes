@@ -52,12 +52,24 @@ docker exec -it pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 
-Navigate to http://localhost:9000/#/query and run the following query:
+Run the following to get a list of segments:
 
-```sql
-select * 
-from matches 
-limit 10
+```bash
+segments_breakdown () {
+  segments=`curl -X GET "http://localhost:9000/segments/matches?type=OFFLINE" \
+    -H "accept: application/json" 2>/dev/null | jq -r '.[] [] []'  `
+
+  for segment in $segments; do 
+    metadata=`curl -X GET "http://localhost:9000/segments/matches/${segment}/metadata" \
+      -H "accept: application/json" 2>/dev/null | jq '.'`
+    docs=`echo $metadata | jq '."segment.total.docs" | tonumber'`
+    startTime=`echo $metadata | jq '."segment.start.time" | tonumber'`
+    endTime=`echo $metadata | jq '."segment.end.time" | tonumber'`
+    echo "$segment,$docs,$startTime,$endTime"
+  done
+}
+
+segments_breakdown
 ```
 
 Run the Merge Roll Up Job:
@@ -65,4 +77,10 @@ Run the Merge Roll Up Job:
 ```bash
 curl -X POST "http://localhost:9000/tasks/schedule?taskType=MergeRollupTask&tableName=matches_OFFLINE" \
   -H "accept: application/json" 2>/dev/null | jq '.'
+```
+
+List the segments again:
+
+```bash
+segments_breakdown
 ```
