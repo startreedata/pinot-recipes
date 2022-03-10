@@ -21,6 +21,9 @@
   </tr>
 </table>
 
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/ingest-parquet-files-from-s3-using-spark
+
+***
 
 Clone this repository and navigate to this recipe:
 
