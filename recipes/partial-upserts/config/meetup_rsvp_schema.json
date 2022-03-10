@@ -1,0 +1,36 @@
+{
+    "schemaName": "meetup_rsvp",
+    "primaryKeyColumns": [
+        "event_id"
+    ],
+    "dimensionFieldSpecs": [
+        {
+            "name": "event_id",
+            "dataType": "INT"
+        },
+        {
+            "name": "venue_name",
+            "dataType": "STRING",
+            "singleValueField": false
+        },
+        {
+          "dataType": "STRING",
+          "name": "group_name",
+          "singleValueField": false
+        }
+    ],
+    "metricFieldSpecs": [
+        {
+            "name": "rsvp_count",
+            "dataType": "INT"
+        }
+    ],
+    "dateTimeFieldSpecs": [
+        {
+            "name": "mtime",
+            "dataType": "LONG",
+            "format": "1:MILLISECONDS:EPOCH",
+            "granularity": "1:MILLISECONDS"
+          }
+    ]
+}
