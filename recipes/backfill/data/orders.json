@@ -1,0 +1,7 @@
+{"order_id": 1, "customer_id": 101, "order_status": "OPEN", "amount": 15.947999999999999, "ts": "1632463351000"}
+{"order_id": 2, "customer_id": 102, "order_status": "IN_TRANSIT", "amount": 251.21999999999997, "ts": "1632463361000"}
+{"order_id": 3, "customer_id": 103, "order_status": "COMPLETED", "amount": 239.21999999999997, "ts": "1632463391000"}
+{"order_id": 4, "customer_id": 105, "order_status": "COMPLETED", "amount": 3.888, "ts": "1632467065000"}
+{"order_id": 5, "customer_id": 103, "order_status": "OPEN", "amount": 11.723999999999998, "ts": "1632467066000"}
+{"order_id": 6, "customer_id": 104, "order_status": "OPEN", "amount": 66.624, "ts": "1632467068000"}
+{"order_id": 7, "customer_id": 104, "order_status": "CANCELLED", "amount": 63.047999999999995, "ts": "1632467070000"}

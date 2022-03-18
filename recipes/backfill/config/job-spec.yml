@@ -1,0 +1,23 @@
+executionFrameworkSpec:
+  name: 'standalone'
+  segmentGenerationJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentGenerationJobRunner'
+  segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
+segmentNameGeneratorSpec:
+  type: fixed
+  configs:
+    segment.name: ${segmentName}
+jobType: SegmentCreationAndTarPush
+inputDirURI: '/data'
+includeFileNamePattern: 'glob:**/orders.json'
+outputDirURI: '/opt/pinot/data/orders/'
+overwriteOutput: true
+pinotFSSpecs:
+  - scheme: file
+    className: org.apache.pinot.spi.filesystem.LocalPinotFS
+recordReaderSpec:
+  dataFormat: 'json'
+  className: 'org.apache.pinot.plugin.inputformat.json.JSONRecordReader'
+tableSpec:
+  tableName: 'orders'
+pinotClusterSpecs:
+  - controllerURI: 'http://localhost:9000'
