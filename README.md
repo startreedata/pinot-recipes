@@ -32,6 +32,7 @@ This repository contains recipes for Apache Pinot.
 
 * [Manually schedule RT2OFF job](recipes/managed-offline-flow)
 * [Automatically schedule RT2OFF job](recipes/managed-offline-flow-automatic-scheduling)
+* [Backfill segment created by RT2OFF job](recipes/backfill)
 
 ## Datasets
 
