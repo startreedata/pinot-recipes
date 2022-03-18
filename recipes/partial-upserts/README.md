@@ -9,11 +9,11 @@
   </tr>
   <tr>
     <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
+    <td><a href="config/schema.json">config/meetup_rsvp_schema.json</a></td>
   </tr>
     <tr>
     <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
+    <td><a href="config/table.json">config/meetup_rsvp_table.json</a></td>
   </tr>
 </table>
 
