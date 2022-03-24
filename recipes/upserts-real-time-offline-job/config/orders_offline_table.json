@@ -1,0 +1,21 @@
+{
+  "tableName": "orders",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "timeColumnName": "ts",
+    "schemaName": "orders",
+    "replication": "1",
+    "replicasPerPartition": "1"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "HOURLY"
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  "tenants": {},
+  "metadata": {}
+}
