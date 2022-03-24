@@ -17,7 +17,7 @@
   </tr>
   <tr>
   <td>Offline Table Config</td>
-  <td><a href="config/orders_table_offline.json">config/orders_table_offline.json</a></td>
+  <td><a href="config/orders_offline_table.json">config/orders_offline_table.json</a></td>
 </tr>
 </table>
 
