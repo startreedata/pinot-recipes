@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  zookeeper:
+    image: zookeeper:3.5.6
+    hostname: zookeeper
+    container_name: zookeeper-sasl
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SASL_ENABLED: "false"
+  kafka:
+    image: wurstmeister/kafka:latest
+    restart: unless-stopped
+    container_name: "kafka-sasl"
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-sasl:2181/kafka
+      KAFKA_BROKER_ID: 0
+      KAFKA_ADVERTISED_HOST_NAME: kafka-sasl
+      KAFKA_ADVERTISED_LISTENERS: SASL_PLAINTEXT://kafka-sasl:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: SASL_PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SASL_PLAINTEXT:SASL_PLAINTEXT,OUTSIDE:SASL_PLAINTEXT
+      ZOOKEEPER_SASL_ENABLED: "false"
+      KAFKA_INTER_BROKER_LISTENER_NAME: SASL_PLAINTEXT
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf"
+    volumes:
+      - ./kafka-config/kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf
+      - ./kafka-config/kafka_client.conf:/etc/kafka/kafka_client.conf
+  pinot-controller:
+    image: apachepinot/pinot:0.10.0
+    command: "StartController -zkAddress zookeeper-sasl:2181"
+    container_name: "pinot-controller-sasl"
+    volumes:
+      - ./config:/config
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+  pinot-broker:
+    image: apachepinot/pinot:0.10.0
+    command: "StartBroker -zkAddress zookeeper-sasl:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker-sasl"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+  pinot-server:
+    image: apachepinot/pinot:0.10.0
+    command: "StartServer -zkAddress zookeeper-sasl:2181"
+    restart: unless-stopped
+    container_name: "pinot-server-sasl"
+    depends_on:
+      - pinot-broker
