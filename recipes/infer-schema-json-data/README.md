@@ -20,39 +20,42 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/infer-schema-json-data
 ```
 
-Spin up a Pinot Controller using Docker Compose:
-
-```bash
-docker-compose up
-```
-
 Infer schema from  [data/github.json](data/github.json):
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
-  -jsonFile=/data/github.json \
-  -outputDir=./config \
-  -pinotSchemaName=github \
+docker run \
+  -v ${PWD}/data/github.json:/data/github.json \
+  -v ${PWD}/config:/config \
+  apachepinot/pinot:0.9.3 JsonToPinotSchema \
+  -jsonFile /data/github.json \
+  -pinotSchemaName="github" \
+  -outputDir="/config" \
   -dimensions=""
 ```
 
 This will write the schema file to [config/github.json](config/github.json).
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
-  -jsonFile=/data/github.json \
-  -outputDir=./config \
-  -pinotSchemaName=github_with_ts \
+docker run \
+  -v ${PWD}/data/github.json:/data/github.json \
+  -v ${PWD}/config:/config \
+  apachepinot/pinot:0.9.3 JsonToPinotSchema \
+  -jsonFile /data/github.json \
+  -pinotSchemaName="github_with_ts" \
+  -outputDir="/config" \
   -timeColumnName=created_at
 ```
 
 This will write the schema file to [config/github_with_ts.json](config/github_with_ts.json).
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
-  -jsonFile=/data/github.json \
-  -outputDir=./config \
-  -pinotSchemaName=github_with_ts \
+docker run \
+  -v ${PWD}/data/github.json:/data/github.json \
+  -v ${PWD}/config:/config \
+  apachepinot/pinot:0.9.3 JsonToPinotSchema \
+  -jsonFile /data/github.json \
+  -pinotSchemaName="github_unnest" \
+  -outputDir="/config" \
   -timeColumnName=created_at \
   -fieldsToUnnest=payload.commits
 ```
