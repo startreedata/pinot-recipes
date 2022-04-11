@@ -1,6 +1,6 @@
-# Configuring segment threshold
+# Kafka SASL
 
-> In this recipe we'll learn how to configure the segment threshold for real-time tables
+> In this recipe we'll learn how to configure Pinot to work with Kafka with SASL enabled.
 
 <table>
   <tr>
@@ -17,13 +17,13 @@
   </tr>
 </table>
 
-This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/configuring-segment-threshold
+
 
 ***
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/configuring-segment-threshold
+cd pinot-recipes/recipes/kafka-sasl
 ```
 
 Spin up a Pinot cluster using Docker Compose:
