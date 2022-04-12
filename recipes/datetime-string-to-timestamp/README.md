@@ -43,7 +43,7 @@ docker exec -it pinot-controller-datetime bin/pinot-admin.sh AddTable   \
 Import message into Kafka:
 
 ```bash
-printf '{"timestamp1": "2019-10-09 22:25:25", "timestamp2": "1570656325000", "timestamp3": "10/09/2019 22:25:25"}\n' |
+printf '{"timestamp1": "2019-10-09 22:25:25", "timestamp2": "1570656325000", "timestamp3": "10/09/2019T22:25:25"}\n' |
 docker exec -i kafka-datetime /opt/kafka/bin/kafka-console-producer.sh \
   --bootstrap-server localhost:9092 \
   --topic dates

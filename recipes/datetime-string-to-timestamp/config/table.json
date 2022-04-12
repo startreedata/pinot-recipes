@@ -23,7 +23,7 @@
             },
             {
                 "columnName": "Date3",
-                "transformFunction": "FromDateTime(timestamp3, 'MM/dd/yyyy HH:mm:ss')"
+                "transformFunction": "FromDateTime(timestamp3, 'MM/dd/yyyy''T''HH:mm:ss')"
             },
             {
                 "columnName": "Date4",
