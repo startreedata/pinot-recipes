@@ -1,4 +1,4 @@
-# Kafka SASL
+# Kafka SSL SASL
 
 > In this recipe we'll learn how to configure Pinot to work with Kafka with SSL and SASL enabled.
 
