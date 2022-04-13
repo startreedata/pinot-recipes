@@ -51,7 +51,7 @@ Update the following properties in [config/table.json](config/table.json):
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-sasl bin/pinot-admin.sh AddTable   \
+docker exec -it pinot-controller-ssl-sasl bin/pinot-admin.sh AddTable   \
   -tableConfigFile /config/table.json   \
   -schemaFile /config/schema.json -exec
 ```
