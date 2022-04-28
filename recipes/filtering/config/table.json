@@ -1,0 +1,25 @@
+{
+    "tableName": "movies",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+      "replication": 1,
+      "schemaName": "movies"
+    },
+    "tenants": {
+      "broker":"DefaultTenant",
+      "server":"DefaultTenant"
+    },
+    "tableIndexConfig": {
+      "loadMode": "MMAP"
+    },
+    "ingestionConfig": {
+      "filterConfig": {
+        "filterFunction": "Groovy({year >= 2010}, year)"
+      },
+      "batchIngestionConfig": {
+        "segmentIngestionType": "APPEND",
+        "segmentIngestionFrequency": "DAILY"
+      }
+    },
+    "metadata": {}
+  }
