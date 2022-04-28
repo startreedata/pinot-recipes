@@ -21,7 +21,6 @@
             "stream.kafka.broker.list": "kafka-sasl:9093",
             "security.protocol": "SASL_PLAINTEXT",
             "sasl.jaas.config":"org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"admin-secret\";",
-            "stream.kafka.decoder.prop.basic.auth.credentials.source": "USER_INFO",
             "sasl.mechanism": "PLAIN",
             "stream.kafka.consumer.type": "lowlevel",
             "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
