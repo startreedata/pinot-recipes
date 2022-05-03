@@ -55,17 +55,16 @@ docker exec -it pinot-controller-pulsar bin/pinot-admin.sh AddTable   \
   -schemaFile /config/schema.json -exec
 ```
 
-Import message into Kafka:
+Import message into Pulsar:
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done | docker exec -i kafka-pulsar /opt/kafka/bin/kafka-console-producer.sh \
-    --bootstrap-server localhost:9092 \
-    --topic events
+python -m venv .venv
+source .venv/bin/active
+pip install pulsar-client
+```
+
+```bash
+python producer.py
 ```
 
 Query Pinot:
