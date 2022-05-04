@@ -1,6 +1,6 @@
-# JSON Unnest
+# JSON Unnest - Rename Fields
 
-> In this recipe we'll learn how to unnest/explode values in nested JSON documents.
+> In this recipe we'll learn how to renamed fields when unnesting/exploding values in nested JSON documents.
 
 <table>
   <tr>
@@ -28,7 +28,7 @@ Clone this repository and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-unnest
+cd pinot-recipes/recipes/json-unnest-rename-fields
 ```
 
 Spin up a Pinot cluster using Docker Compose:
