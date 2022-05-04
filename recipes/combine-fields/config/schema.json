@@ -1,0 +1,9 @@
+{
+  "schemaName": "people",
+  "dimensionFieldSpecs": [
+    {
+      "name": "fullName",
+      "dataType": "STRING"
+    }
+  ]
+}

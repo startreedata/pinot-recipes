@@ -1,0 +1,28 @@
+{
+  "tableName": "people",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": 1,
+    "schemaName": "people"
+  },
+  "ingestionConfig": {
+    "transformConfigs": [
+      {
+        "columnName": "fullName",
+        "transformFunction": "concat(name, surname, ' ')"
+      }
+    ],
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
+    }
+  },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  "metadata": {}
+}
