@@ -1,6 +1,6 @@
 # Combine fields during import
 
-> In this recipe we'll learn how to use JSON transformation functions to extract values from nested JSON documents.
+> In this recipe we'll learn how to combine the data from fields in our data source into a single column in Apache Pinot.
 
 <table>
   <tr>
