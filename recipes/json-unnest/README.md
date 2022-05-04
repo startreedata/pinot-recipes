@@ -1,6 +1,6 @@
 # JSON Unnest
 
-> In this recipe we'll learn how to use JSON transformation functions to extract values from nested JSON documents.
+> In this recipe we'll learn how to unnest/explode values in nested JSON documents.
 
 <table>
   <tr>
