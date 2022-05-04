@@ -21,7 +21,17 @@
       "fieldsToUnnest": [
         "Ratings"
       ]
-    }
+    },
+    "transformConfigs": [
+      {
+        "columnName": "Source",
+        "transformFunction": "Ratings.Source"
+      },
+      {
+        "columnName": "Rating",
+        "transformFunction": "Ratings.Value"
+      }
+    ]
   },
   "metadata": {}
 }

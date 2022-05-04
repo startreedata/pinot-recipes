@@ -1,0 +1,25 @@
+{
+  "schemaName": "movie_ratings",
+  "dimensionFieldSpecs": [
+    {
+      "name": "Title",
+      "dataType": "STRING"
+    },
+    {
+      "name": "Year",
+      "dataType": "INT"
+    },
+    {
+      "name": "Rated",
+      "dataType": "STRING"
+    },
+    {
+      "name": "Source",
+      "dataType": "STRING"
+    },
+    {
+      "name": "Rating",
+      "dataType": "STRING"
+    }
+  ]
+}
