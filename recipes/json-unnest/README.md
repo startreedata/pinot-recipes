@@ -1,11 +1,11 @@
-# JSON Transformation Functions
+# JSON Unnest
 
 > In this recipe we'll learn how to use JSON transformation functions to extract values from nested JSON documents.
 
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.10.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -29,7 +29,7 @@ Clone this repository and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-transformation-functions
+cd pinot-recipes/recipes/json-unnest
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -38,16 +38,21 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Open another tab to add the `people` table:
+Open another tab to add the `movie_ratings` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
+docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
   -schemaFile /config/schema.json \
   -exec
 ```
 
-Import [data/ingest.json](data/import.json) into Pinot:
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
+  -tableConfigFile /config/table.json   \
+  -exec
+```
+
+Import [data/movies.json](data/movies.json) into Pinot:
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
@@ -58,6 +63,6 @@ Navigate to http://localhost:9000/#/query and run the following query:
 
 ```sql
 select * 
-from people 
+from movie_ratings 
 limit 10
 ```

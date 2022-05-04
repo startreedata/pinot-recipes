@@ -1,0 +1,28 @@
+{
+  "tableName": "movie_ratings",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": 1,
+    "schemaName": "movie_ratings"
+  },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
+    },
+    "complexTypeConfig": {
+      "delimiter": ".",
+      "fieldsToUnnest": [
+        "Ratings"
+      ]
+    }
+  },
+  "metadata": {}
+}

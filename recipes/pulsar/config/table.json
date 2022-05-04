@@ -1,34 +1,34 @@
 {
-    "tableName": "events",
-    "tableType": "REALTIME",
-    "segmentsConfig": {
-        "timeColumnName": "ts",
-        "schemaName": "events",
-        "replication": "1",
-        "replicasPerPartition": "1"
-    },
-    "ingestionConfig": {
-        "batchIngestionConfig": {
-            "segmentIngestionType": "APPEND",
-            "segmentIngestionFrequency": "DAILY"
-        }
-    },
-    "tableIndexConfig": {
-        "loadMode": "MMAP",
-        "streamConfigs": {
-            "streamType": "pulsar",
-            "stream.pulsar.topic.name": "events",
-            "stream.pulsar.bootstrap.servers": "pulsar://pulsar:6650",
-            "stream.pulsar.consumer.type": "lowlevel",
-            "stream.pulsar.fetch.timeout.millis": "10000",
-            "stream.pulsar.consumer.prop.auto.offset.reset": "smallest",
-            "stream.pulsar.consumer.factory.class.name": "org.apache.pinot.plugin.stream.pulsar.PulsarConsumerFactory",
-            "stream.pulsar.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",
-            "realtime.segment.flush.threshold.rows": "0",
-            "realtime.segment.flush.threshold.time": "1h",
-            "realtime.segment.flush.threshold.segment.size": "5M"
-        }
-    },
-    "tenants": {},
-    "metadata": {}
+  "tableName": "events",
+  "tableType": "REALTIME",
+  "segmentsConfig": {
+    "timeColumnName": "ts",
+    "schemaName": "events",
+    "replication": "1",
+    "replicasPerPartition": "1"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "streamConfigs": {
+      "streamType": "pulsar",
+      "stream.pulsar.topic.name": "events",
+      "stream.pulsar.bootstrap.servers": "pulsar://pulsar:6650",
+      "stream.pulsar.consumer.type": "lowlevel",
+      "stream.pulsar.fetch.timeout.millis": "10000",
+      "stream.pulsar.consumer.prop.auto.offset.reset": "smallest",
+      "stream.pulsar.consumer.factory.class.name": "org.apache.pinot.plugin.stream.pulsar.PulsarConsumerFactory",
+      "stream.pulsar.decoder.class.name": "org.apache.pinot.plugin.inputformat.json.JSONMessageDecoder",
+      "realtime.segment.flush.threshold.rows": "0",
+      "realtime.segment.flush.threshold.time": "1h",
+      "realtime.segment.flush.threshold.segment.size": "5M"
+    }
+  },
+  "tenants": {},
+  "metadata": {}
 }
