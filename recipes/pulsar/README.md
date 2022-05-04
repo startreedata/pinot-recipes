@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.10.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -17,7 +17,7 @@
   </tr>
 </table>
 
-
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/pulsar
 
 ***
 
