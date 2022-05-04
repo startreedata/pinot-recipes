@@ -1,6 +1,6 @@
-# JSON Unnest - Rename Fields
+# Handle null values
 
-> In this recipe we'll learn how to rename fields when unnesting/exploding values in nested JSON documents.
+> In this recipe we'll learn how to work with null values in Apache Pinot.
 
 <table>
   <tr>
@@ -21,14 +21,13 @@
   </tr>
 </table>
 
-
 ***
 
 Clone this repository and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-unnest-rename-fields
+cd pinot-recipes/recipes/null-values
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -37,7 +36,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Open another tab to add the `movie_ratings` table:
+Open another tab to add the `movies` schema:
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
@@ -45,23 +44,46 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
   -exec
 ```
 
+Next, add the `movies-no-nulls` table:
+
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
+  -tableConfigFile /config/table-no-nulls.json   \
   -exec
 ```
 
-Import [data/movies.json](data/movies.json) into Pinot:
+Add the `movies-nulls` table:
+
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
+  -tableConfigFile /config/table-nulls.json   \
+  -exec
+```
+
+Import [data/ingest.json](data/import.json) into the `movies-not-nulls` and `movies-nulls` tables:
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
+  -jobSpecFile /config/job-spec.yml \
+  -values tableName='movies_no_nulls'
+```
+
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
+  -jobSpecFile /config/job-spec.yml \
+  -values tableName='movies_nulls'
 ```
 
 Navigate to http://localhost:9000/#/query and run the following query:
 
 ```sql
 select * 
-from movie_ratings 
-limit 10
+from movies_no_nulls 
+WHERE genre IS NOT NULL
+```
+
+```sql
+select * 
+from movies_nulls 
+WHERE genre IS NOT NULL
 ```

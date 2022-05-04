@@ -1,0 +1,23 @@
+{
+    "tableName": "movies_nulls",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+      "replication": 1,
+      "schemaName": "movies"
+    },
+    "tenants": {
+      "broker":"DefaultTenant",
+      "server":"DefaultTenant"
+    },
+    "tableIndexConfig": {
+      "loadMode": "MMAP",
+      "nullHandlingEnabled": "true"
+    },
+    "ingestionConfig": {
+      "batchIngestionConfig": {
+        "segmentIngestionType": "APPEND",
+        "segmentIngestionFrequency": "DAILY"
+      }
+    },
+    "metadata": {}
+  }
