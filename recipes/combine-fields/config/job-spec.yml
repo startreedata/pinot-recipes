@@ -5,7 +5,7 @@ executionFrameworkSpec:
 jobType: SegmentCreationAndTarPush
 inputDirURI: '/data'
 includeFileNamePattern: 'glob:**/import.json'
-outputDirURI: '/opt/pinot/data/movies/'
+outputDirURI: '/opt/pinot/data/people/'
 overwriteOutput: true
 pinotFSSpecs:
   - scheme: file
