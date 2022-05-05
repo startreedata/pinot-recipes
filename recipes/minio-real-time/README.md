@@ -38,7 +38,8 @@ export AWS_SECRET_ACCESS_KEY="miniodeepstorage"
 Create a S3 bucket called `pinot-events`:
 
 ```bash
-aws --endpoint-url http://localhost:9100 s3 mb s3://pinot-events
+aws s3 mb s3://pinot-events \
+  --endpoint-url http://localhost:9100 
 ```
 
 
