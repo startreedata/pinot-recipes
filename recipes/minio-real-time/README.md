@@ -1,4 +1,4 @@
-# Managed Offline Flow
+# Using MinIO as a Deep Store
 
 > In this recipe we'll learn how to use Minio as a Deep Store for segments in real-time tables.
 
