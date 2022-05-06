@@ -24,6 +24,10 @@
     },
     "transformConfigs": [
       {
+        "columnName": "Released",
+        "transformFunction": "Meta.Released"
+      },
+      {
         "columnName": "Source",
         "transformFunction": "Ratings.Source"
       },

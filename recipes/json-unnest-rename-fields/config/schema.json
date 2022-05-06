@@ -6,8 +6,8 @@
       "dataType": "STRING"
     },
     {
-      "name": "Year",
-      "dataType": "INT"
+      "name": "Released",
+      "dataType": "STRING"
     },
     {
       "name": "Rated",
