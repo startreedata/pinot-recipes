@@ -1,0 +1,37 @@
+{
+  "schemaName": "users",
+  "dimensionFieldSpecs": [
+    {
+      "name": "id",
+      "dataType": "INT"
+    },
+    {
+      "name": "name",
+      "dataType": "STRING"
+    },
+    {
+      "name": "address.street",
+      "dataType": "STRING"
+    },
+    {
+      "name": "address.suite",
+      "dataType": "STRING"
+    },
+    {
+      "name": "address.city",
+      "dataType": "STRING"
+    },
+    {
+      "name": "address.zipcode",
+      "dataType": "STRING"
+    },
+    {
+      "name": "address.geo.lat",
+      "dataType": "DOUBLE"
+    },
+    {
+      "name": "address.geo.lng",
+      "dataType": "DOUBLE"
+    }
+  ]
+}

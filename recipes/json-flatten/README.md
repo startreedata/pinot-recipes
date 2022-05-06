@@ -1,6 +1,6 @@
-# Unnest array values in JSON documents
+# Flatten JSON documents
 
-> In this recipe we'll learn how to unnest/explode values in nested JSON documents.
+> In this recipe we'll learn how to flatten nested fields in JSON documents.
 
 <table>
   <tr>
@@ -21,16 +21,13 @@
   </tr>
 </table>
 
-
-This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/json-unnest
-
 ***
 
 Clone this repository and navigate to this recipe:
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-unnest
+cd pinot-recipes/recipes/json-flatten
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -39,7 +36,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Open another tab to add the `movie_ratings` table:
+Open another tab to add the `users` table:
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
@@ -49,21 +46,40 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
+  -tableConfigFile /config/table-no-flatten.json   \
   -exec
 ```
 
-Import [data/movies.json](data/movies.json) into Pinot:
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
+  -tableConfigFile /config/table-flatten.json   \
+  -exec
+```
+
+Import [data/users.json](data/users.json) into Pinot:
 
 ```bash
 docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
+  -jobSpecFile /config/job-spec.yml \
+  -values tableName='users_no_flatten'
 ```
 
-Navigate to http://localhost:9000/#/query and run the following query:
+```bash
+docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
+  -jobSpecFile /config/job-spec.yml \
+  -values tableName='users_flatten'
+```
+
+Navigate to http://localhost:9000/#/query and run the following queries:
 
 ```sql
 select * 
-from movie_ratings 
+from users_no_flatten 
+limit 10
+```
+
+```sql
+select * 
+from users_flatten 
 limit 10
 ```

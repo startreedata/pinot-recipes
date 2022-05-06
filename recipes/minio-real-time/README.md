@@ -25,6 +25,12 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/minio-real-time
 ```
 
+Spin up a Pinot cluster using Docker Compose:
+
+```bash
+docker-compose up
+```
+
 Navigate to http://localhost:9101 and login using the username `minioadmin` and password `minionadmin`. 
 Click on `Identity > Users` and create a `miniodeepstorage` user with the password `miniodeepstorage` and assigned the `readwrite` policy.
 
@@ -40,13 +46,6 @@ Create a S3 bucket called `pinot-events`:
 ```bash
 aws s3 mb s3://pinot-events \
   --endpoint-url http://localhost:9100 
-```
-
-
-Spin up a Pinot cluster using Docker Compose:
-
-```bash
-docker-compose up
 ```
 
 Add table and schema:
