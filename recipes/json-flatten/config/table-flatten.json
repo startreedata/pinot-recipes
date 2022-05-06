@@ -18,6 +18,7 @@
       "segmentIngestionFrequency": "DAILY"
     },
     "complexTypeConfig": {
+      "delimiter": "_"
     }
   },
   "metadata": {}

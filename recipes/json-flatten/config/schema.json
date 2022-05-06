@@ -1,37 +1,49 @@
 {
-  "schemaName": "users",
-  "dimensionFieldSpecs": [
-    {
-      "name": "id",
-      "dataType": "INT"
-    },
-    {
-      "name": "name",
-      "dataType": "STRING"
-    },
-    {
-      "name": "address.street",
-      "dataType": "STRING"
-    },
-    {
-      "name": "address.suite",
-      "dataType": "STRING"
-    },
-    {
-      "name": "address.city",
-      "dataType": "STRING"
-    },
-    {
-      "name": "address.zipcode",
-      "dataType": "STRING"
-    },
-    {
-      "name": "address.geo.lat",
-      "dataType": "DOUBLE"
-    },
-    {
-      "name": "address.geo.lng",
-      "dataType": "DOUBLE"
-    }
-  ]
+  "schemaName" : "users",
+  "dimensionFieldSpecs" : [ {
+    "name" : "id",
+    "dataType" : "INT"
+  }, {
+    "name" : "name",
+    "dataType" : "STRING"
+  }, {
+    "name" : "username",
+    "dataType" : "STRING"
+  }, {
+    "name" : "email",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_street",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_suite",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_city",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_zipcode",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_geo_lat",
+    "dataType" : "STRING"
+  }, {
+    "name" : "address_geo_lng",
+    "dataType" : "STRING"
+  }, {
+    "name" : "phone",
+    "dataType" : "STRING"
+  }, {
+    "name" : "website",
+    "dataType" : "STRING"
+  }, {
+    "name" : "company_name",
+    "dataType" : "STRING"
+  }, {
+    "name" : "company_catchPhrase",
+    "dataType" : "STRING"
+  }, {
+    "name" : "company_bs",
+    "dataType" : "STRING"
+  } ]
 }
