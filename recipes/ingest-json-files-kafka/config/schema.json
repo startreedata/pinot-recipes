@@ -1,0 +1,35 @@
+{
+  "schemaName": "movies",
+  "dimensionFieldSpecs": [
+    {
+      "name": "title",
+      "dataType": "STRING"
+    },
+    {
+      "name": "genre",
+      "dataType": "STRING"
+    },
+    {
+      "name": "year",
+      "dataType": "INT"
+    }
+  ],
+  "metricFieldSpecs": [
+    {
+      "name": "budget",
+      "dataType": "INT"
+    },
+    {
+      "name": "boxOffice",
+      "dataType": "INT"
+    }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "releaseDate",
+      "dataType": "TIMESTAMP",
+      "format": "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}
