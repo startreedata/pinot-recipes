@@ -3,20 +3,11 @@
   "tableType": "OFFLINE",
   "segmentsConfig": {
     "replication": 1,
-    "schemaName": "movies"
+    "schemaName": "movies",
+    "timeColumnName": "releaseDate"
   },
-  "tenants": {
-    "broker": "DefaultTenant",
-    "server": "DefaultTenant"
-  },
-  "tableIndexConfig": {
-    "loadMode": "MMAP"
-  },
-  "ingestionConfig": {
-    "batchIngestionConfig": {
-      "segmentIngestionType": "APPEND",
-      "segmentIngestionFrequency": "DAILY"
-    }
-  },
+  "tenants": {},
+  "tableIndexConfig": {},
+  "ingestionConfig": {},
   "metadata": {}
 }
