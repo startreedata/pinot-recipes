@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.10.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -47,12 +47,31 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
   -exec
 ```
 
+Create Kafka topic:
+
+```bash
+docker exec -i kafka-json kafka-topics.sh \
+  --bootstrap-server kafka-json:9092 \
+  --topic events \
+  --partitions 5 \
+  --create
+```
+
 Import [data/ingest.json](data/import.json) into Pinot:
 
 ```bash
 docker exec -i kafka-json kafka-console-producer.sh \
   --bootstrap-server kafka-json:9092 \
   --topic events < data/import.jsonl
+```
+
+Check the message in the Kafka topic:
+
+```bash
+docker exec -i kafka-json kafka-console-consumer.sh \
+  --bootstrap-server kafka-json:9092 \
+  --topic events \
+  --from-beginning
 ```
 
 Navigate to http://localhost:9000/#/query and run the following query:
