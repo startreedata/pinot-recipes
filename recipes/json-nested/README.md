@@ -57,6 +57,11 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
   -outputDir=/config
 ```
 
+
+```bash
+sudo chown `whoami`:`whoami` config/tv_shows.json
+```
+
 Open another tab to add the `movies` table:
 
 
@@ -67,7 +72,7 @@ docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
   -exec
 ```
 
-Import [data/movies.json](data/movies.json) into Pinot:
+Import [data/shows.json](data/shows.json) into Pinot:
 
 ```bash
 docker exec -i kafka-json kafka-console-producer.sh \
@@ -79,12 +84,6 @@ Navigate to http://localhost:9000/#/query and run the following queries:
 
 ```sql
 select * 
-from users_no_flatten 
-limit 10
-```
-
-```sql
-select * 
-from users_flatten 
+from tv_shows
 limit 10
 ```
