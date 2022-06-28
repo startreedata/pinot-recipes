@@ -57,12 +57,18 @@ docker exec -i kafka-json kafka-topics.sh \
   --create
 ```
 
-Import [data/ingest.json](data/import.json) into Pinot:
+Import [data/ingest1.jsonl](data/import1.jsonl) and [data/ingest2.jsonl](data/import2.jsonl) into Pinot:
 
 ```bash
 docker exec -i kafka-json kafka-console-producer.sh \
   --bootstrap-server kafka-json:9092 \
-  --topic events < data/import.jsonl
+  --topic events < data/import1.jsonl
+```
+
+```bash
+docker exec -i kafka-json kafka-console-producer.sh \
+  --bootstrap-server kafka-json:9092 \
+  --topic events < data/import2.jsonl
 ```
 
 Check the message in the Kafka topic:
