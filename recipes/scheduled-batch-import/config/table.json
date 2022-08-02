@@ -1,0 +1,40 @@
+{
+    "tableName": "events",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+        "timeColumnName": "ts",
+        "schemaName": "events",
+        "replication": "1"
+    },
+    "tableIndexConfig": {
+        "loadMode": "MMAP"
+    },
+    "tenants": {},
+    "metadata": {},
+    "ingestionConfig": {
+        "batchIngestionConfig": {
+            "segmentIngestionType": "APPEND",
+            "segmentIngestionFrequency": "DAILY",
+            "batchConfigMaps": [
+                {
+                    "input.fs.className": "org.apache.pinot.plugin.filesystem.S3PinotFS",
+                    "input.fs.prop.region": "eu-west-2",
+                    "input.fs.prop.accessKey": "xxx",
+                    "input.fs.prop.secretKey": "yyy",
+                    "inputDirURI": "s3://<bucket-name>",
+                    "includeFileNamePattern": "glob:**/*.json",
+                    "excludeFileNamePattern": "glob:**/*.tmp",
+                    "inputFormat": "json"
+                }
+            ]
+        }
+    },
+    "task": {
+        "taskTypeConfigsMap": {
+            "SegmentGenerationAndPushTask": {
+                "schedule": "0 */1 * * * ?",
+                "tableMaxNumTasks": 10
+            }
+        }
+    }
+}
