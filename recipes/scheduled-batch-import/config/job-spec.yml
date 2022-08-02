@@ -1,0 +1,24 @@
+executionFrameworkSpec:
+  name: 'standalone'
+  segmentGenerationJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentGenerationJobRunner'
+  segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
+  segmentUriPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentUriPushJobRunner'
+jobType: SegmentCreationAndTarPush
+inputDirURI: 's3://marks-st-cloud-bucket/events/'
+includeFileNamePattern: 'glob:**/*.json'
+outputDirURI: '/opt/pinot/data/crimes/'
+overwriteOutput: true
+pinotFSSpecs:
+  - scheme: s3
+    className: org.apache.pinot.plugin.filesystem.S3PinotFS
+    configs:
+      region: 'eu-west-2'
+  - scheme: file
+    className: org.apache.pinot.spi.filesystem.LocalPinotFS
+recordReaderSpec:
+  dataFormat: 'json'
+  className: 'org.apache.pinot.plugin.inputformat.json.JSONRecordReader'
+tableSpec:
+  tableName: 'events'
+pinotClusterSpecs:
+  - controllerURI: 'http://localhost:9000'
