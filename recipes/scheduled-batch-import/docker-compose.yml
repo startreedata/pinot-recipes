@@ -2,6 +2,7 @@ version: '3.7'
 services:
   zookeeper:
     image: zookeeper:3.5.6
+    platform: linux/amd64
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -9,23 +10,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-  kafka:
-    image: wurstmeister/kafka:latest
-    restart: unless-stopped
-    container_name: "kafka"
-    ports:
-      - "9092:9092"
-    expose:
-      - "9093"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka
-      KAFKA_BROKER_ID: 0
-      KAFKA_ADVERTISED_HOST_NAME: kafka
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093,OUTSIDE://localhost:9092
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,OUTSIDE:PLAINTEXT
   pinot-controller:
     image: apachepinot/pinot:0.9.3
     command: "StartController -zkAddress zookeeper:2181 -config /config/controller-conf.conf"
