@@ -1,0 +1,69 @@
+{
+    "schemaName": "crimes_indexed",
+    "dimensionFieldSpecs": [
+      {
+        "name": "ID",
+        "dataType": "INT"
+      },
+      {
+        "name": "CaseNumber",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "Block",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "IUCR",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "PrimaryType",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "Arrest",
+        "dataType": "BOOLEAN"        
+      },
+      {
+        "name": "Domestic",
+        "dataType": "BOOLEAN"        
+      },
+      {
+        "name": "Beat",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "District",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "Ward",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "CommunityArea",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "FBICode",
+        "dataType": "STRING"        
+      },
+      {
+        "name": "Latitude",
+        "dataType": "DOUBLE"
+      },
+      {
+        "name": "Longitude",
+        "dataType": "DOUBLE"
+      }
+    ],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "DateEpoch",
+        "dataType": "TIMESTAMP",
+        "format" : "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ]
+}

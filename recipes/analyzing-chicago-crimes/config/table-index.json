@@ -1,0 +1,46 @@
+{
+    "tableName": "crimes_indexed",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+      "replication": 1,
+      "schemaName": "crimes"
+    },
+    "tenants": {
+      "broker":"DefaultTenant",
+      "server":"DefaultTenant"
+    },
+    "tableIndexConfig": {
+      "loadMode": "MMAP",
+      "sortedColumn": ["Beat"],
+      "rangeIndexVersion": 2,
+      "rangeIndexColumns": ["DateEpoch"]
+    },
+    "fieldConfigList": [
+      {
+        "name": "DateEpoch",
+        "encodingType": "DICTIONARY",
+        "indexTypes": ["TIMESTAMP"],
+        "timestampConfig": {
+          "granularities": [
+            "DAY",
+            "WEEK",
+            "MONTH"
+          ]
+        }
+      }
+    ],
+    "ingestionConfig": {
+      "batchIngestionConfig": {
+        "segmentIngestionType": "APPEND",
+        "segmentIngestionFrequency": "DAILY"
+      },
+      "transformConfigs": [
+        {"columnName": "CaseNumber", "transformFunction": "\"Case Number\"" },
+        {"columnName": "PrimaryType", "transformFunction": "\"Primary Type\"" },
+        {"columnName": "CommunityArea", "transformFunction": "\"Community Area\"" },
+        {"columnName": "FBICode", "transformFunction": "\"FBI Code\"" },
+        {"columnName": "DateEpoch", "transformFunction": "FromDateTime(\"Date\", 'MM/dd/yyyy hh:mm:ss a')" }
+      ]
+    },
+    "metadata": {}
+  }

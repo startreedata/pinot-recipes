@@ -1,0 +1,12 @@
+executionFrameworkSpec:
+  name: 'standalone'
+  segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
+jobType: SegmentTarPush
+outputDirURI: '/data/out'
+pinotFSSpecs:
+  - scheme: file
+    className: org.apache.pinot.spi.filesystem.LocalPinotFS
+tableSpec:
+  tableName: 'crimes_indexed'
+pinotClusterSpecs:
+  - controllerURI: 'http://${controllerHost}:9000'
