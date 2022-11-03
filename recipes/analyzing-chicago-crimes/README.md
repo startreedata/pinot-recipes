@@ -69,7 +69,8 @@ Import Chicago Crimes CSV file into Pinot:
 
 ```bash
 docker exec -it manual-pinot-controller-chicago bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
+  -jobSpecFile /config/job-spec.yml \
+  -values pinot-controller
 ```
 
 Run Streamlit app:
