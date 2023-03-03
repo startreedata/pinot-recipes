@@ -1,0 +1,18 @@
+{
+    "schemaName": "events",
+    "dimensionFieldSpecs": [
+      {"name": "uuid", "dataType": "STRING"},
+      {"name": "polygon", "dataType": "BYTES"},
+      {"name": "multiPolygon", "dataType": "BYTES"},
+      {"name": "point", "dataType": "BYTES"}
+    ],
+    "metricFieldSpecs": [{"name": "count", "dataType": "INT"}],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "ts",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ]
+  }

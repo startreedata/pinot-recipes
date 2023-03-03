@@ -1,0 +1,53 @@
+{
+    "tableName": "events_geo",
+    "tableType": "REALTIME",
+    "segmentsConfig": {
+      "timeColumnName": "ts",
+      "schemaName": "events_geo",
+      "replication": "1",
+      "replicasPerPartition": "1"
+    },
+    "fieldConfigList": [
+      {
+        "name": "point",
+        "encodingType":"RAW",
+        "indexType":"H3",
+        "properties": {
+        "resolutions": "5"
+         }
+        }
+    ],
+    "tableIndexConfig": {
+      "loadMode": "MMAP",
+      "noDictionaryColumns": ["point"],
+      "streamConfigs": {
+        "streamType": "kafka",
+        "stream.kafka.topic.name": "events",
+        "stream.kafka.broker.list": "kafka-polygons:9093",
+        "stream.kafka.consumer.type": "lowlevel",
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder",
+        "realtime.segment.flush.threshold.rows":"100000",
+        "realtime.segment.flush.threshold.time":"1h"
+      }
+    },
+    "ingestionConfig": {
+      "transformConfigs": [
+        {
+          "columnName": "polygon",
+          "transformFunction": "toSphericalGeography(ST_GeomFromText(polygonString))"
+        },
+        {
+          "columnName": "multiPolygon",
+          "transformFunction": "toSphericalGeography(ST_GeomFromText(multiPolygonString))"
+        },
+        {
+          "columnName": "point",
+          "transformFunction": "toSphericalGeography(ST_GeomFromText(pointString))"
+        }
+      ]
+    },
+    "tenants": {},
+    "metadata": {}
+  }
