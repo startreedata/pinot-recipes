@@ -17,6 +17,8 @@
   </tr>
 </table>
 
+***
+
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/geospatial
