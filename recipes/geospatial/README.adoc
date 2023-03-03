@@ -1,4 +1,4 @@
-= Polygons
+= Geospatial Querying
 
 [source, bash]
 ----
