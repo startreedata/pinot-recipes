@@ -20,6 +20,14 @@
         {
           "columnName": "point",
           "transformFunction": "toSphericalGeography(ST_GeomFromText(pointString))"
+        },
+        {
+          "columnName": "lineString",
+          "transformFunction": "toSphericalGeography(ST_GeomFromText(lineStringString))"
+        },
+        {
+          "columnName": "geometryCollection",
+          "transformFunction": "toSphericalGeography(ST_GeomFromText(geometryCollectionString))"
         }
       ]
     },    

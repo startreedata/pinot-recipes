@@ -4,7 +4,9 @@
       {"name": "uuid", "dataType": "STRING"},
       {"name": "polygon", "dataType": "BYTES"},
       {"name": "multiPolygon", "dataType": "BYTES"},
-      {"name": "point", "dataType": "BYTES"}
+      {"name": "point", "dataType": "BYTES"},
+      {"name": "lineString", "dataType": "BYTES"},
+      {"name": "geometryCollection", "dataType": "BYTES"}
     ],
     "metricFieldSpecs": [{"name": "count", "dataType": "INT"}],
     "dateTimeFieldSpecs": [

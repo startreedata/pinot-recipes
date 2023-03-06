@@ -14,15 +14,22 @@ while True:
     id = str(uuid.uuid4())
     count = random.randint(0, 1000)
     
-    multi_polygon=shape(fake.multipolygon()).wkt
-    polygon=shape(fake.polygon()).wkt
-    point=shape(fake.point()).wkt
+    try:
+        multi_polygon=shape(fake.multipolygon()).wkt
+        polygon=shape(fake.polygon()).wkt
+        point=shape(fake.point()).wkt
+        line_string = shape(fake.linestring(node_limit=5)).wkt
+        geometry_collection = shape(fake.geometry_collection(count_limit=1)).wkt
 
-    print(json.dumps({
-        "tsString": ts, 
-        "uuid": id, 
-        "count": count, 
-        "polygonString": polygon,
-        "multiPolygonString": multi_polygon,
-        "pointString": point
-    }))
+        print(json.dumps({
+            "tsString": ts, 
+            "uuid": id, 
+            "count": count, 
+            "polygonString": polygon,
+            "multiPolygonString": multi_polygon,
+            "pointString": point,
+            "lineStringString": line_string,
+            "geometryCollectionString": geometry_collection
+        }))
+    except ValueError as err:
+        pass
