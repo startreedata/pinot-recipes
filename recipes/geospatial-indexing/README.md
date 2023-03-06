@@ -1,4 +1,4 @@
-= Geospatial Indexes
+# Geospatial Indexes
 
 > In this recipe we'll learn how to work with Geospatial indexes
 
