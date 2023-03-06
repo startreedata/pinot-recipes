@@ -9,11 +9,11 @@
   </tr>
   <tr>
     <td>Schema</td>
-    <td><a href="config/schema.json">config/orders_schema.json</a></td>
+    <td><a href="config/schema.json">config/schema.json</a></td>
   </tr>
     <tr>
     <td>Real-Time Table Config</td>
-    <td><a href="config/_table.json">config/orders_table.json</a></td>
+    <td><a href="config/_table.json">config/table.json</a></td>
   </tr>
 </table>
 
