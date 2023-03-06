@@ -12,17 +12,12 @@ fake.add_provider(GeoFactory)
 while True:
     ts = int(datetime.datetime.now().timestamp() * 1000)
     id = str(uuid.uuid4())
-    count = random.randint(0, 1000)
-    
-    multi_polygon=shape(fake.multipolygon()).wkt
-    polygon=shape(fake.polygon()).wkt
+    count = random.randint(0, 1000)    
     point=shape(fake.point()).wkt
 
     print(json.dumps({
         "tsString": ts, 
         "uuid": id, 
         "count": count, 
-        "polygonString": polygon,
-        "multiPolygonString": multi_polygon,
         "pointString": point
     }))

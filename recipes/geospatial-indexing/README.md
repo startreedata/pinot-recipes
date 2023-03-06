@@ -1,11 +1,11 @@
-= Geospatial Indexes
+# Geospatial Indexes
 
 > In this recipe we'll learn how to work with Geospatial indexes
 
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -16,6 +16,8 @@
     <td><a href="config/_table.json">config/table.json</a></td>
   </tr>
 </table>
+
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/geospatial-indexing
 
 ***
 
