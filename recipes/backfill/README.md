@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -39,23 +39,28 @@ docker-compose up
 Add tables and schema:
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddSchema   \
-  -schemaFile /config/orders_schema.json   \
-  -exec
+docker run \
+   --network backfill \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/orders_schema.json \
+     -tableConfigFile /config/orders_table.json \
+     -controllerHost "pinot-controller" \
+    -exec
 ```
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/orders_offline_table.json   \
-  -exec
+docker run \
+   --network backfill \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/orders_schema.json \
+     -tableConfigFile /config/orders_offline_table.json \
+     -controllerHost "pinot-controller" \
+    -update -exec
 ```
 
-```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/orders_table.json   \
-  -exec
-```
-
+Remove the `-arm64` suffix from the Apache Pinot image name if you aren't using the Mac M1/M2.
 
 Import messages into Kafka:
 
@@ -87,12 +92,25 @@ curl -X POST "http://localhost:9000/tasks/schedule?taskType=RealtimeToOfflineSeg
   -H "accept: application/json" 2>/dev/null | jq '.'
 ```
 
+Update the time boundary so that it starts from the latest time in the offline table:
+
+```bash
+curl -X POST \
+  "http://localhost:9000/tables/orders/timeBoundary" \
+  -H "accept: application/json"
+```
+
 Backfill the first 7 records to increase the amount by 20%:
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml \
-  -values segmentName='orders_1632463351000_1632467070000_0'
+docker run \
+   --network backfill \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+    -jobSpecFile /config/job-spec.yml \
+    -values segmentName='orders_1632463351000_1632467070000_0' \
+    -values pinotController=http://pinot-controller:9000
 ```
 
 Query the `orders` table:
@@ -100,7 +118,7 @@ Query the `orders` table:
 ```sql
 select order_id, customer_id, order_status, amount,
        ToDateTime(ts, 'YYYY-MM-dd HH:mm:ss') AS tsString,
-       ToDateTime(1632463470000, 'YYYY-MM-dd HH:mm:ss') AS boundary	   
+       ToDateTime(1632463470000, 'YYYY-MM-dd HH:mm:ss') AS boundary
 from orders
 ORDER BY order_id
 limit 10
