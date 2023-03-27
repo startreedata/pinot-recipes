@@ -1,0 +1,16 @@
+{
+    "schemaName": "events",
+    "dimensionFieldSpecs": [
+      {"name": "uuid", "dataType": "STRING"},
+      {"name": "point", "dataType": "BYTES", "defaultNullValue": "003fe5f4a42008f90c4054e004d205fbe4"}
+    ],
+    "metricFieldSpecs": [{"name": "count", "dataType": "INT"}],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "ts",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ]
+  }
