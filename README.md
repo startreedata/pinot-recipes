@@ -34,6 +34,13 @@ This repository contains recipes for Apache Pinot.
 * [Automatically schedule RT2OFF job](recipes/managed-offline-flow-automatic-scheduling)
 * [Backfill segment created by RT2OFF job](recipes/backfill)
 
+## Geospatial
+
+* [Storing Geospatial objects](recipes/geospatial)
+* [Geospatial indexes](recipes/geospatial-indexing)
+* [Default values for Geospatial fields](recipes/geospatial-default)
+
+
 ## Datasets
 
 * [Chicago Crimes](recipes/analyzing-chicago-crimes)
