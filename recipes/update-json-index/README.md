@@ -17,13 +17,14 @@
   </tr>
     <tr>
     <td>Table Config with no index</td>
-    <td><a href="config/table-no-index.json">config/table.json</a></td>
+    <td><a href="config/table-no-index.json">config/table-no-index.json</a></td>
+  </tr>
+   <tr>
+    <td>Updated Table Config</td>
+    <td><a href="config/table-updated-index.json">config/table-updated-index.json</a></td>
   </tr>
   
-    <tr>
-    <td>Updated Table Config</td>
-    <td><a href="config/table-updated-index.json">config/table.json</a></td>
-  </tr>
+  
 </table>
 
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/update-json-index
