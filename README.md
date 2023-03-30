@@ -44,6 +44,10 @@ This repository contains recipes for Apache Pinot.
 
 * [JSON indexes](recipes/json-index)
 
+## Querying
+
+* [Query by segment name](recipes/query-by-segment)
+
 ## Datasets
 
 * [Chicago Crimes](recipes/analyzing-chicago-crimes)
