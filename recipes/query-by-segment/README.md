@@ -1,6 +1,6 @@
-# JSON Indexes
+# Query by segment
 
-> In this recipe we'll learn how to configure a JSON index.
+> In this recipe we'll learn how to query a table by segment name.
 
 <table>
   <tr>
@@ -23,7 +23,7 @@
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-index
+cd pinot-recipes/recipes/query-by-segment
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -36,12 +36,12 @@ Add tables and schema:
 
 ```bash
 docker run \
-   --network jsonindex \
+   --network querysegment \
    -v $PWD/config:/config \
    apachepinot/pinot:0.12.0-arm64 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table.json \
-     -controllerHost "pinot-controller-jsonindex" \
+     -controllerHost "pinot-controller-querysegment" \
     -exec
 ```
 
@@ -56,50 +56,23 @@ pip install faker
 ```bash
 python datagen.py --sleep 0.0001 2>/dev/null |
 jq -cr --arg sep ø '[.uuid, tostring] | join($sep)' |
-kcat -P -b localhost:9092 -t people -Kø
+kcat -P -b localhost:9092 -t events -Kø
 ```
 
 Query Pinot:
 
 ```sql
-select *
-from people 
-WHERE JSON_MATCH(person, '"$.address.state"=''Kentucky''')
+select $segmentName, count(*)
+from events
+group by $segmentName
 limit 10
 ```
 
-```sql
-select count(*)
-from people 
-WHERE JSON_MATCH(person, '"$.address.state" <> ''Kentucky''')
-```
 
 ```sql
-select json_extract_scalar(person, '$.address.state', 'STRING') AS state, count(*)
-from people 
-WHERE JSON_MATCH(person, '"$.address.state" IN (''Kentucky'', ''Alabama'')')
-GROUP BY state
-ORDER BY count(*) DESC
-```
-
-```sql
-select json_extract_scalar(person, '$.address.state', 'STRING') AS state, count(*)
-from people 
-WHERE JSON_MATCH(person, '"$.address.state" NOT IN (''Kentucky'', ''Alabama'')')
-GROUP BY state
-ORDER BY count(*) DESC
-```
-
-```sql
-select count(*)
-from people 
-WHERE JSON_MATCH(person, '"$.address.state" IN (''Kentucky'')')
-```
-
-
-
-```sql
-select count(*)
-from people 
-WHERE JSON_MATCH(person, '"$.interests[0]" = ''Swimming''')
+select *
+from events
+-- Change the segment name to match one that's returned by the previous query
+WHERE $segmentName = 'events__0__14__20230330T1003Z'
+limit 10
 ```
