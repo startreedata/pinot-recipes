@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -41,28 +41,39 @@ docker-compose up
 Open another tab to add the `movies` table:
 
 ```bash
-docker exec -it pinot-controller-csv bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network mergesegments \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table.json \
+     -controllerHost "pinot-controller-mergesegments" \
+    -exec
 ```
 
 Import the CSV files from the [input](input) directory into Pinot:
 
 ```bash
-docker exec -it pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
+docker run \
+   --network mergesegments \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   -v $PWD/input:/input \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+    -jobSpecFile /config/job-spec.yml \
+    -values pinotController=http://pinot-controller-mergesegments:9000
 ```
 
 Run the following to get a list of segments:
 
 ```bash
 segments_breakdown () {
-  segments=`curl -X GET "http://localhost:9000/segments/matches?type=OFFLINE" \
-    -H "accept: application/json" 2>/dev/null | jq -r '.[] [] []'  `
+  table="matches"
+  table_type="OFFLINE"
+  segments=$(curl -X GET "http://localhost:9000/segments/${table}?type=${table_type}"  2>/dev/null | jq -r '.[] []')
 
-  for segment in $segments; do 
-    metadata=`curl -X GET "http://localhost:9000/segments/matches/${segment}/metadata" \
+  for segment in $(echo $segments | jq '.[]'); do 
+    metadata=`curl -X GET "http://localhost:9000/segments/${table}/$(echo ${segment} | jq -r)/metadata" \
       -H "accept: application/json" 2>/dev/null | jq '.'`
     docs=`echo $metadata | jq '."segment.total.docs" | tonumber'`
     startTime=`echo $metadata | jq '."segment.start.time" | tonumber'`
