@@ -45,7 +45,7 @@ def generate_data(sleep):
         current_data = {}
         current_data['ts'] = int(dt.datetime.now().timestamp() * 1000)
         current_data['person'] = generate_person()
-        print(json.dumps(current_data, indent=4, cls=DecimalEncoder))
+        print(json.dumps(current_data, cls=DecimalEncoder))
         time.sleep(sleep)
 
 if __name__ == '__main__':

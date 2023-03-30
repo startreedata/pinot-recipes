@@ -8,5 +8,5 @@ while True:
     id = str(uuid.uuid4())
     count = random.randint(0, 1000)
     print(
-        json.dumps({"tsString": ts, "uuid": id, "count": count})
+        json.dumps({"ts": ts, "uuid": id, "count": count})
     )
