@@ -1,6 +1,6 @@
-# JSON Indexes
+# Updating a JSON Index
 
-> In this recipe we'll learn how to configure a JSON index.
+> In this recipe we'll learn how to update a JSON index and have the new config applied to existing data.
 
 <table>
   <tr>
@@ -23,7 +23,7 @@
 
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/json-index
+cd pinot-recipes/recipes/update-json-index
 ```
 
 Spin up a Pinot cluster using Docker Compose:
@@ -97,6 +97,58 @@ WHERE JSON_MATCH(person, '"$.address.state" IN (''Kentucky'')')
 ```
 
 
+
+```sql
+select count(*)
+from people 
+WHERE JSON_MATCH(person, '"$.interests[0]" = ''Swimming''')
+```
+
+Clear JSON index and refresh all segments:
+
+```bash
+docker run \
+   --network jsonindex \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table-no-index.json \
+     -controllerHost "pinot-controller-jsonindex" \
+    -exec -update
+```
+
+```bash
+curl -X 'POST' 'http://localhost:9000/segments/people_REALTIME/reload?type=REALTIME' 
+```
+
+Update with new JSON index and refresh all segments:
+
+```bash
+docker run \
+   --network jsonindex \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table-updated-index.json \
+     -controllerHost "pinot-controller-jsonindex" \
+    -exec -update
+```
+
+```bash
+curl -X 'POST' 'http://localhost:9000/segments/people_REALTIME/reload?type=REALTIME' 
+```
+
+Query Pinot again:
+
+This query will return results:
+
+```sql
+select count(*)
+from people 
+WHERE JSON_MATCH(person, '"$.address.country" = ''Croatia''')
+```
+
+But this one won't because that field isn't indexed anymore:
 
 ```sql
 select count(*)

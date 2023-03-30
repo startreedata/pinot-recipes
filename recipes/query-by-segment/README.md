@@ -13,7 +13,7 @@
   </tr>
     <tr>
     <td>Real-Time Table Config</td>
-    <td><a href="config/orders_table.json">config/table.json</a></td>
+    <td><a href="config/table.json">config/table.json</a></td>
   </tr>
 </table>
 
