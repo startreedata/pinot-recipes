@@ -43,6 +43,7 @@ This repository contains recipes for Apache Pinot.
 ## Indexes
 
 * [JSON indexes](recipes/json-index)
+* [Update JSON index](recipes/update-json-index)
 
 ## Querying
 
