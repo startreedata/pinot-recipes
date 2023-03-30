@@ -50,10 +50,6 @@ Remove the `-arm64` suffix from the Apache Pinot image name if you aren't using 
 Import messages into Kafka:
 
 ```bash
-pip install faker
-```
-
-```bash
 python datagen.py --sleep 0.0001 2>/dev/null |
 jq -cr --arg sep ø '[.uuid, tostring] | join($sep)' |
 kcat -P -b localhost:9092 -t events -Kø
