@@ -27,7 +27,7 @@
   
 </table>
 
-This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/update-json-index
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/json-update-index
 
 ***
 
