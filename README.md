@@ -41,6 +41,10 @@ This repository contains recipes for Apache Pinot.
 * [Default values for Geospatial fields](recipes/geospatial-default)
 
 
+## Indexing
+
+* [JSON Indexing](recipes/json-index)
+
 ## Datasets
 
 * [Chicago Crimes](recipes/analyzing-chicago-crimes)
