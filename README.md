@@ -40,6 +40,9 @@ This repository contains recipes for Apache Pinot.
 * [Geospatial indexes](recipes/geospatial-indexing)
 * [Default values for Geospatial fields](recipes/geospatial-default)
 
+## Indexes
+
+* [JSON indexes](recipes/json-index)
 
 ## Datasets
 
