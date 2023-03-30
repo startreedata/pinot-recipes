@@ -12,12 +12,21 @@
     <td><a href="config/schema.json">config/schema.json</a></td>
   </tr>
     <tr>
-    <td>Real-Time Table Config</td>
+    <td>Initial Table Config</td>
     <td><a href="config/table.json">config/table.json</a></td>
+  </tr>
+    <tr>
+    <td>Table Config with no index</td>
+    <td><a href="config/table-no-index.json">config/table.json</a></td>
+  </tr>
+  
+    <tr>
+    <td>Updated Table Config</td>
+    <td><a href="config/table-updated-index.json">config/table.json</a></td>
   </tr>
 </table>
 
-<!-- This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/upserts-full -->
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/update-json-index
 
 ***
 
