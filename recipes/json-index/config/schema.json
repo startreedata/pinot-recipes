@@ -1,0 +1,19 @@
+{
+    "schemaName": "people",
+    "dimensionFieldSpecs": [
+      {
+        "name": "person",
+        "dataType": "JSON"
+      }
+    ],
+    "metricFieldSpecs": [],
+    "dateTimeFieldSpecs": [
+        {
+            "name": "ts",
+            "dataType": "TIMESTAMP",
+            "format": "1:MILLISECONDS:EPOCH",
+            "granularity": "1:MILLISECONDS"
+          }
+    ]
+  }
+  
