@@ -7,6 +7,7 @@ This repository contains recipes for Apache Pinot.
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Infer schema from JSON data](recipes/infer-schema-json-data)
 * [Merge small segments](recipes/merge-small-segments)
+* [Automatically merge real-time segments](recipes/merge-small-segments-realtime)
 * [Time boundary in hybrid tables](recipes/time-boundary-hybrid-table)
 
 ## Batch Data Ingestion
