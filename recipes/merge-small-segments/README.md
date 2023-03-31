@@ -38,31 +38,27 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Open another tab to add the `movies` table:
+Add tables and schema:
 
 ```bash
 docker run \
-   --network mergesegments \
+   --network querysegment \
    -v $PWD/config:/config \
    apachepinot/pinot:0.12.0-arm64 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table.json \
-     -controllerHost "pinot-controller-mergesegments" \
+     -controllerHost "pinot-controller-querysegment" \
     -exec
 ```
 
-Import the CSV files from the [input](input) directory into Pinot:
+Remove the `-arm64` suffix from the Apache Pinot image name if you aren't using the Mac M1/M2.
+
+Import messages into Kafka:
 
 ```bash
-docker run \
-   --network mergesegments \
-   -v $PWD/config:/config \
-   -v $PWD/data:/data \
-   -v $PWD/input:/input \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
-    -jobSpecFile /config/job-spec.yml \
-    -values pinotController=http://pinot-controller-mergesegments:9000
-```
+python datagen.py --sleep 0.0001 2>/dev/null |
+jq -cr --arg sep ø '[.uuid, tostring] | join($sep)' |
+kcat -P -b localhost:9092 -t events -Kø
 
 Run the following to get a list of segments:
 
