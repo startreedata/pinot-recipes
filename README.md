@@ -6,7 +6,6 @@ This repository contains recipes for Apache Pinot.
 * [Understanding Lookup-based Join Support](recipes/lookup-joins)
 * [Using MinIO as Deep Store for an Offline Table](recipes/minio)
 * [Infer schema from JSON data](recipes/infer-schema-json-data)
-* [Merge small segments](recipes/merge-small-segments)
 * [Time boundary in hybrid tables](recipes/time-boundary-hybrid-table)
 
 ## Batch Data Ingestion
@@ -44,6 +43,11 @@ This repository contains recipes for Apache Pinot.
 
 * [JSON indexes](recipes/json-index)
 * [Update JSON index](recipes/update-json-index)
+
+## Merge and Rollup
+
+* [Merge small segments](recipes/merge-small-segments)
+* [Automatically merge real-time segments](recipes/merge-small-segments-realtime)
 
 ## Querying
 
