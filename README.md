@@ -15,6 +15,9 @@ This repository contains recipes for Apache Pinot.
 * [Import Data files from different directories](recipes/import-data-files-different-directories)
 * [Ingest Parquet Files from a S3 Bucket into Pinot Using Spark](recipes/ingest-parquet-files-from-s3-using-spark/)
 
+## Streaming Ingestion
+
+* [Ingest Avro from Kafka](recipes/ingest-avro)
 
 ## Upserts
 
