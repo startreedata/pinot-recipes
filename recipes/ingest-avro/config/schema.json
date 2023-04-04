@@ -1,0 +1,25 @@
+{
+    "schemaName": "people",
+    "dimensionFieldSpecs": [
+      {"name": "person.id", "dataType": "STRING"},
+      {"name": "person.name", "dataType": "STRING"},
+      {"name": "person.email", "dataType": "STRING"},
+      {"name": "person.age", "dataType": "INT"},
+      {"name": "person.address.street_address", "dataType": "STRING"},
+      {"name": "person.address.city", "dataType": "STRING"},
+      {"name": "person.address.state", "dataType": "STRING"},
+      {"name": "person.address.country", "dataType": "STRING"},
+      {"name": "person.phone_number", "dataType": "STRING"},
+      {"name": "person.job.company", "dataType": "STRING"},
+      {"name": "person.job.position", "dataType": "STRING"},
+      {"name": "person.job.department", "dataType": "STRING"},
+      {"name": "person.interests", "dataType": "STRING", "singleValueField": false},
+      {"name": "person.friend_ids", "dataType": "STRING", "singleValueField": false}
+    ],
+    "metricFieldSpecs": [
+    ],
+    "dateTimeFieldSpecs": [
+      {"name": "ts", "dataType": "TIMESTAMP", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS"}
+    ]
+  }
+  

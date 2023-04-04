@@ -1,0 +1,49 @@
+{
+  "type": "record",
+  "name": "PersonMessage",
+  "namespace": "ai.startree",
+  "fields": [
+    {"name": "ts", "type": "long"},
+    {
+      "name": "person",
+      "type": {
+        "type": "record",
+        "name": "Person",
+        "fields": [
+          {"name": "id", "type": "string"},
+          {"name": "name", "type": "string"},
+          {"name": "email", "type": "string"},
+          {"name": "age", "type": "int"},
+          {
+            "name": "address",
+            "type": {
+              "type": "record",
+              "name": "Address",
+              "fields": [
+                {"name": "street_address", "type": "string"},
+                {"name": "city", "type": "string"},
+                {"name": "state", "type": "string"},
+                {"name": "country", "type": "string"}
+              ]
+            }
+          },
+          {"name": "phone_number", "type": "string"},
+          {
+            "name": "job",
+            "type": {
+              "type": "record",
+              "name": "Job",
+              "fields": [
+                {"name": "company", "type": "string"},
+                {"name": "position", "type": "string"},
+                {"name": "department", "type": "string"}
+              ]
+            }
+          },
+          {"name": "interests", "type": [{"type": "array", "items": "string"}, "null"]},
+          {"name": "friend_ids", "type": [{"type": "array", "items": "string"}, "null"]}
+        ]
+      }
+    }
+  ]
+}

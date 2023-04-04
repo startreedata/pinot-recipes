@@ -1,0 +1,102 @@
+version: '3.9'
+services:
+  zookeeper:
+    image: zookeeper:3.8.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - ingestavro
+
+  kafka:
+    image: confluentinc/cp-server:7.2.0
+    platform: linux/arm64
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 30
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093,PLAINTEXT_HOST://localhost:9092
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:9093
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'false'
+    networks: 
+      - ingestavro
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.2.0
+    platform: linux/amd64
+    hostname: schema-registry
+    container_name: schema-registry
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: nc -z localhost 8081 || exit -1
+      start_period: 30s
+      interval: 20s
+      timeout: 60s
+      retries: 300
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:9093'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    networks: 
+      - ingestavro
+
+  pinot-controller:
+    image: apachepinot/pinot:latest-local-20230403b
+    command: "StartController -zkAddress zookeeper:2181"
+    container_name: "pinot-controller"
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+    networks: 
+      - ingestavro
+  pinot-broker:
+    image: apachepinot/pinot:latest-local-20230403b
+    command: "StartBroker -zkAddress zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+    networks: 
+      - ingestavro
+  pinot-server:
+    image: apachepinot/pinot:latest-local-20230403b
+    command: "StartServer -zkAddress zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-server"
+    networks: 
+      - ingestavro
+
+networks:
+  ingestavro:
+    name: ingestavro

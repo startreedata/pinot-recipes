@@ -1,0 +1,37 @@
+{
+    "tableName": "people",
+    "tableType": "REALTIME",
+    "segmentsConfig": {
+      "timeColumnName": "ts",
+      "timeType": "MILLISECONDS",
+      "schemaName": "people",
+      "replicasPerPartition": "1"
+    },
+    "tenants": {},
+    "tableIndexConfig": {
+      "loadMode": "MMAP",
+      "streamConfigs": {
+        "streamType": "kafka",
+        "stream.kafka.consumer.type": "lowLevel",
+        "stream.kafka.topic.name": "person-topic",
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.inputformat.avro.confluent.KafkaConfluentSchemaRegistryAvroMessageDecoder",
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+        "stream.kafka.decoder.prop.format": "AVRO",
+        "stream.kafka.decoder.prop.schema.registry.rest.url": "http://schema-registry:8081",
+        "stream.kafka.decoder.prop.schema.registry.schema.name": "person-topic-value",
+        "stream.kafka.broker.list": "kafka:9093",
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest"
+      }
+    },
+    "metadata": {
+      "customConfigs": {}
+    },
+    "ingestionConfig": {
+        "complexTypeConfig": {
+            "delimiter": "."
+          }
+    },
+    "routing": {
+      "instanceSelectorType": "strictReplicaGroup"
+    }
+  }
