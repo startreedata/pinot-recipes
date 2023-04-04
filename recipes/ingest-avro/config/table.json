@@ -34,4 +34,4 @@
     "routing": {
       "instanceSelectorType": "strictReplicaGroup"
     }
-  }
+}

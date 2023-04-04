@@ -1,18 +1,10 @@
 import json
 import sys
-from confluent_kafka import Producer, KafkaException
 from confluent_kafka.avro import AvroProducer
 from confluent_kafka import avro
 
 
-def acked(err, msg):
-    if err is not None:
-        print('Failed to deliver message: %s: %s' % msg.value().decode('utf-8'), str(err))
-    else:
-        print('Message produced: %s' % msg.value().decode('utf-8'))
-
-
-def kafka_producer(schema_name="mastodon-topic"):
+def kafka_producer(schema_name):
     producer_config = {
         'bootstrap.servers': 'localhost:9092',
         'schema.registry.url': 'http://localhost:8081', 
@@ -33,7 +25,3 @@ if __name__ == "__main__":
         event = json.loads(line)
         producer.produce(topic = topic_name, value = event)
         producer.flush()
-
-    
-    # producer.produce(topic = topic_name, value = value_dict)
-    # producer.flush()
