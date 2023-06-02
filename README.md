@@ -59,3 +59,8 @@ This repository contains recipes for Apache Pinot.
 ## Datasets
 
 * [Chicago Crimes](recipes/analyzing-chicago-crimes)
+
+
+## Operational
+
+* [Force Commit](recipes/force-commit)
