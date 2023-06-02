@@ -1,0 +1,32 @@
+{
+    "tableName": "events",
+    "tableType": "REALTIME",
+    "segmentsConfig": {
+      "timeColumnName": "ts",
+      "schemaName": "events",
+      "replication": "1",
+      "replicasPerPartition": "1"
+    },
+    "tableIndexConfig": {
+      "loadMode": "MMAP",
+      "streamConfigs": {
+        "streamType": "kafka",
+        "stream.kafka.topic.name": "events",
+        "stream.kafka.broker.list": "kafka-pauseresume:9093",
+        "stream.kafka.consumer.type": "lowlevel",
+        "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+        "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+        "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder"
+      }
+    },
+    "ingestionConfig":{
+      "transformConfigs": [
+        {
+            "columnName": "ts",
+            "transformFunction": "FromDateTime(tsString, 'YYYY-MM-dd''T''HH:mm:ss.SS''Z''')"
+        }
+      ]
+    },
+    "tenants": {},
+    "metadata": {}
+  }

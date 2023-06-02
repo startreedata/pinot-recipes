@@ -1,0 +1,64 @@
+version: "3"
+services:
+  zookeeper:
+    image: zookeeper:3.8.0
+    hostname: zookeeper
+    container_name: zookeeper-pauseresume
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - pauseresume
+  kafka:
+    image: wurstmeister/kafka:latest
+    restart: unless-stopped
+    container_name: "kafka-pauseresume"
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    depends_on:
+     - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-pauseresume:2181/kafka
+      KAFKA_BROKER_ID: 0
+      KAFKA_ADVERTISED_HOST_NAME: kafka-pauseresume
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-pauseresume:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,OUTSIDE:PLAINTEXT
+    networks: 
+      - pauseresume
+  pinot-controller:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartController -zkAddress zookeeper-pauseresume:2181"
+    container_name: "pinot-controller-pauseresume"
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    networks: 
+      - pauseresume
+  pinot-broker:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartBroker -zkAddress zookeeper-pauseresume:2181"
+    container_name: "pinot-broker-pauseresume"
+    restart: unless-stopped
+    ports:
+      - "8099:8099"
+    networks: 
+      - pauseresume
+  pinot-server:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartServer -zkAddress zookeeper-pauseresume:2181"
+    container_name: "pinot-server-pauseresume"
+    ports:
+      - "5006:5005"
+    expose:
+      - "8097"
+    restart: unless-stopped
+    networks: 
+      - pauseresume
+networks:
+  pauseresume:
+    name: pauseresume
