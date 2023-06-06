@@ -64,3 +64,4 @@ This repository contains recipes for Apache Pinot.
 ## Operational
 
 * [Force Commit](recipes/force-commit)
+* [Pause/Resume consumption](recipes/pause-resume)
