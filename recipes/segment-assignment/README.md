@@ -9,12 +9,7 @@
   </tr>
   <tr>
     <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Real-Time Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
+    <td><a href="config/pinot-events.yml">Schema and Table Config</a></td>
 </table>
 
 <!-- This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/upserts-full -->
