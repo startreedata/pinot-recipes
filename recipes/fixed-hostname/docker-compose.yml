@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  zookeeper:
+    image: zookeeper:3.8.0
+    hostname: zookeeper
+    container_name: zookeeper-fixedhost
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - fixedhost
+  pinot-controller:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartController -zkAddress zookeeper-fixedhost:2181 -controllerHost pinot-controller-fixedhost"
+    container_name: "pinot-controller-fixedhost"
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+    networks: 
+      - fixedhost
+  pinot-broker:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartBroker -zkAddress zookeeper-fixedhost:2181  -brokerHost pinot-broker-fixedhost"
+    restart: unless-stopped
+    container_name: "pinot-broker-fixedhost"
+    hostname: "pinot-broker-fixedhost"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+    networks: 
+      - fixedhost
+  pinot-server:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartServer -zkAddress zookeeper-fixedhost:2181 -serverHost pinot-server-fixedhost"
+    restart: unless-stopped
+    container_name: "pinot-server-fixedhost"
+    depends_on:
+      - pinot-broker
+    networks: 
+      - fixedhost
+  pinot-minion:
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartMinion -zkAddress zookeeper-fixedhost:2181 -minionHost pinot-minion-fixedhost"
+    restart: unless-stopped
+    container_name: "pinot-minion-fixedhost"
+    depends_on:
+      - pinot-server
+    networks: 
+      - fixedhost
+networks:
+  fixedhost:
+    name: fixedhost
