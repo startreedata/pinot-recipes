@@ -1,6 +1,6 @@
 # Removing a server
 
-> In this recipe we'll learn how to force commit segments.
+> In this recipe we'll learn how to remove a server from a Pinot cluster.
 
 <table>
   <tr>
