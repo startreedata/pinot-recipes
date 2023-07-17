@@ -1,0 +1,50 @@
+{
+  "schemaName" : "mastodon",
+  "dimensionFieldSpecs" : [ {
+    "name" : "m_id",
+    "dataType" : "LONG"
+  }, {
+    "name" : "created_at_str",
+    "dataType" : "STRING"
+  }, {
+    "name" : "app",
+    "dataType" : "STRING"
+  }, {
+    "name" : "url",
+    "dataType" : "STRING"
+  }, {
+    "name" : "base_url",
+    "dataType" : "STRING"
+  }, {
+    "name" : "language",
+    "dataType" : "STRING"
+  }, {
+    "name" : "username",
+    "dataType" : "STRING"
+  }, {
+    "name" : "bot",
+    "dataType" : "BOOLEAN"
+  }, {
+    "name" : "mastodon_text",
+    "dataType" : "STRING"
+  } ],
+  "metricFieldSpecs" : [ {
+    "name" : "favourites",
+    "dataType" : "INT"
+  }, {
+    "name" : "tags",
+    "dataType" : "INT"
+  }, {
+    "name" : "characters",
+    "dataType" : "INT"
+  }, {
+    "name" : "words",
+    "dataType" : "INT"
+  } ],
+  "dateTimeFieldSpecs" : [ {
+    "name" : "created_at",
+    "dataType" : "INT",
+    "format" : "1:DAYS:EPOCH",
+    "granularity" : "1:DAYS"
+  } ]
+}

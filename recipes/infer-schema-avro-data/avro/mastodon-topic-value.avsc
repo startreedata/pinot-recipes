@@ -1,0 +1,21 @@
+{
+  "type":"record",
+  "namespace":"com.simonaubury",
+  "name":"MastodonDetails",
+  "fields":[
+    {"name":"m_id","type":"long","default":0},
+    {"name":"created_at","type": "int","logicalType":"date"},
+    {"name":"created_at_str","type":"string","default":"unknown"},
+    {"name":"app","type":"string","default":"unknown"},
+    {"name":"url","type":"string","default":"null"},
+    {"name":"base_url","type":"string","default":"null"},
+    {"name":"language","type":"string","default":"null"},
+    {"name":"favourites","type":"int","default":0},
+    {"name":"username","type":"string","default":""},
+    {"name":"bot","type":"boolean"},
+    {"name":"tags","type":"int","default":0},
+    {"name":"characters","type":"int","default":0},
+    {"name":"words","type":"int","default":0},
+    {"name":"mastodon_text","type":"string","default":"null"}
+  ]
+}
