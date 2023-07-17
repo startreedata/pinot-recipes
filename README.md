@@ -66,3 +66,4 @@ This repository contains recipes for Apache Pinot.
 * [Force Commit](recipes/force-commit)
 * [Pause/Resume consumption](recipes/pause-resume)
 * [Checking segment to server assignment](recipes/segment-assignment)
+* [Removing server](recipes/removing-server)

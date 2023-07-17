@@ -12,7 +12,7 @@
     <td><a href="config/pinot-events.yml">Schema and Table Config</a></td>
 </table>
 
-<!-- This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/upserts-full -->
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/segment-assignment
 
 ***
 
