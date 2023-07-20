@@ -51,7 +51,8 @@ aws s3 mb s3://pinot-events \
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-minio bin/pinot-admin.sh AddTable   \
+docker exec -it pinot-controller-minio \
+  bin/pinot-admin.sh AddTable   \
   -tableConfigFile /config/table-realtime.json   \
   -schemaFile /config/schema.json -exec
 ```
@@ -60,15 +61,9 @@ docker exec -it pinot-controller-minio bin/pinot-admin.sh AddTable   \
 Import messages into Kafka:
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done |
-docker exec -i kafka-minio /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic events
+python datagen.py --sleep 0.0001 2>/dev/null |
+jq -cr --arg sep ø '[.uuid, tostring] | join($sep)' |
+kcat -P -b localhost:9092 -t events -Kø
 ```
 
 List the segments in the MinIO bucket:
