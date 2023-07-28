@@ -16,9 +16,13 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/startree-index
 ```
 
+## Create topic
+
 ```bash
 rpk topic create -p 5 webtraffic
 ```
+
+## Run data generator
 
 ```bash
 poetry run python datagen.py 2>/dev/null | 
