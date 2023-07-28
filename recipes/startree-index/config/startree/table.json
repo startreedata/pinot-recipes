@@ -1,0 +1,43 @@
+{
+    "tableName": "webtraffic_stree",
+    "tableType": "REALTIME",
+    "segmentsConfig": {
+        "timeColumnName": "ts",
+        "schemaName": "webtraffic",
+        "replication": "1",
+        "replicasPerPartition": "1"
+    },
+    "tableIndexConfig": {
+        "loadMode": "MMAP",
+        "streamConfigs": {
+            "streamType": "kafka",
+            "stream.kafka.topic.name": "webtraffic",
+            "stream.kafka.broker.list": "kafka-startree-index:9093",
+            "stream.kafka.consumer.type": "lowlevel",
+            "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
+            "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
+            "stream.kafka.decoder.class.name": "org.apache.pinot.plugin.stream.kafka.KafkaJSONMessageDecoder",
+            "realtime.segment.flush.threshold.rows": "1000000",
+            "realtime.segment.flush.threshold.time": "1h"
+        },
+        "nullHandlingEnabled": true,
+        "starTreeIndexConfigs": [
+          {
+            "dimensionsSplitOrder": [
+              "country",
+              "browserType",
+              "deviceBrand"
+            ],
+            "skipStarNodeCreationForDimensions": [],
+            "functionColumnPairs": [
+              "COUNT__*",
+              "SUM__timeSpent",
+              "AVG__timeSpent"
+            ],
+            "maxLeafRecords": 10000
+          }
+        ]
+    }, 
+    "tenants": {},
+    "metadata": {}
+}

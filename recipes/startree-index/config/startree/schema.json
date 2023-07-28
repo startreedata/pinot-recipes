@@ -1,0 +1,23 @@
+{
+  "schemaName": "webtraffic_stree",
+  "dimensionFieldSpecs": [
+    {"name": "userID", "dataType": "STRING"},
+    {"name": "pageID", "dataType": "STRING"},
+    {"name": "country", "dataType": "STRING"},
+    {"name": "deviceType", "dataType": "STRING"},
+    {"name": "deviceBrand", "dataType": "STRING"},
+    {"name": "deviceModel", "dataType": "STRING"},
+    {"name": "browserType", "dataType": "STRING"},
+    {"name": "browserVersion", "dataType": "STRING"},
+    {"name": "locale", "dataType": "STRING"}
+  ],
+  "metricFieldSpecs": [{"name": "timeSpent", "dataType": "INT"}],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "ts",
+      "dataType": "TIMESTAMP",
+      "format": "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ]
+}
