@@ -11,9 +11,17 @@
 
 ***
 
+## Setup
+
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/startree-index
+```
+
+Start up Pinot and friends:
+
+```bash
+docker compose up
 ```
 
 ## Create topic
