@@ -99,5 +99,5 @@ GROUP BY browserType
 limit 10
 ```
 
-Try changing `FROM webtraffic` to say `FROM webtraffic_inverted` or `FROM webtraffic_stree`
+Try changing `FROM webtraffic` to `FROM webtraffic_inverted` or `FROM webtraffic_stree`
 
