@@ -31,7 +31,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker-compose up
 ```
 
-Navigate to http://localhost:9101 and login using the username `minioadmin` and password `minionadmin`. 
+Navigate to http://localhost:9101 and login using the username `minioadmin` and password `minioadmin`. 
 Click on `Identity > Users` and create a `miniodeepstorage` user with the password `miniodeepstorage` and assigned the `readwrite` policy.
 
 Configure the [MinIO Demo credentials](https://docs.min.io/docs/aws-cli-with-minio) as environment variables:
