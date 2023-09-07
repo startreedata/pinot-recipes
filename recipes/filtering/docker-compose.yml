@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-filtering
     ports:
@@ -9,8 +9,10 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - filtering
   pinot-controller:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartController -zkAddress zookeeper-filtering:2181"
     container_name: "pinot-controller-filtering"
     volumes:
@@ -21,8 +23,10 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - filtering
   pinot-broker:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress zookeeper-filtering:2181"
     restart: unless-stopped
     container_name: "pinot-broker-filtering"
@@ -30,10 +34,17 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - filtering
   pinot-server:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress zookeeper-filtering:2181"
     restart: unless-stopped
     container_name: "pinot-server-filtering"
     depends_on:
       - pinot-broker
+    networks: 
+      - filtering
+networks:
+  filtering:
+    name: filtering

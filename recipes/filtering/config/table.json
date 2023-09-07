@@ -14,7 +14,7 @@
     },
     "ingestionConfig": {
       "filterConfig": {
-        "filterFunction": "Groovy({year >= 2010}, year)"
+        "filterFunction": "year >= 2010"
       },
       "batchIngestionConfig": {
         "segmentIngestionType": "APPEND",
