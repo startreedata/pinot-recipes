@@ -11,9 +11,17 @@
 
 ***
 
+## Setup
+
 ```bash
 git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/startree-index
+```
+
+Start up Pinot and friends:
+
+```bash
+docker compose up
 ```
 
 ## Create topic
@@ -99,5 +107,5 @@ GROUP BY browserType
 limit 10
 ```
 
-Try changing `FROM webtraffic` to say `FROM webtraffic_inverted` or `FROM webtraffic_stree`
+Try changing `FROM webtraffic` to `FROM webtraffic_inverted` or `FROM webtraffic_stree`
 
