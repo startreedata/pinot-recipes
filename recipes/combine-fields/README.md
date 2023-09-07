@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -40,15 +40,26 @@ docker-compose up
 Open another tab to add the `people` table:
 
 ```bash
-docker exec -it pinot-controller-combine bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network combine \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table.json \
+     -controllerHost "pinot-controller-combine" \
+    -exec
 ```
 
 Import [data/ingest.json](data/import.json) into Pinot:
 
 ```bash
+docker run \
+   --network combine \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+  -jobSpecFile /config/job-spec.yml
+
 docker exec -it pinot-controller-combine bin/pinot-admin.sh LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```

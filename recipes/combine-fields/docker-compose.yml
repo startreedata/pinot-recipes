@@ -1,16 +1,17 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-combine
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - combine
   pinot-controller:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartController -zkAddress zookeeper-combine:2181"
     container_name: "pinot-controller-combine"
     volumes:
@@ -21,8 +22,10 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - combine
   pinot-broker:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress zookeeper-combine:2181"
     restart: unless-stopped
     container_name: "pinot-broker-combine"
@@ -30,10 +33,17 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - combine
   pinot-server:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress zookeeper-combine:2181"
     restart: unless-stopped
     container_name: "pinot-server-combine"
     depends_on:
       - pinot-broker
+    networks: 
+      - combine
+networks:
+  combine:
+    name: combine
