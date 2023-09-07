@@ -41,11 +41,6 @@ docker-compose up
 Open another tab to add the `crimes` table:
 
 ```bash
-docker exec -it manual-pinot-controller-csv bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
-
 docker run \
    --network csv \
    -v $PWD/config:/config \
@@ -64,9 +59,6 @@ docker run \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
    apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml
-
-docker exec -it manual-pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 
