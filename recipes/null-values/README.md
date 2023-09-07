@@ -36,45 +36,55 @@ cd pinot-recipes/recipes/null-values
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
-Open another tab to add the `movies` schema:
+Open another tab to add the `movies` schema and table config:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network null-values \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table-nulls.json \
+     -controllerHost "pinot-controller-nulls" \
+    -exec
 ```
 
 Next, add the `movies-no-nulls` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-no-nulls.json   \
-  -exec
-```
-
-Add the `movies-nulls` table:
-
-```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-nulls.json   \
-  -exec
+docker run \
+   --network null-values \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema-no-nulls.json \
+     -tableConfigFile /config/table-no-nulls.json \
+     -controllerHost "pinot-controller-nulls" \
+    -exec
 ```
 
 Import [data/ingest.json](data/import.json) into the `movies-not-nulls` and `movies-nulls` tables:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml \
-  -values tableName='movies_no_nulls'
+docker run \
+   --network null-values \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+     -jobSpecFile /config/job-spec.yml \
+     -values tableName='movies_no_nulls'
 ```
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
-  -jobSpecFile /config/job-spec.yml \
-  -values tableName='movies_nulls'
+docker run \
+   --network null-values \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+     -jobSpecFile /config/job-spec.yml \
+     -values tableName='movies_nulls'
 ```
 
 Navigate to http://localhost:9000/#/query and run the following query:

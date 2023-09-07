@@ -1,5 +1,5 @@
 {
-  "schemaName": "movies_nulls",
+  "schemaName": "movies_no_nulls",
   "dimensionFieldSpecs": [
     {
       "name": "id",

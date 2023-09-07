@@ -3,7 +3,7 @@
   "tableType": "OFFLINE",
   "segmentsConfig": {
     "replication": 1,
-    "schemaName": "movies"
+    "schemaName": "movies_no_nulls"
   },
   "tenants": {
     "broker": "DefaultTenant",

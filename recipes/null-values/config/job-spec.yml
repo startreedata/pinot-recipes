@@ -16,4 +16,7 @@ recordReaderSpec:
 tableSpec:
   tableName: ${tableName}
 pinotClusterSpecs:
-  - controllerURI: 'http://localhost:9000'
+  - controllerURI: 'http://pinot-controller-nulls:9000'
+pushJobSpec:
+  pushParallelism: 2
+  pushAttempts: 2

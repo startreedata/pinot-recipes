@@ -1,18 +1,20 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
-    container_name: zookeeper-json
+    container_name: zookeeper-nulls
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - null-values
   pinot-controller:
-    image: apachepinot/pinot:0.9.3
-    command: "StartController -zkAddress zookeeper-json:2181"
-    container_name: "pinot-controller-json"
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartController -zkAddress zookeeper-nulls:2181"
+    container_name: "pinot-controller-nulls"
     volumes:
       - ./config:/config
       - ./data:/data
@@ -21,19 +23,28 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - null-values
   pinot-broker:
-    image: apachepinot/pinot:0.9.3
-    command: "StartBroker -zkAddress zookeeper-json:2181"
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartBroker -zkAddress zookeeper-nulls:2181"
     restart: unless-stopped
-    container_name: "pinot-broker-json"
+    container_name: "pinot-broker-nulls"
     ports:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - null-values
   pinot-server:
-    image: apachepinot/pinot:0.9.3
-    command: "StartServer -zkAddress zookeeper-json:2181"
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartServer -zkAddress zookeeper-nulls:2181"
     restart: unless-stopped
-    container_name: "pinot-server-json"
+    container_name: "pinot-server-nulls"
     depends_on:
       - pinot-broker
+    networks: 
+      - null-values
+networks:
+  null-values:
+    name: null-values
