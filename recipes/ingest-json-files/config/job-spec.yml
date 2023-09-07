@@ -16,4 +16,7 @@ recordReaderSpec:
 tableSpec:
   tableName: 'movies'
 pinotClusterSpecs:
-  - controllerURI: 'http://localhost:9000'
+  - controllerURI: 'http://pinot-controller-json:9000'
+pushJobSpec:
+  pushParallelism: 2
+  pushAttempts: 2
