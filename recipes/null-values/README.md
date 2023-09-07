@@ -39,7 +39,7 @@ Spin up a Pinot cluster using Docker Compose:
 docker compose up
 ```
 
-Open another tab to add the `movies` schema and table config:
+Open another tab to add the `movies-nulls` schema and table config:
 
 ```bash
 docker run \
@@ -92,11 +92,11 @@ Navigate to http://localhost:9000/#/query and run the following query:
 ```sql
 select * 
 from movies_no_nulls 
-WHERE genre IS NOT NULL
+WHERE genre IS NOT NULL AND year iS NOT NULL;
 ```
 
 ```sql
 select * 
 from movies_nulls 
-WHERE genre IS NOT NULL
+WHERE genre IS NOT NULL AND year IS NOT NULL;
 ```
