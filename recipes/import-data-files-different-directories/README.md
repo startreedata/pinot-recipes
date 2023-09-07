@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.0</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -39,16 +39,25 @@ docker-compose up
 Open another tab to add the `movies` table:
 
 ```bash
-docker exec -it pinot-controller-csv bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network csv \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -tableConfigFile /config/table.json   \
+     -schemaFile /config/schema.json \
+     -controllerHost "pinot-controller-csv" \
+    -exec
 ```
 
 Import the CSV files from the  [input](input) directory into Pinot:
 
 ```bash
-docker exec -it pinot-controller-csv bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network csv \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   -v $PWD/input:/input \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 

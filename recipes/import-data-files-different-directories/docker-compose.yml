@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-csv
     ports:
@@ -9,8 +9,10 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - csv
   pinot-controller:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartController -zkAddress zookeeper-csv:2181 -dataDir /data"
     container_name: "pinot-controller-csv"
     volumes:
@@ -22,8 +24,10 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - csv
   pinot-broker:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress zookeeper-csv:2181"
     restart: unless-stopped
     container_name: "pinot-broker-csv"
@@ -31,10 +35,17 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - csv
   pinot-server:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress zookeeper-csv:2181"
     restart: unless-stopped
     container_name: "pinot-server-csv"
     depends_on:
       - pinot-broker
+    networks: 
+      - csv
+networks:
+  csv:
+    name: csv
