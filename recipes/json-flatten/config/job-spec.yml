@@ -4,7 +4,7 @@ executionFrameworkSpec:
   segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
 jobType: SegmentCreationAndTarPush
 inputDirURI: '/data'
-includeFileNamePattern: 'glob:users.json'
+includeFileNamePattern: 'glob:**/*.json'
 outputDirURI: '/opt/pinot/data/${tableName}/'
 overwriteOutput: true
 pinotFSSpecs:
@@ -16,4 +16,7 @@ recordReaderSpec:
 tableSpec:
   tableName: ${tableName}
 pinotClusterSpecs:
-  - controllerURI: 'http://localhost:9000'
+  - controllerURI: 'http://pinot-controller-json:9000'
+pushJobSpec:
+  pushAttempts: 2
+  pushRetryIntervalMillis: 1000

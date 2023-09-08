@@ -3,7 +3,7 @@
   "tableType": "OFFLINE",
   "segmentsConfig": {
     "replication": 1,
-    "schemaName": "users"
+    "schemaName": "users_flatten"
   },
   "tenants": {
     "broker": "DefaultTenant",

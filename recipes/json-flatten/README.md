@@ -33,39 +33,53 @@ cd pinot-recipes/recipes/json-flatten
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
-Open another tab to add the `users` table:
+Open another tab to add the `users_flatten` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddSchema   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema-flatten.json \
+     -tableConfigFile /config/table-flatten.json \
+     -controllerHost "pinot-controller-json" \
+    -exec
 ```
 
-```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-no-flatten.json   \
-  -exec
-```
+And now the `users_no_flatten` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-flatten.json   \
-  -exec
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema-no-flatten.json \
+     -tableConfigFile /config/table-no-flatten.json \
+     -controllerHost "pinot-controller-json" \
+    -exec
 ```
 
 Import [data/users.json](data/users.json) into Pinot:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values tableName='users_no_flatten'
 ```
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+      -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values tableName='users_flatten'
 ```
