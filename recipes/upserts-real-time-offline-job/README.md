@@ -29,35 +29,37 @@ cd pinot-recipes/recipes/upserts-real-time-offline-job
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
-Add tables and schema:
+Add offline table and schema:
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddSchema   \
-  -schemaFile /config/orders_schema.json   \
-  -exec
+docker run \
+   --network upserts \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/orders_schema.json \
+     -tableConfigFile /config/orders_offline_table.json \
+     -controllerHost "pinot-controller" \
+    -exec
 ```
 
-```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/orders_offline_table.json   \
-  -exec
-```
+Add real-time table:
 
 ```bash
-curl -X POST http://localhost:9000/tables?validationTypesToSkip=All \
-  --data @config/orders_table.json 
+wget -q --method=POST "http://localhost:9000/tables?validationTypesToSkip=ALL" \
+     --header="accept: application/json" \
+     --header="Content-Type: application/json" \
+     --body-file=config/orders_table.json \
+     -O -
 ```
 
 
 Import messages into Kafka:
 
 ```bash
-docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server kafka:9092 --topic orders
-
+echo -e '
 {"order_id":1,"customer_id":104,"order_status":"OPEN","amount":29.35,"ts":"1632463351000"}
 {"order_id":1,"customer_id":104,"order_status":"IN_TRANSIT","amount":29.35,"ts":"1632463361000"}
 {"order_id":1,"customer_id":104,"order_status":"COMPLETED","amount":29.35,"ts":"1632463391000"}
@@ -72,6 +74,7 @@ docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh \
 {"order_id":7,"customer_id":107,"order_status":"OPEN","amount":20.32,"ts":"1632677270403"}
 {"order_id":8,"customer_id":108,"order_status":"OPEN","amount":45.11,"ts":"1632677270508"}
 {"order_id":9,"customer_id":109,"order_status":"OPEN","amount":129.22,"ts":"1632677270699"}
+' | kcat -P -b localhost:9092 -t orders
 ```
 
 Query Pinot:
@@ -86,8 +89,9 @@ Run the Real-Time to Offline Job:
 
 ```bash
 tableName="orders_REALTIME"
-curl -X POST "http://localhost:9000/tasks/schedule?taskType=RealtimeToOfflineSegmentsTask&tableName=${tableName}" \
-  -H "accept: application/json" 2>/dev/null | jq '.'
+wget -q --method=POST \
+  "http://localhost:9000/tasks/schedule?taskType=RealtimeToOfflineSegmentsTask&tableName=${tableName}" \
+  --header="accept: application/json" -O -
 ```
 
 Now, query for `order_id=1`:
@@ -102,7 +106,11 @@ limit 10
 Backfill the offline segment with the records in [data/orders.json](data/orders.json)
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network upserts \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values segmentName='orders_1632463351000_1632467070000_0'
 ```
