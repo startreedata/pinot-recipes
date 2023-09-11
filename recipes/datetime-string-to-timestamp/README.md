@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -35,18 +35,21 @@ docker-compose up
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-datetime bin/pinot-admin.sh AddTable   \
+docker run \
+   --network datetime \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable   \
   -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json -exec
+  -schemaFile /config/schema.json \
+  -controllerHost "pinot-controller-datetime" \
+  -exec
 ```
 
 Import message into Kafka:
 
 ```bash
 printf '{"timestamp1": "2019-10-09 22:25:25", "timestamp2": "1570656325000", "timestamp3": "10/09/2019T22:25:25"}\n' |
-docker exec -i kafka-datetime /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic dates
+kcat -P -b localhost:9092 -t dates
 ```
 
 Query Pinot:
