@@ -41,16 +41,24 @@ docker-compose up
 Open another tab to add the `people` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table.json \
+     -controllerHost "pinot-controller-json" \
+    -exec
 ```
 
 Import [data/ingest.json](data/import.json) into Pinot:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 

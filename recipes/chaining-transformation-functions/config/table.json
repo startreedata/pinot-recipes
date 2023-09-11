@@ -24,12 +24,13 @@
       },
       {
         "columnName":"id",
-        "transformFunction":"Groovy({Long.valueOf(userId.split('__')[0])}, userId)"
+        "transformFunction":"arrayElementAtString(split(userId, '__'), 0)"
       },
       {
         "columnName":"name",
-        "transformFunction":"Groovy({userId.split('__')[1]}, userId)"
+        "transformFunction":"arrayElementAtString(split(userId, '__'), 1)"
       }
+
     ]
   },
   "metadata":{}
