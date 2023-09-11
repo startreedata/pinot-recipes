@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.9.3</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -35,23 +35,27 @@ docker-compose up
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller /opt/pinot/bin/pinot-admin.sh AddTable \
--tableConfigFile /config/meetup_rsvp_table.json \
--schemaFile /config/meetup_rsvp_schema.json -exec
+docker run \
+   --network upserts \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+  -tableConfigFile /config/meetup_rsvp_table.json \
+  -controllerHost "pinot-controller" \
+  -schemaFile /config/meetup_rsvp_schema.json \
+  -exec
 ```
 
 Import messages into Kafka:
 
 ```bash
-docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh \
---bootstrap-server kafka:9092 --topic meetup_rsvp
-
+echo - '
 {"event_id":3,"venue_name":"Indonesia","group_name":"C","rsvp_count":1,"mtime":"1635140709"}
 {"event_id":3,"venue_name":"China","group_name":"C","rsvp_count":1,"mtime":"1646067689"}
 {"event_id":2,"venue_name":"France","group_name":"C","rsvp_count":1,"mtime":"1616646138"}
 {"event_id":1,"venue_name":"Myanmar","group_name":"B","rsvp_count":1,"mtime":"1632930567"}
 {"event_id":1,"venue_name":"Hungary","group_name":"A","rsvp_count":1,"mtime":"1643574332"}
 {"event_id":1,"venue_name":"China","group_name":"B","rsvp_count":1,"mtime":"1645779637"}
+' | kcat -P -b localhost:9092 -t meetup_rsvp
 ```
 
 Query Pinot:
