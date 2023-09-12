@@ -29,45 +29,38 @@ cd pinot-recipes/recipes/time-boundary-hybrid-table
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh AddSchema   \
-  -schemaFile /config/schema.json \
-  -exec
-```
-
-```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-realtime.json   \
-  -exec
-```
-
-```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-offline.json   \
-  -exec
+docker run \
+   --network rt \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+   -schemaFile /config/schema.json \
+   -realtimeTableConfigFile /config/table-realtime.json \
+   -offlineTableConfigFile /config/table-offline.json \
+   -controllerHost "pinot-controller-rt" \
+   -exec
 ```
 
 Ingest records into the offline table:
 
 ```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh LaunchDataIngestionJob \
+docker run \
+   --network rt \
+   -v $PWD/config:/config \
+   -v $PWD/input:/input \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 
 Import messages into Kafka:
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done |
+python datagen.py |
 docker exec -i kafka-rt /opt/kafka/bin/kafka-console-producer.sh \
   --bootstrap-server localhost:9092 \
   --topic events
