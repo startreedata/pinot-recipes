@@ -33,7 +33,7 @@ cd pinot-recipes/recipes/json-nested
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Create Kafka topic:
@@ -49,7 +49,11 @@ docker exec -i kafka-json kafka-topics.sh \
 Generate schema:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh JsonToPinotSchema \
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 JsonToPinotSchema \
   -timeColumnName first_air_date \
   -metrics "number_of_episodes,popularity"\
   -pinotSchemaName=tv_shows \
@@ -66,18 +70,22 @@ Open another tab to add the `movies` table:
 
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
+docker run \
+   --network json \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64  AddTable   \
   -schemaFile /config/tv_shows.json \
   -tableConfigFile /config/table.json   \
+  -controllerHost "pinot-controller-json" \
   -exec
 ```
 
 Import [data/shows.json](data/shows.json) into Pinot:
 
 ```bash
-docker exec -i kafka-json kafka-console-producer.sh \
-  --bootstrap-server kafka-json:9092 \
-  --topic events < data/shows.json
+cat data/shows.json |
+kcat -P -b localhost:9092 -t events
 ```
 
 Navigate to http://localhost:9000/#/query and run the following queries:
