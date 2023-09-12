@@ -35,16 +35,27 @@ docker-compose up
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/orders_table.json   \
-  -schemaFile /config/orders_schema.json -exec
+docker run \
+   --network fullupserts \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/orders_schema.json \
+     -tableConfigFile /config/orders_table.json \
+     -controllerHost "pinot-controller" \
+    -exec
+
 ```
 
 Open a tab to import messages into Kafka:
 
 ```bash
-docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh \
---bootstrap-server kafka:9092 --topic orders
+echo -e '
+{"order_id":1,"customer_id":104,"order_status":"IN_TRANSIT","amount":29.35,"ts":"1632467063"}
+{"order_id":2,"customer_id":105,"order_status":"COMPLETED","amount":3.24,"ts":"1618931459"}
+{"order_id":3,"customer_id":103,"order_status":"OPEN","amount":9.77,"ts":"1626484196"}
+{"order_id":4,"customer_id":104,"order_status":"COMPLETED","amount":90.35,"ts":"1623066325"}
+{"order_id":5,"customer_id":105,"order_status":"OPEN","amount":55.52,"ts":"1635543905"}
+' | kcat -P -b localhost:9092 -t orders
 ```
 
 Paste the following:
@@ -68,5 +79,7 @@ limit 10
 Go back to the Kafka tab and paste the following:
 
 ```json
+echo -e '
 {"order_id":5,"customer_id":105,"order_status":"CANCELLED","amount":55.52,"ts":"1635543948"}
+' | kcat -P -b localhost:9092 -t orders
 ```
