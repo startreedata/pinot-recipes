@@ -61,9 +61,7 @@ Import messages into Kafka:
 
 ```bash
 python datagen.py |
-docker exec -i kafka-rt /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic events
+kcat -P -b localhost:9092 -t events
 ```
 
 Check the time boundary:
