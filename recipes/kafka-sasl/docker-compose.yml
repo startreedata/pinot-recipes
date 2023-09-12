@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-sasl
     ports:
@@ -10,6 +10,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SASL_ENABLED: "false"
+    networks: 
+      - sasl
   kafka:
     image: wurstmeister/kafka:latest
     restart: unless-stopped
@@ -35,8 +37,10 @@ services:
     volumes:
       - ./kafka-config/kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf
       - ./kafka-config/kafka_client.conf:/etc/kafka/kafka_client.conf
+    networks: 
+      - sasl
   pinot-controller:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartController -zkAddress zookeeper-sasl:2181"
     container_name: "pinot-controller-sasl"
     volumes:
@@ -46,8 +50,10 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - sasl
   pinot-broker:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress zookeeper-sasl:2181"
     restart: unless-stopped
     container_name: "pinot-broker-sasl"
@@ -55,10 +61,17 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - sasl
   pinot-server:
-    image: apachepinot/pinot:0.10.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress zookeeper-sasl:2181"
     restart: unless-stopped
     container_name: "pinot-server-sasl"
     depends_on:
       - pinot-broker
+    networks: 
+      - sasl
+networks:
+  sasl:
+    name: sasl

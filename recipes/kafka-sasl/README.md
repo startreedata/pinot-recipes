@@ -29,39 +29,33 @@ cd pinot-recipes/recipes/kafka-sasl
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Import message into Kafka:
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done | docker exec -i kafka-sasl /opt/kafka/bin/kafka-console-producer.sh \
-    --bootstrap-server localhost:9092 \
-    --topic events \
-    --producer.config /etc/kafka/kafka_client.conf
+python datagen.py |
+kcat -P -b localhost:9092 -F kafka-config/kafka_client_kcat.conf -t events
 ```
 
 Consume messages from Kafka:
 
 ```bash
-docker exec -i kafka-sasl /opt/kafka/bin/kafka-console-consumer.sh \
-   --bootstrap-server localhost:9093  \
-   --consumer.config /etc/kafka/kafka_client.conf \
-   --topic events \
-   --from-beginning
+kcat -C -b localhost:9092 -F kafka-config/kafka_client_kcat.conf -t events
 ``` 
 
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-sasl bin/pinot-admin.sh AddTable   \
+docker run \
+   --network sasl \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64  AddTable   \
   -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json -exec
+  -schemaFile /config/schema.json \
+  -controllerHost "pinot-controller-sasl" \
+  -exec
 ```
 
 Query Pinot:
