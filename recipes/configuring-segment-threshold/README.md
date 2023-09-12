@@ -35,22 +35,21 @@ docker-compose up
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-segment bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json -exec
+docker run \
+   --network segment \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table.json \
+     -controllerHost "pinot-controller-segment" \
+    -exec
 ```
 
 Import message into Kafka:
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done | docker exec -i kafka-segment /opt/kafka/bin/kafka-console-producer.sh \
-    --bootstrap-server localhost:9092 \
-    --topic events
+python datagen.py | 
+kcat -P -b localhost:9092 -t events
 ```
 
 Query Pinot:
