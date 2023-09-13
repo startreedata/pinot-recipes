@@ -7,8 +7,10 @@ services:
     ports:
       - "9100:9000"
       - "9101:9001"
+    networks: 
+      - minio
   zookeeper:
-    image: zookeeper:3.8.0
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-minio
     ports:
@@ -16,6 +18,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - minio
   kafka:
     image: wurstmeister/kafka:latest
     restart: unless-stopped
@@ -33,6 +37,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-minio:9093,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,OUTSIDE:PLAINTEXT
+    networks: 
+      - minio
   pinot-controller:
     image: apachepinot/pinot:0.12.1-arm64
     command: "StartController -zkAddress zookeeper-minio:2181 -config /config/controller-conf.conf"
@@ -45,6 +51,8 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - minio
   pinot-broker:
     image: apachepinot/pinot:0.12.1-arm64
     command: "StartBroker -zkAddress zookeeper-minio:2181"
@@ -54,6 +62,8 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - minio
   pinot-server:
     image: apachepinot/pinot:0.12.1-arm64
     command: "StartServer -zkAddress zookeeper-minio:2181"
@@ -61,3 +71,9 @@ services:
     container_name: "pinot-server-minio"
     depends_on:
       - pinot-broker
+    networks: 
+      - minio
+
+networks:
+  minio:
+    name: minio

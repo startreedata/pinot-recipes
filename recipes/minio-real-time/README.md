@@ -51,10 +51,14 @@ aws s3 mb s3://pinot-events \
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-minio \
-  bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-realtime.json   \
-  -schemaFile /config/schema.json -exec
+docker run \
+   --network minio \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table-realtime.json \
+     -controllerHost "pinot-controller-minio" \
+    -exec
 ```
 
 
