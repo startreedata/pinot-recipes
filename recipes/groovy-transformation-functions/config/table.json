@@ -7,6 +7,9 @@
     "replication": "1",
     "replicasPerPartition": "1"
   },
+  "query" : {
+    "disableGroovy": false
+  },
   "tenants": {},
   "tableIndexConfig": {
     "loadMode": "MMAP",

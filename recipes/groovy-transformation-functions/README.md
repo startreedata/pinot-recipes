@@ -37,10 +37,14 @@ docker-compose up
 Open another tab to add the `events` table:
 
 ```bash
-docker exec -it pinot-controller-groovy bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network groovy \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+     -schemaFile /config/schema.json \
+     -tableConfigFile /config/table.json \
+     -controllerHost "pinot-controller-groovy" \
+    -exec
 ```
 
 Add events into Kafka:
@@ -48,9 +52,7 @@ Add events into Kafka:
 ```bash
 printf '{"timestamp": "2019-10-09 21:25:25", "payload": {"firstName": "James", "lastName": "Smith", "before": {"id": 2}, "after": { "id": 3}}}
 {"timestamp": "2019-10-10 21:33:25", "payload": {"firstName": "John", "lastName": "Gates", "before": {"id": 2}}}\n' |
-docker exec -i kafka-groovy /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic events
+kcat -P -b localhost:9092 -t events
 ```
 
 Navigate to http://localhost:9000/#/query and run the following query:

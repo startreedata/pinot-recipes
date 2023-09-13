@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: zookeeper-groovy
     ports:
@@ -9,19 +9,26 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - groovy
   pinot-controller:
-    image: apachepinot/pinot:0.9.3
-    command: "StartController -zkAddress zookeeper-groovy:2181"
+    image: apachepinot/pinot:0.12.0-arm64
+    command: "StartController -zkAddress zookeeper-groovy:2181 -config /config/controller-conf.conf"
     container_name: "pinot-controller-groovy"
     volumes:
       - ./config:/config
     restart: unless-stopped
     ports:
       - "9000:9000"
+      - "5005:5005"
+    environment:
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     depends_on:
       - zookeeper
+    networks: 
+      - groovy
   pinot-broker:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress zookeeper-groovy:2181"
     restart: unless-stopped
     container_name: "pinot-broker-groovy"
@@ -29,13 +36,17 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - groovy
   pinot-server:
-    image: apachepinot/pinot:0.9.3
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress zookeeper-groovy:2181"
     restart: unless-stopped
     container_name: "pinot-server-groovy"
     depends_on:
       - pinot-broker
+    networks: 
+      - groovy
   kafka:
     image: wurstmeister/kafka:latest
     restart: unless-stopped
@@ -53,3 +64,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-groovy:9093,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,OUTSIDE:PLAINTEXT
+    networks: 
+      - groovy
+
+networks:
+  groovy:
+    name: groovy
