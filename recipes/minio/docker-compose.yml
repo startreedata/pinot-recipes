@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: zookeeper:3.5.6
+    image: zookeeper:3.9.0
     hostname: zookeeper
     container_name: manual-zookeeper-minio
     ports:
@@ -9,8 +9,10 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - minio
   pinot-controller:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartController -zkAddress manual-zookeeper-minio:2181"
     container_name: "manual-pinot-controller-minio"
     volumes:
@@ -21,8 +23,10 @@ services:
       - "9000:9000"
     depends_on:
       - zookeeper
+    networks: 
+      - minio
   pinot-broker:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartBroker -zkAddress manual-zookeeper-minio:2181"
     restart: unless-stopped
     container_name: "manual-pinot-broker-minio"
@@ -33,8 +37,10 @@ services:
       - "8099:8099"
     depends_on:
       - pinot-controller
+    networks: 
+      - minio
   pinot-server:
-    image: apachepinot/pinot:0.9.0
+    image: apachepinot/pinot:0.12.0-arm64
     command: "StartServer -zkAddress manual-zookeeper-minio:2181"
     restart: unless-stopped
     container_name: "manual-pinot-server-minio"
@@ -43,3 +49,9 @@ services:
       - ./data:/data
     depends_on:
       - pinot-broker
+    networks: 
+      - minio
+
+networks:
+  minio:
+    name: minio

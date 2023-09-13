@@ -44,28 +44,37 @@ export AWS_SECRET_ACCESS_KEY="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
 Create an S3 bucket called `pinot-transcript-output`:
 
 ```bash
-aws --endpoint-url https://play.min.io:9000 s3 mb s3://pinot-transcript-output
+aws --endpoint-url https://play.min.io:9000 s3 mb s3://pinot-transcript-output --region us-east-1
+
 ```
 
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Open another tab to add the `transcript` table:
 
 ```bash
-docker exec -it manual-pinot-controller-minio bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
-  -exec
+docker run \
+   --network minio \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+   -schemaFile /config/schema.json \
+   -tableConfigFile /config/table.json \
+   -controllerHost "manual-pinot-controller-minio" \
+   -exec
 ```
 
 Import [data/transcript.csv](data/transcript.csv) into Pinot:
 
 ```bash
-docker exec -it manual-pinot-controller-minio bin/pinot-admin.sh LaunchDataIngestionJob   \
+docker run \
+   --network minio \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob   \
   -jobSpecFile /config/job-spec.yml \
   -values ACCESS_KEY=${AWS_ACCESS_KEY_ID} SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
 ```
