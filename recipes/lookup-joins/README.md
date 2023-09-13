@@ -31,3 +31,39 @@ Clone this repository and navigate to this recipe:
 git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/lookup-joins
 ```
+
+```bash
+docker run \
+   --network lookup-join \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+   -schemaFile /config/orders_schema.json \
+   -tableConfigFile /config/orders_table.json \
+   -controllerHost "pinot-controller" \
+   -exec
+```
+
+```bash
+docker run \
+   --network lookup-join \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+   -schemaFile /config/customers_schema.json \
+   -tableConfigFile /config/customers_table.json \
+   -controllerHost "pinot-controller" \
+   -exec
+```
+
+```bash
+docker run \
+   --network lookup-join \
+   -v $PWD/config:/config \
+   -v $PWD/data:/data \
+   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+-jobSpecFile /config/customers_job-spec.yml
+```
+
+```bash
+cat data/orders.json |
+kcat -P -b localhost:9092 -t orders
+```
