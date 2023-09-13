@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.10.0</td>
+    <td>0.12.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -26,33 +26,25 @@ git clone git@github.com:startreedata/pinot-recipes.git
 cd pinot-recipes/recipes/pulsar
 ```
 
-Build Pulsar plugin:
-
-```bash
-git clone git@github.com:apache/pinot.git
-cd pinot
-git checkout release-0.10.0
-```
-
-```bash
-cd pinot-plugins/pinot-stream-ingestion/pinot-pulsar
-mvn clean install -DskipTests
-```
-
-The Pulsar plugin is in `target/pinot-pulsar-0.10.0-shaded.jar` and we'll copy that into the `plugins` directory.
+Download the appropriate version of the Pulsar plugin from https://central.sonatype.com/artifact/org.apache.pinot/pinot-pulsar/versions and copy it into the `plugins` directory
 
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Add table and schema:
 
 ```bash
-docker exec -it pinot-controller-pulsar bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json -exec
+docker run \
+   --network pulsar \
+   -v $PWD/config:/config \
+   apachepinot/pinot:0.12.0-arm64 AddTable \
+   -schemaFile /config/schema.json \
+   -tableConfigFile /config/table.json \
+   -controllerHost "pinot-controller-pulsar" \
+   -exec
 ```
 
 Import message into Pulsar:
