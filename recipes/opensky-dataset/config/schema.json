@@ -1,0 +1,81 @@
+{
+    "schemaName": "flights",
+    "dimensionFieldSpecs": [
+      {
+        "name": "callsign",
+        "dataType": "STRING"
+      },
+      {
+        "name": "number",
+        "dataType": "STRING"
+      },
+      {
+        "name": "icao24",
+        "dataType": "STRING"
+      },
+      {
+        "name": "registration",
+        "dataType": "STRING"
+      },
+      {
+        "name": "typecode",
+        "dataType": "STRING"
+      },
+      {
+        "name": "origin",
+        "dataType": "STRING"
+      },
+      {
+        "name": "destination",
+        "dataType": "STRING"
+      },
+      {
+        "name": "latitude_1",
+        "dataType": "FLOAT"
+      },
+      {
+        "name": "longitude_1",
+        "dataType": "FLOAT"
+      },
+      {
+        "name": "altitude_1",
+        "dataType": "FLOAT"
+      },
+      {
+        "name": "latitude_2",
+        "dataType": "FLOAT"
+      },
+      {
+        "name": "longitude_2",
+        "dataType": "FLOAT"
+      },
+      {
+        "name": "altitude_2",
+        "dataType": "FLOAT"
+      }
+    ],
+    "dateTimeFieldSpecs": [
+      {
+        "name": "firstSeen",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      },
+      {
+        "name": "lastSeen",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      },
+      {
+        "name": "daySeen",
+        "dataType": "TIMESTAMP",
+        "format": "1:MILLISECONDS:EPOCH",
+        "granularity": "1:MILLISECONDS"
+      }
+    ],
+    "metricFieldSpecs": [
+
+    ]
+  }
+  

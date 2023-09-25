@@ -1,0 +1,23 @@
+{
+    "tableName": "flights",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+      "replication": 1,
+      "schemaName": "flights",
+      "timeColumnName": "firstSeen"
+    },
+    "tenants": {},
+    "tableIndexConfig": {},
+    "ingestionConfig": {
+        "transformConfigs": [
+          {"columnName": "firstSeen", "transformFunction": "FromDateTime(firstseen, 'YYYY-MM-dd HH:mm:ssZ')" },
+          {"columnName": "lastSeen", "transformFunction": "FromDateTime(lastseen, 'YYYY-MM-dd HH:mm:ssZ')" },
+          {"columnName": "daySeen", "transformFunction": "FromDateTime(day, 'YYYY-MM-dd HH:mm:ssZ')" }
+        ],
+        "filterConfig": {
+            "filterFunction": "strcmp(coalesce(origin, ''), '') = 0 OR strcmp(coalesce(destination, ''), '') = 0"
+          }
+      },
+    
+    "metadata": {}
+  }

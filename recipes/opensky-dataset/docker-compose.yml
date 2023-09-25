@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+  zookeeper:
+    image: zookeeper:3.9.0
+    hostname: zookeeper
+    container_name: zookeeper-opensky
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - opensky
+  pinot-controller:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartController -zkAddress zookeeper-opensky:2181"
+    container_name: "pinot-controller-opensky"
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+    networks: 
+      - opensky
+  pinot-broker:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartBroker -zkAddress zookeeper-opensky:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker-opensky"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+    networks: 
+      - opensky
+  pinot-server:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartServer -zkAddress zookeeper-opensky:2181"
+    restart: unless-stopped
+    container_name: "pinot-server-opensky"
+    depends_on:
+      - pinot-broker
+    networks: 
+      - opensky
+  pinot-minion:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartMinion -zkAddress zookeeper-opensky:2181"
+    restart: unless-stopped
+    container_name: "pinot-minion-opensky"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - pinot-broker
+    networks: 
+      - opensky
+networks:
+  opensky:
+    name: opensky
