@@ -1,0 +1,56 @@
+{
+    "tableName": "nypdComplaintData",
+    "tableType": "OFFLINE",
+    "segmentsConfig": {
+      "replication": 1,
+      "schemaName": "nypdComplaintData",
+      "timeColumnName": "complntFrDtTm"
+    },
+    "tenants": {},
+    "tableIndexConfig": {},
+    "ingestionConfig": {
+        "continueOnError": "true",
+        "rowTimeValueCheck": "true",
+        "transformConfigs": [
+          {"columnName": "complntFrDtTm", "transformFunction": "FromDateTime(concat(CMPLNT_FR_DT, replace(CMPLNT_FR_TM, '(null)', '00:00:00'), ' '), 'MM/dd/yyyy HH:mm:ss')" },
+          {"columnName": "complntToDtTm", "transformFunction": "FromDateTime(concat(CMPLNT_TO_DT, replace(CMPLNT_TO_TM, '(null)', '00:00:00'), ' '), 'MM/dd/yyyy HH:mm:ss')" },
+          {"columnName": "rptDt", "transformFunction": "FromDateTime(RPT_DT, 'MM/dd/yyyy')" },
+          {"columnName": "addrPctCd", "transformFunction": "ADDR_PCT_CD" },
+          {"columnName": "complntNum", "transformFunction": "CMPLNT_NUM"},
+          {"columnName": "boroNm", "transformFunction": "BORO_NM"},
+          {"columnName": "crmAtptCptdCd", "transformFunction": "CRM_ATPT_CPTD_CD"},
+          {"columnName": "hadevelopt", "transformFunction": "HADEVELOPT"},
+          {"columnName": "housingPsa", "transformFunction": "HOUSING_PSA"},
+          {"columnName": "jurisdictionCode", "transformFunction": "JURISDICTION_CODE"},
+          {"columnName": "jurisDesc", "transformFunction": "JURIS_DESC"},
+          {"columnName": "kyCd", "transformFunction": "KY_CD"},
+          {"columnName": "lawCatCd", "transformFunction": "LAW_CAT_CD"},
+          {"columnName": "locOfOccurDesc", "transformFunction": "LOC_OF_OCCUR_DESC"},
+          {"columnName": "ofnsDesc", "transformFunction": "OFNS_DESC"},
+          {"columnName": "parksNm", "transformFunction": "PARKS_NM"},
+          {"columnName": "patrolBoro", "transformFunction": "PATROL_BORO"},
+          {"columnName": "pdCd", "transformFunction": "PD_CD"},
+          {"columnName": "pdDesc", "transformFunction": "PD_DESC"},
+          {"columnName": "premTypDesc", "transformFunction": "PREM_TYP_DESC"},
+          {"columnName": "stationName", "transformFunction": "STATION_NAME"},
+          {"columnName": "suspAgeGroup", "transformFunction": "SUSP_AGE_GROUP"},
+          {"columnName": "suspRace", "transformFunction": "SUSP_RACE"},
+          {"columnName": "suspSex", "transformFunction": "SUSP_SEX"},
+          {"columnName": "transitDistrict", "transformFunction": "TRANSIT_DISTRICT"},
+          {"columnName": "vicAgeGroup", "transformFunction": "VIC_AGE_GROUP"},
+          {"columnName": "vicRace", "transformFunction": "VIC_RACE"},
+          {"columnName": "vicSex", "transformFunction": "VIC_SEX"},
+          {"columnName": "xCoordCd", "transformFunction": "X_COORD_CD"},
+          {"columnName": "yCoordCd", "transformFunction": "Y_COORD_CD"},
+          {"columnName": "latitude", "transformFunction": "Latitude"},
+          {"columnName": "longitude", "transformFunction": "Longitude"},
+          {"columnName": "latLon", "transformFunction": "\"Lat_Lon\""},
+          {"columnName": "newGeoreferencedColumn", "transformFunction": "\"New Georeferenced Column\""}
+        
+        ],
+        "filterConfig": {
+            
+          }
+      },
+    "metadata": {}
+  }

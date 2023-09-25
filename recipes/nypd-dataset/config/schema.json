@@ -1,0 +1,45 @@
+{
+  "schemaName": "nypdComplaintData",
+  "dimensionFieldSpecs": [
+    {"name": "complntNum", "dataType": "STRING"},
+    {"name": "addrPctCd", "dataType": "INT"},
+    {"name": "boroNm", "dataType": "STRING"},
+    {"name": "crmAtptCptdCd", "dataType": "STRING"},
+    {"name": "hadevelopt", "dataType": "STRING"},
+    {"name": "housingPsa", "dataType": "STRING"},
+    {"name": "jurisdictionCode", "dataType": "INT"},
+    {"name": "jurisDesc", "dataType": "STRING"},
+    {"name": "kyCd", "dataType": "INT"},
+    {"name": "lawCatCd", "dataType": "STRING"},
+    {"name": "locOfOccurDesc", "dataType": "STRING"},
+    {"name": "ofnsDesc", "dataType": "STRING"},
+    {"name": "parksNm", "dataType": "STRING"},
+    {"name": "patrolBoro", "dataType": "STRING"},
+    {"name": "pdCd", "dataType": "INT"},
+    {"name": "pdDesc", "dataType": "STRING"},
+    {"name": "premTypDesc", "dataType": "STRING"},
+    {"name": "stationName", "dataType": "STRING"},
+    {"name": "suspAgeGroup", "dataType": "STRING"},
+    {"name": "suspRace", "dataType": "STRING"},
+    {"name": "suspSex", "dataType": "STRING"},
+    {"name": "transitDistrict", "dataType": "INT"},
+    {"name": "vicAgeGroup", "dataType": "STRING"},
+    {"name": "vicRace", "dataType": "STRING"},
+    {"name": "vicSex", "dataType": "STRING"},
+    {"name": "latLon", "dataType": "STRING"},
+    {"name": "newGeoreferencedColumn", "dataType": "STRING"},
+    {"name": "latitude", "dataType": "FLOAT"},
+    {"name": "longitude", "dataType": "FLOAT"},
+    {"name": "xCoordCd", "dataType": "FLOAT"},
+    {"name": "yCoordCd", "dataType": "FLOAT"}
+  ],
+  "metricFieldSpecs": [
+
+  ],
+  "dateTimeFieldSpecs": [
+    {"name": "complntFrDtTm", "dataType": "TIMESTAMP", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS" },
+    {"name": "complntToDtTm", "dataType": "TIMESTAMP", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS" },
+    {"name": "rptDt", "dataType": "TIMESTAMP", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS" }
+  ],
+  "primaryKeyColumns": ["complntNum"]
+}
