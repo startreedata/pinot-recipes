@@ -62,19 +62,21 @@ FROM FILE 'file:///data/';
 Query the dataset:
 
 ```sql
-select County, avg(Price) AS averagePrice, max(Price) AS maxPrice, count(*) AS numberOfSales
+select County, avg(Price) AS averagePrice, count(*) AS numberOfSales
 from house_prices
 group by County
 order by averagePrice DESC
 limit 10
 ```
 
+
 ```sql
-select County, year(TransferDate) as yearSold, avg(Price) AS averagePrice, mode(Price), 
-       max(Price) AS maxPrice, 
+select TownCity, County, max(Price) AS maxPrice,
        count(*) AS numberOfSales
 from house_prices
-group by County, yearSold
+WHERE year(TransferDate) = 2021
+group by TownCity, County
 order by maxPrice DESC
 limit 10
 ```
+
