@@ -29,6 +29,10 @@ cd pinot-recipes/recipes/house-prices-dataset
 Download CSV files from https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads#yearly-file and put them into the `raw` directory.
 Then use the `clean_csv.py` script to add a header to the file and write it to the `data` directory.
 
+```bash
+python clean_csv pp-2021.csv
+```
+
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
