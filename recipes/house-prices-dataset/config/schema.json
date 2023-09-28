@@ -1,0 +1,28 @@
+{
+  "schemaName": "house_prices",
+  "dimensionFieldSpecs": [
+    {"name": "UniqueTransactionIdentifier", "dataType": "STRING"},
+    {"name": "Postcode", "dataType": "STRING"},
+    {"name": "PropertyType", "dataType": "STRING"},
+    {"name": "OldNew", "dataType": "STRING"},
+    {"name": "Duration", "dataType": "STRING"},
+    {"name": "PAON", "dataType": "STRING"},
+    {"name": "SAON", "dataType": "STRING"},
+    {"name": "Street", "dataType": "STRING"},
+    {"name": "Locality", "dataType": "STRING"},
+    {"name": "TownCity", "dataType": "STRING"},
+    {"name": "District", "dataType": "STRING"},
+    {"name": "County", "dataType": "STRING"},
+    {"name": "PPDCategoryType", "dataType": "STRING"},
+    {"name": "RecordStatus", "dataType": "STRING"}
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "TransferDate",
+      "dataType": "TIMESTAMP",
+      "format": "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }
+  ],
+  "metricFieldSpecs": [{"name": "Price", "dataType": "INT"}]
+}

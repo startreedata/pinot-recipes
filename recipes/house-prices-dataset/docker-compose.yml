@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+  zookeeper:
+    image: zookeeper:3.9.0
+    hostname: zookeeper
+    container_name: zookeeper-houseprices
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: 
+      - houseprices
+  pinot-controller:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartController -zkAddress zookeeper-houseprices:2181"
+    container_name: "pinot-controller-houseprices"
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+    networks: 
+      - houseprices
+  pinot-broker:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartBroker -zkAddress zookeeper-houseprices:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker-houseprices"
+    ports:
+      - "8099:8099"
+    depends_on:
+      - pinot-controller
+    networks: 
+      - houseprices
+  pinot-server:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartServer -zkAddress zookeeper-houseprices:2181"
+    restart: unless-stopped
+    container_name: "pinot-server-houseprices"
+    depends_on:
+      - pinot-broker
+    networks: 
+      - houseprices
+  pinot-minion:
+    image: apachepinot/pinot:1.0.0-11-ms-openjdk
+    command: "StartMinion -zkAddress zookeeper-houseprices:2181"
+    restart: unless-stopped
+    container_name: "pinot-minion-houseprices"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - pinot-broker
+    networks: 
+      - houseprices
+networks:
+  houseprices:
+    name: houseprices

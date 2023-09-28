@@ -1,0 +1,20 @@
+{
+  "tableName": "house_prices",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": 1,
+    "schemaName": "house_prices",
+    "timeColumnName": "TransferDate"
+  },
+  "tenants": {},
+  "tableIndexConfig": {},
+  "ingestionConfig": {
+    "transformConfigs": [
+      {
+        "columnName": "TransferDate",
+        "transformFunction": "FromDateTime(DateOfTransfer, 'YYYY-MM-dd HH:mm')"
+      }
+    ]
+  },
+  "metadata": {}
+}

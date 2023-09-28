@@ -18,6 +18,5 @@
             "filterFunction": "strcmp(coalesce(origin, ''), '') = 0 OR strcmp(coalesce(destination, ''), '') = 0"
           }
       },
-    
     "metadata": {}
   }
