@@ -50,6 +50,8 @@ Convert CSV File to Parquet Format
 val df = spark.read.format("csv").option("header", true).load("/path/to/events.csv")
 
 df.write.option("compression","none").mode("overwrite").parquet("/path/to/output")
+
+:q // to exit
 ```
 
 Upload Parquet Files
