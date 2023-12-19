@@ -42,7 +42,7 @@ Open another tab to add the `users_flatten` table:
 docker run \
    --network json \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema-flatten.json \
      -tableConfigFile /config/table-flatten.json \
      -controllerHost "pinot-controller-json" \
@@ -55,7 +55,7 @@ And now the `users_no_flatten` table:
 docker run \
    --network json \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema-no-flatten.json \
      -tableConfigFile /config/table-no-flatten.json \
      -controllerHost "pinot-controller-json" \
@@ -69,7 +69,7 @@ docker run \
    --network json \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values tableName='users_no_flatten'
 ```
@@ -79,7 +79,7 @@ docker run \
    --network json \
    -v $PWD/config:/config \
       -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values tableName='users_flatten'
 ```

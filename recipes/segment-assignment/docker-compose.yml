@@ -31,7 +31,7 @@ services:
     networks: 
       - forcecommit
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-forcecommit:2181"
     container_name: "pinot-controller-forcecommit"
     restart: unless-stopped
@@ -40,7 +40,7 @@ services:
     networks: 
       - forcecommit
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-forcecommit:2181"
     container_name: "pinot-broker-forcecommit"
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
     networks: 
       - forcecommit
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-forcecommit:2181"
     container_name: "pinot-server-forcecommit"
     ports:

@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -51,7 +51,7 @@ Add table and schema:
 docker run \
    --network sasl \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64  AddTable   \
+   apachepinot/pinot:1.0.0  AddTable   \
   -tableConfigFile /config/table.json   \
   -schemaFile /config/schema.json \
   -controllerHost "pinot-controller-sasl" \

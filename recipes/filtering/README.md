@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -44,7 +44,7 @@ Open another tab to add the `movies` table:
 docker run \
    --network filtering\
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table.json \
      -controllerHost "pinot-controller-filtering" \
@@ -60,7 +60,7 @@ docker run \
    --network filtering \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
      -jobSpecFile /config/job-spec.yml
 ```
 

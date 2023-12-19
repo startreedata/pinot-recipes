@@ -31,7 +31,7 @@ services:
     networks: 
       - rt
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-rt:2181 -dataDir /data"
     container_name: "pinot-controller-rt"
     volumes:
@@ -46,7 +46,7 @@ services:
     networks: 
       - rt
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-rt:2181"
     restart: unless-stopped
     container_name: "pinot-broker-rt"
@@ -59,7 +59,7 @@ services:
     networks: 
       - rt
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-rt:2181"
     restart: unless-stopped
     container_name: "pinot-server-rt"

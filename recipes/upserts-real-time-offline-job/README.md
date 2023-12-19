@@ -38,7 +38,7 @@ Add offline table and schema:
 docker run \
    --network upserts \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/orders_schema.json \
      -tableConfigFile /config/orders_offline_table.json \
      -controllerHost "pinot-controller" \
@@ -110,7 +110,7 @@ docker run \
    --network upserts \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml \
   -values segmentName='orders_1632463351000_1632467070000_0'
 ```

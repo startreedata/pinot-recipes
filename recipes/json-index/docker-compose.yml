@@ -31,7 +31,7 @@ services:
     networks: 
       - jsonindex
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-jsonindex:2181"
     container_name: "pinot-controller-jsonindex"
     restart: unless-stopped
@@ -40,7 +40,7 @@ services:
     networks: 
       - jsonindex
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-jsonindex:2181"
     container_name: "pinot-broker-jsonindex"
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
     networks: 
       - jsonindex
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-jsonindex:2181"
     container_name: "pinot-server-jsonindex"
     ports:

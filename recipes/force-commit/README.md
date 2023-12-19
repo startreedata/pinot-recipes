@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -38,7 +38,7 @@ Add tables and schema:
 docker run \
    --network forcecommit \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table.json \
      -controllerHost "pinot-controller-forcecommit" \
@@ -71,7 +71,7 @@ Update the segment threshold from 500k to 100k:
 docker run \
    --network forcecommit \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table-newthreshold.json \
      -controllerHost "pinot-controller-forcecommit" \

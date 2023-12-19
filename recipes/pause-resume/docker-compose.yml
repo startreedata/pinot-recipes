@@ -31,7 +31,7 @@ services:
     networks: 
       - pauseresume
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-pauseresume:2181"
     container_name: "pinot-controller-pauseresume"
     restart: unless-stopped
@@ -40,7 +40,7 @@ services:
     networks: 
       - pauseresume
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-pauseresume:2181"
     container_name: "pinot-broker-pauseresume"
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
     networks: 
       - pauseresume
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-pauseresume:2181"
     container_name: "pinot-server-pauseresume"
     ports:

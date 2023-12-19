@@ -12,7 +12,7 @@ services:
     networks: 
       - filtering
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-filtering:2181"
     container_name: "pinot-controller-filtering"
     volumes:
@@ -26,7 +26,7 @@ services:
     networks: 
       - filtering
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-filtering:2181"
     restart: unless-stopped
     container_name: "pinot-broker-filtering"
@@ -37,7 +37,7 @@ services:
     networks: 
       - filtering
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-filtering:2181"
     restart: unless-stopped
     container_name: "pinot-server-filtering"

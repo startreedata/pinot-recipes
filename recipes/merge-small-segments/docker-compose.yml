@@ -12,7 +12,7 @@ services:
     networks: 
       - mergesegments
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-mergesegments:2181 -dataDir /data"
     container_name: "pinot-controller-mergesegments"
     volumes:
@@ -26,7 +26,7 @@ services:
     networks: 
       - mergesegments
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-mergesegments:2181"
     restart: unless-stopped
     container_name: "pinot-broker-mergesegments"
@@ -37,7 +37,7 @@ services:
     networks: 
       - mergesegments
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-mergesegments:2181"
     restart: unless-stopped
     container_name: "pinot-server-mergesegments"
@@ -46,7 +46,7 @@ services:
     networks: 
       - mergesegments
   pinot-minion:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartMinion -zkAddress zookeeper-mergesegments:2181"
     restart: unless-stopped
     container_name: "pinot-minion-mergesegments"

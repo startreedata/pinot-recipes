@@ -38,7 +38,7 @@ Add table and schema:
 docker run \
    --network rt \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
    -schemaFile /config/schema.json \
    -realtimeTableConfigFile /config/table-realtime.json \
    -offlineTableConfigFile /config/table-offline.json \
@@ -53,7 +53,7 @@ docker run \
    --network rt \
    -v $PWD/config:/config \
    -v $PWD/input:/input \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
   -jobSpecFile /config/job-spec.yml
 ```
 

@@ -53,7 +53,7 @@ docker run \
    --network json \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 JsonToPinotSchema \
+   apachepinot/pinot:1.0.0 JsonToPinotSchema \
   -timeColumnName first_air_date \
   -metrics "number_of_episodes,popularity"\
   -pinotSchemaName=tv_shows \
@@ -74,7 +74,7 @@ docker run \
    --network json \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64  AddTable   \
+   apachepinot/pinot:1.0.0  AddTable   \
   -schemaFile /config/tv_shows.json \
   -tableConfigFile /config/table.json   \
   -controllerHost "pinot-controller-json" \

@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -40,7 +40,7 @@ Add table and schema:
 docker run \
    --network pulsar \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
    -schemaFile /config/schema.json \
    -tableConfigFile /config/table.json \
    -controllerHost "pinot-controller-pulsar" \

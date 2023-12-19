@@ -36,7 +36,7 @@ cd pinot-recipes/recipes/lookup-joins
 docker run \
    --network lookup-join \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
    -schemaFile /config/orders_schema.json \
    -tableConfigFile /config/orders_table.json \
    -controllerHost "pinot-controller" \
@@ -47,7 +47,7 @@ docker run \
 docker run \
    --network lookup-join \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
    -schemaFile /config/customers_schema.json \
    -tableConfigFile /config/customers_table.json \
    -controllerHost "pinot-controller" \
@@ -59,7 +59,7 @@ docker run \
    --network lookup-join \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
 -jobSpecFile /config/customers_job-spec.yml
 ```
 

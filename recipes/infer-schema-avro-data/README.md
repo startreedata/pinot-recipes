@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
 </table>
 
@@ -26,7 +26,7 @@ Infer schema from  [data/github.json](data/github.json):
 docker run \
   -v ${PWD}/config:/config \
   -v ${PWD}/avro:/avro \
-  apachepinot/pinot:0.12.0-arm64 AvroSchemaToPinotSchema \
+  apachepinot/pinot:1.0.0 AvroSchemaToPinotSchema \
   -avroSchemaFile /avro/mastodon-topic-value.avsc \
   -pinotSchemaName="mastodon" \
   -outputDir="/config" \

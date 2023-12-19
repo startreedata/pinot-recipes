@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -46,7 +46,7 @@ Add schema:
 docker run \
    --network geospatial \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddSchema \
+   apachepinot/pinot:1.0.0 AddSchema \
      -schemaFile /config/schema.json \
      -controllerHost "pinot-controller-geospatial" \
     -exec

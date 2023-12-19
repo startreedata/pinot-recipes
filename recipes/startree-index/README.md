@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
 </table>
 
@@ -44,7 +44,7 @@ kcat -P -b localhost:9092 -t webtraffic -Kø
 docker run \
    --network startree-index \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/base/schema.json \
      -tableConfigFile /config/base/table.json \
      -controllerHost "pinot-controller-startree-index" \
@@ -55,7 +55,7 @@ docker run \
 docker run \
    --network startree-index \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/startree/schema.json \
      -tableConfigFile /config/startree/table.json \
      -controllerHost "pinot-controller-startree-index" \
@@ -66,7 +66,7 @@ docker run \
 docker run \
    --network startree-index \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/inverted/schema.json \
      -tableConfigFile /config/inverted/table.json \
      -controllerHost "pinot-controller-startree-index" \

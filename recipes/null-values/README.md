@@ -45,7 +45,7 @@ Open another tab to add the `movies-nulls` schema and table config:
 docker run \
    --network null-values \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table-nulls.json \
      -controllerHost "pinot-controller-nulls" \
@@ -58,7 +58,7 @@ Next, add the `movies-no-nulls` table:
 docker run \
    --network null-values \
    -v $PWD/config:/config \
-   apachepinot/pinot:0.12.0-arm64 AddTable \
+   apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema-no-nulls.json \
      -tableConfigFile /config/table-no-nulls.json \
      -controllerHost "pinot-controller-nulls" \
@@ -72,7 +72,7 @@ docker run \
    --network null-values \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
      -jobSpecFile /config/job-spec.yml \
      -values tableName='movies_no_nulls'
 ```
@@ -82,7 +82,7 @@ docker run \
    --network null-values \
    -v $PWD/config:/config \
    -v $PWD/data:/data \
-   apachepinot/pinot:0.12.0-arm64 LaunchDataIngestionJob \
+   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
      -jobSpecFile /config/job-spec.yml \
      -values tableName='movies_nulls'
 ```

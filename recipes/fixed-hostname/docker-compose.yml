@@ -12,7 +12,7 @@ services:
     networks: 
       - fixedhost
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-fixedhost:2181 -controllerHost pinot-controller-fixedhost"
     container_name: "pinot-controller-fixedhost"
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
     networks: 
       - fixedhost
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-fixedhost:2181  -brokerHost pinot-broker-fixedhost"
     restart: unless-stopped
     container_name: "pinot-broker-fixedhost"
@@ -35,7 +35,7 @@ services:
     networks: 
       - fixedhost
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-fixedhost:2181 -serverHost pinot-server-fixedhost"
     restart: unless-stopped
     container_name: "pinot-server-fixedhost"
@@ -44,7 +44,7 @@ services:
     networks: 
       - fixedhost
   pinot-minion:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartMinion -zkAddress zookeeper-fixedhost:2181 -minionHost pinot-minion-fixedhost"
     restart: unless-stopped
     container_name: "pinot-minion-fixedhost"

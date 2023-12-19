@@ -31,7 +31,7 @@ services:
     networks: 
       - geospatial
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-geospatial:2181"
     container_name: "pinot-controller-geospatial"
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
     networks: 
       - geospatial
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-geospatial:2181"
     container_name: "pinot-broker-geospatial"
     restart: unless-stopped
@@ -55,7 +55,7 @@ services:
     networks: 
       - geospatial
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-geospatial:2181"
     container_name: "pinot-server-geospatial"
     ports:

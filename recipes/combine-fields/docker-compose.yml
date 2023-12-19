@@ -11,7 +11,7 @@ services:
     networks: 
       - combine
   pinot-controller:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-combine:2181"
     container_name: "pinot-controller-combine"
     volumes:
@@ -25,7 +25,7 @@ services:
     networks: 
       - combine
   pinot-broker:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-combine:2181"
     restart: unless-stopped
     container_name: "pinot-broker-combine"
@@ -36,7 +36,7 @@ services:
     networks: 
       - combine
   pinot-server:
-    image: apachepinot/pinot:0.12.0-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-combine:2181"
     restart: unless-stopped
     container_name: "pinot-server-combine"
