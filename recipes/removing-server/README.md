@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.12.0</td>
+    <td>1.0.0</td>
   </tr>
   <tr>
     <td>Schema</td>
