@@ -54,7 +54,7 @@ services:
     depends_on:
       - pinot-broker
     volumes:
-      - ./plugins/pinot-pulsar-0.12.0-shaded.jar:/opt/pinot/plugins/pinot-stream-ingestion/pinot-pulsar/pinot-pulsar-0.12.0-arm64-shaded.jar
+      - ./plugins/pinot-pulsar-0.12.0-shaded.jar:/opt/pinot/plugins/pinot-stream-ingestion/pinot-pulsar/pinot-pulsar-0.12.0-arm64-shaded.jar 
     networks: 
       - pulsar
 networks:
