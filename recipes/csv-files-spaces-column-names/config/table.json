@@ -1,24 +1,28 @@
 {
-    "tableName": "crimes",
-    "tableType": "OFFLINE",
-    "segmentsConfig": {
-      "replication": 1
+  "tableName": "crimes",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "replication": "1",
+    "schemaName": "crimes"
+  },
+  "tenants": {
+    "broker": "DefaultTenant",
+    "server": "DefaultTenant"
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP"
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY"
     },
-    "tenants": {
-      "broker":"DefaultTenant",
-      "server":"DefaultTenant"
-    },
-    "tableIndexConfig": {
-      "loadMode": "MMAP"
-    },
-    "ingestionConfig": {
-      "batchIngestionConfig": {
-        "segmentIngestionType": "APPEND",
-        "segmentIngestionFrequency": "DAILY"
-      },
-      "transformConfigs": [
-        {"columnName": "CaseNumber", "transformFunction": "\"Case Number\"" }
-      ]
-    },
-    "metadata": {}
-  }
+    "transformConfigs": [
+      {
+        "columnName": "CaseNumber",
+        "transformFunction": "\"Case Number\""
+      }
+    ]
+  },
+  "metadata": {}
+}

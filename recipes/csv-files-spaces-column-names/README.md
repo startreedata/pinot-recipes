@@ -1,6 +1,16 @@
 # Importing CSV files with columns containing spaces
 
-> In this recipe we'll learn how to use transformation functions to ingest a CSV file whose column names contain spaces.
+Pinot can transform data at ingestion. In this recipe, we'll learn how to use a transformation to change the name of a column. We will ingest a CSV file with a column containing spaces in its name. 
+
+```csv
+ID,Case Number
+10224738,HY411648
+10224739,HY411615
+11646166,JC213529
+10224740,HY411595
+```
+
+We will use a transformation function to remove the space as the data is being ingested into Pinot
 
 <table>
   <tr>
