@@ -1,4 +1,6 @@
-# Apache Pinot and Debezium Example for MySQL
+# Apache Pinot and Debezium Example for PostgreSQL
+
+This recipe executes all of the commands in a Makefile. It downloads a Postgres dump of data about `dvdrentals` and stands up Kafka connect with Debezium. CDC data is written to Kafka which is then consumed by Apache Pinot.
 
 ```mermaid
 flowchart LR
