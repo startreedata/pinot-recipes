@@ -40,7 +40,7 @@ services:
     networks: 
       - minio
   pinot-controller:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-minio:2181 -config /config/controller-conf.conf"
     container_name: "pinot-controller-minio"
     volumes:
@@ -54,7 +54,7 @@ services:
     networks: 
       - minio
   pinot-broker:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-minio:2181"
     restart: unless-stopped
     container_name: "pinot-broker-minio"
@@ -65,7 +65,7 @@ services:
     networks: 
       - minio
   pinot-server:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-minio:2181"
     restart: unless-stopped
     container_name: "pinot-server-minio"

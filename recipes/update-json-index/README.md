@@ -55,8 +55,6 @@ docker run \
     -exec
 ```
 
-Remove the `-arm64` suffix from the Apache Pinot image name if you aren't using the Mac M1/M2.
-
 Import messages into Kafka:
 
 ```bash

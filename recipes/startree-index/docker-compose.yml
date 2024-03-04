@@ -31,7 +31,7 @@ services:
     networks: 
       - startree-index
   pinot-controller:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress zookeeper-startree-index:2181"
     container_name: "pinot-controller-startree-index"
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
     networks: 
       - startree-index
   pinot-broker:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartBroker -zkAddress zookeeper-startree-index:2181"
     container_name: "pinot-broker-startree-index"
     restart: unless-stopped
@@ -52,7 +52,7 @@ services:
     networks: 
       - startree-index
   pinot-server:
-    image: apachepinot/pinot:0.12.1-arm64
+    image: apachepinot/pinot:1.0.0
     command: "StartServer -zkAddress zookeeper-startree-index:2181"
     container_name: "pinot-server-startree-index"
     ports:
