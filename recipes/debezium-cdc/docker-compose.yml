@@ -9,7 +9,6 @@ services:
      - 8083:8083
     depends_on:
      - kafka
-     - mysql
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
