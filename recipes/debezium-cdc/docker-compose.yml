@@ -1,24 +1,10 @@
 version: '2'
+
 services:
-  zookeeper:
-    image: zookeeper:3.5.6
-    hostname: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-  kafka:
-    image: debezium/kafka:latest
-    ports:
-     - 9092:9092
-    links:
-     - zookeeper
-    environment:
-     - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-     - ZOOKEEPER_CONNECT=zookeeper:2181
   mysql:
     image: debezium/example-mysql:latest
+    container_name: mysql
+    hostname: mysql
     ports:
      - 3306:3306
     environment:
@@ -27,9 +13,11 @@ services:
      - MYSQL_PASSWORD=mysqlpw
   connect:
     image: debezium/connect:latest
+    container_name: connect
+    hostname: connect
     ports:
      - 8083:8083
-    links:
+    depends_on:
      - kafka
      - mysql
     environment:
@@ -38,31 +26,3 @@ services:
      - CONFIG_STORAGE_TOPIC=my_connect_configs
      - OFFSET_STORAGE_TOPIC=my_connect_offsets
      - STATUS_STORAGE_TOPIC=my_connect_statuses
-  pinot-controller:
-    image: apachepinot/pinot:0.11.0-SNAPSHOT-438c53b-20220608
-    command: "StartController -zkAddress zookeeper:2181"
-    container_name: "pinot-controller-cdc"
-    volumes:
-      - ./config:/config
-      - ./data:/data
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-    depends_on:
-      - zookeeper
-  pinot-broker:
-    image: apachepinot/pinot:0.11.0-SNAPSHOT-438c53b-20220608
-    command: "StartBroker -zkAddress zookeeper:2181"
-    restart: unless-stopped
-    container_name: "pinot-broker-cdc"
-    ports:
-      - "8099:8099"
-    depends_on:
-      - pinot-controller
-  pinot-server:
-    image: apachepinot/pinot:0.11.0-SNAPSHOT-438c53b-20220608
-    command: "StartServer -zkAddress zookeeper:2181"
-    restart: unless-stopped
-    container_name: "pinot-server-cdc"
-    depends_on:
-      - pinot-broker

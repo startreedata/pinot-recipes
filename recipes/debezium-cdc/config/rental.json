@@ -1,0 +1,18 @@
+{
+    "schemaName": "rental",
+    "dimensionFieldSpecs": [
+      {
+        "name": "payload_json",
+        "dataType": "STRING",
+        "defaultNullValue": ""
+      }
+    ],
+    "metricFieldSpecs": [
+    ],
+    "dateTimeFieldSpecs": [{
+      "name": "ts_ms",
+      "dataType": "LONG",
+      "format" : "1:MILLISECONDS:EPOCH",
+      "granularity": "1:MILLISECONDS"
+    }]
+  }
