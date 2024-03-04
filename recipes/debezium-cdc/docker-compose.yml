@@ -1,16 +1,6 @@
 version: '2'
 
 services:
-  mysql:
-    image: debezium/example-mysql:latest
-    container_name: mysql
-    hostname: mysql
-    ports:
-     - 3306:3306
-    environment:
-     - MYSQL_ROOT_PASSWORD=debezium
-     - MYSQL_USER=mysqluser
-     - MYSQL_PASSWORD=mysqlpw
   connect:
     image: debezium/connect:latest
     container_name: connect
