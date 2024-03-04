@@ -29,19 +29,20 @@ cd pinot-recipes/recipes/full-upserts
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose \
+		-f ../pinot-compose.yml \
+		-f ../kafka-compose.yml up -d
 ```
 
 Add table and schema:
 
 ```bash
-docker run \
-   --network fullupserts \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-     -schemaFile /config/orders_schema.json \
-     -tableConfigFile /config/orders_table.json \
-     -controllerHost "pinot-controller" \
+docker cp config/orders_schema.json pinot-controller:/opt/pinot/
+docker cp config/orders_table.json pinot-controller:/opt/pinot/
+
+docker exec pinot-controller ./bin/pinot-admin.sh AddTable \
+     -schemaFile /opt/pinot/orders_schema.json \
+     -tableConfigFile /opt/pinot/orders_table.json \
     -exec
 
 ```
