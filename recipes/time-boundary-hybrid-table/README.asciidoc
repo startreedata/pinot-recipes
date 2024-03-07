@@ -1,0 +1,88 @@
+# Time boundary for hybrid tables
+
+In this recipe we'll learn how to compute the time boundary used by Pinot brokers when processing queries for hybrid tables
+
+[cols="1,1"]
+|===
+|Cell in column 1, header row |Cell in column 2, header row
+
+|Schema
+|link:./config/schema.json[schema]
+
+|Offline configuration
+|link:./config/table-offline.json[offline]
+
+|Realtime configuration
+|link:./config/table-realtime.json[realtime]
+
+|Batch upload job spec
+|link:./config/job-spec.yml[job spec]
+
+|===
+
+
+This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/time-boundary-hybrid-table
+
+---
+
+## Makefile
+
+The link:Makefile[Makefile] contains all of the commands need to start up Pinot and Kafka. Run the make command below.
+
+
+`make recipe`
+
+This command will also:
+
+- Create a Kafka topic called `events`.
+- Create a hybrid Pinot `events` table.
+- Batch load link:./input/events.json[data] into the offline `events` table in Pinot.
+- Generate stream data using the Pinot schema to Kafka and ultimately into the realtime `events` table in Pinot.
+
+When you go to the link:http://localhost:9000/#/tables[table list] in Pinot, you will see an `events_REALTIME` and an `events_OFFLINE` table. When you go to the link:http://localhost:9000/#/query[query console] in Pinot, you will only see one table: `events`.
+
+## Select Pinot Segments
+
+The stream data generator will generate 1000 records into the `events_REALTIME` table. The batch loader will load 10 records into the `events_OFFLINE` table for a total of `1010` records.
+
+If you count the number of records in this table, you will only get `1000`.
+
+image::images/pinot1.png[alt]
+
+If you look at the `query response stats` you'll see `1000` documents scanned from `1010` totalDocs. When querying hybrid tables, the Pinot Broker must decide which records to read from the offline table and which to read from the real-time table.
+
+If you run the SQL below, you'll see that there are no OFFLINE segments. They are only realtime segments.
+
+[source,sql,attributes]
+----
+select $segmentName, count(*) from events
+group by $segmentName
+----
+
+
+Check the current time boundary:
+
+[source,bash]
+----
+curl "http://localhost:8099/debug/timeBoundary/events" -H "accept: application/json" 2>/dev/null | jq '.'
+----
+
+
+Execute the API call below to force Pinot to update the `event` table's time boundary.
+
+[source,bash,attributes]
+----
+curl -X POST \
+  "http://localhost:9000/tables/events/timeBoundary" \
+  -H "accept: application/json" | \
+  jq
+
+----
+
+Run the query again below. This time, you should see both offline and realtime segments.
+
+[source, sql]
+----
+select $segmentName, count(*) from events
+group by $segmentName
+----
