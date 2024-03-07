@@ -34,7 +34,7 @@ The link:Makefile[Makefile] contains all of the commands need to start up Pinot 
 
 This command will also:
 
-- create a Kafka topic called `events`.
+- Create a Kafka topic called `events`.
 - create a hybrid Pinot `events` table.
 - batch load link:./input/events.json[data] into the offline `events` table in Pinot.
 - generate stream data using the Pinot schema to Kafka and ultimately into the realtime `events` table in Pinot.
