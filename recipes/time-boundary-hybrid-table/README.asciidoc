@@ -36,7 +36,7 @@ This command will also:
 
 - Create a Kafka topic called `events`.
 - Create a hybrid Pinot `events` table.
-- batch load link:./input/events.json[data] into the offline `events` table in Pinot.
+- Batch load link:./input/events.json[data] into the offline `events` table in Pinot.
 - generate stream data using the Pinot schema to Kafka and ultimately into the realtime `events` table in Pinot.
 
 When you go to the link:http://localhost:9000/#/tables[table list] in Pinot, you will see a `events_REALTIME` and a `events_OFFLINE` table. When you go to the link:http://localhost:9000/#/query[query console] in Pinot, you will only see one table: `events`.
