@@ -16,7 +16,7 @@ recordReaderSpec:
 tableSpec:
   tableName: 'events'
 pinotClusterSpecs:
-  - controllerURI: 'http://pinot-controller-rt:9000'
+  - controllerURI: 'http://pinot-controller:9000'
 pushJobSpec:
   pushAttempts: 2
   pushRetryIntervalMillis: 1000

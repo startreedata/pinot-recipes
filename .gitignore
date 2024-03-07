@@ -4,3 +4,5 @@ output
 examples
 logs
 .DS_Store
+.venv
+.vscode

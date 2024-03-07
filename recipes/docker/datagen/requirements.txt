@@ -1,0 +1,5 @@
+confluent-kafka
+Faker
+numpy
+pandas
+typer
