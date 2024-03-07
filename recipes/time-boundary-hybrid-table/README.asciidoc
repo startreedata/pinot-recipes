@@ -39,7 +39,7 @@ This command will also:
 - Batch load link:./input/events.json[data] into the offline `events` table in Pinot.
 - Generate stream data using the Pinot schema to Kafka and ultimately into the realtime `events` table in Pinot.
 
-When you go to the link:http://localhost:9000/#/tables[table list] in Pinot, you will see a `events_REALTIME` and a `events_OFFLINE` table. When you go to the link:http://localhost:9000/#/query[query console] in Pinot, you will only see one table: `events`.
+When you go to the link:http://localhost:9000/#/tables[table list] in Pinot, you will see an `events_REALTIME` and an `events_OFFLINE` table. When you go to the link:http://localhost:9000/#/query[query console] in Pinot, you will only see one table: `events`.
 
 ## Select Pinot Segments
 
