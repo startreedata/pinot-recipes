@@ -1,6 +1,6 @@
 # Time boundary for hybrid tables
 
-In this recipe we'll learn how to compute the time boundary used by Pinot brokers when processing queries for hybrid tables
+In this recipe we'll learn how to compute the time boundary used by Pinot brokers when processing queries for hybrid tables.
 
 [cols="1,1"]
 |===
