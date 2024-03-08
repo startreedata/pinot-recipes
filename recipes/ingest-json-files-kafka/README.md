@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td>Pinot Version</td>
-    <td>0.10.0</td>
+    <td>1.0</td>
   </tr>
   <tr>
     <td>Schema</td>
@@ -14,10 +14,6 @@
     <tr>
     <td>Table Config</td>
     <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-      <tr>
-    <td>Ingestion Job</td>
-    <td><a href="config/job-spec.yml">config/job-spec.yml</a></td>
   </tr>
 </table>
 
@@ -35,49 +31,34 @@ cd pinot-recipes/recipes/ingest-json-files-kafka
 Spin up a Pinot cluster using Docker Compose:
 
 ```bash
-docker-compose up
+docker compose -f ../pinot-compose.yml -f ../kafka-compose.yml up -d
 ```
 
 Open another tab to add the `movies` table:
 
 ```bash
-docker exec -it pinot-controller-json bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table.json   \
-  -schemaFile /config/schema.json \
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic events
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --list
+docker cp config/schema.json pinot-controller:/opt/pinot
+docker cp config/table.json pinot-controller:/opt/pinot
+docker exec -it pinot-controller bin/pinot-admin.sh AddTable   \
+  -tableConfigFile table.json   \
+  -schemaFile schema.json \
   -exec
-```
-
-Create Kafka topic:
-
-```bash
-docker exec -i kafka-json kafka-topics.sh \
-  --bootstrap-server kafka-json:9092 \
-  --topic events \
-  --partitions 5 \
-  --create
 ```
 
 Import [data/ingest1.jsonl](data/import1.jsonl) and [data/ingest2.jsonl](data/import2.jsonl) into Pinot:
 
 ```bash
-docker exec -i kafka-json kafka-console-producer.sh \
-  --bootstrap-server kafka-json:9092 \
-  --topic events < data/import1.jsonl
+cat data/import1.jsonl | docker exec -i kafka kafka-console-producer.sh \
+  --bootstrap-server kafka:9092 \
+  --topic events
 ```
 
 ```bash
-docker exec -i kafka-json kafka-console-producer.sh \
-  --bootstrap-server kafka-json:9092 \
-  --topic events < data/import2.jsonl
-```
-
-Check the message in the Kafka topic:
-
-```bash
-docker exec -i kafka-json kafka-console-consumer.sh \
-  --bootstrap-server kafka-json:9092 \
-  --topic events \
-  --from-beginning
+cat data/import2.jsonl | docker exec -i kafka kafka-console-producer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic events
 ```
 
 Navigate to http://localhost:9000/#/query and run the following query:
