@@ -2,28 +2,15 @@
 
 > In this recipe we'll learn how to use look up joins in Apache Pinot. 
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>0.9.0</td>
-  </tr>
-  <tr>
-    <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-      <tr>
-    <td>Ingestion Job</td>
-    <td><a href="config/job-spec.yml">config/job-spec.yml</a></td>
-  </tr>
-</table>
+`lookup` joins in Pinot are done against a dimensional table. Dimension tables are a special kind of offline table. They are replicated on all the hosts for a given tenant to allow faster lookups.
+
+Alternatively, you can perform a join using Pinot's `multi-stage` query engine in cases where the joining table is not dimensional.
+
 
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/lookup-joins
 
-***
+
+## Steps
 
 Clone this repository and navigate to this recipe:
 

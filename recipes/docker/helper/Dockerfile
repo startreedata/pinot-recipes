@@ -5,7 +5,7 @@ RUN apt-get update -y && \
 
 WORKDIR /code
 COPY requirements.txt requirements.txt
-COPY producer.py producer.py
+COPY helper.py helper.py
 
 RUN pip install --upgrade pip
 RUN python3 --version && pip install -r requirements.txt
