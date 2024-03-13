@@ -12,45 +12,22 @@ This is the code for the following recipe: https://dev.startree.ai/docs/pinot/re
 
 ## Steps
 
-Clone this repository and navigate to this recipe:
+Run the make command below. Re-run the command if you encounter any errors.
 
 ```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/lookup-joins
+make recipe
 ```
 
-```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-   -schemaFile /config/orders_schema.json \
-   -tableConfigFile /config/orders_table.json \
-   -controllerHost "pinot-controller" \
-   -exec
+Go to the [Pinot console](http://localhost:9000) and execute the lookup command below.
+
+```sql
+SELECT
+    orders.order_id,
+    lookup('customers','name','customer_id',customer_id) as name,
+    lookup('customers','tier','customer_id',customer_id) as tier,
+    orders.amount
+FROM orders
+WHERE tier='Gold'
+LIMIT 10
 ```
 
-```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-   -schemaFile /config/customers_schema.json \
-   -tableConfigFile /config/customers_table.json \
-   -controllerHost "pinot-controller" \
-   -exec
-```
-
-```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   -v $PWD/data:/data \
-   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
--jobSpecFile /config/customers_job-spec.yml
-```
-
-```bash
-cat data/orders.json |
-kcat -P -b localhost:9092 -t orders
-```
