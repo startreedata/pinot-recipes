@@ -8,11 +8,6 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:9092"]
-        interval: 30s
-        timeout: 10s
-        retries: 10
     environment:
       # KRaft settings
       - KAFKA_CFG_NODE_ID=0

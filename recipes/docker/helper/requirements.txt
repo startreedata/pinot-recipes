@@ -3,3 +3,5 @@ Faker
 numpy
 pandas
 typer
+pyyaml
+requests

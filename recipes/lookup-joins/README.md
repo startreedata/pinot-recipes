@@ -2,68 +2,32 @@
 
 > In this recipe we'll learn how to use look up joins in Apache Pinot. 
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>0.9.0</td>
-  </tr>
-  <tr>
-    <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-      <tr>
-    <td>Ingestion Job</td>
-    <td><a href="config/job-spec.yml">config/job-spec.yml</a></td>
-  </tr>
-</table>
+`lookup` joins in Pinot are done against a dimensional table. Dimension tables are a special kind of offline table. They are replicated on all the hosts for a given tenant to allow faster lookups.
+
+Alternatively, you can perform a join using Pinot's `multi-stage` query engine in cases where the joining table is not dimensional.
+
 
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/lookup-joins
 
-***
 
-Clone this repository and navigate to this recipe:
+## Steps
 
-```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/lookup-joins
-```
+Run the make command below. Re-run the command if you encounter any errors.
 
 ```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-   -schemaFile /config/orders_schema.json \
-   -tableConfigFile /config/orders_table.json \
-   -controllerHost "pinot-controller" \
-   -exec
+make recipe
 ```
 
-```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-   -schemaFile /config/customers_schema.json \
-   -tableConfigFile /config/customers_table.json \
-   -controllerHost "pinot-controller" \
-   -exec
+Go to the [Pinot console](http://localhost:9000) and execute the lookup command below.
+
+```sql
+SELECT
+    orders.order_id,
+    lookup('customers','name','customer_id',customer_id) as name,
+    lookup('customers','tier','customer_id',customer_id) as tier,
+    orders.amount
+FROM orders
+WHERE tier='Gold'
+LIMIT 10
 ```
 
-```bash
-docker run \
-   --network lookup-join \
-   -v $PWD/config:/config \
-   -v $PWD/data:/data \
-   apachepinot/pinot:1.0.0 LaunchDataIngestionJob \
--jobSpecFile /config/customers_job-spec.yml
-```
-
-```bash
-cat data/orders.json |
-kcat -P -b localhost:9092 -t orders
-```
