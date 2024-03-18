@@ -2,78 +2,58 @@
 
 > In this recipe we'll learn how to use the StarTree index.
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>1.0.0</td>
-  </tr>
-</table>
+|Property|Value|
+|-|-|
+|Pinot Version|1.0.0|
+
 
 ***
 
-## Setup
+## Makefile
+
+Run this recipe using make.
 
 ```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/startree-index
+make recipe
 ```
 
-Start up Pinot and friends:
+This will build up the infrastructure: Pinot and Kafka, create the tables, and produce streaming data. 
 
-```bash
-docker compose up
+Three tables will be generated:
+
+- webtraffic - a real-time table with any Pinot indexes.
+- webstraffic_inverted - a real-time table with an `inverted index` on the columns: country, browserType, and deviceBrand.
+
+```json
+"invertedIndexColumns": [
+  "country",
+  "browserType",
+  "deviceBrand"
+],
+```
+- webtraffic_startree - a real-time table with a `startree index`.
+
+```json
+"starTreeIndexConfigs": [
+  {
+    "dimensionsSplitOrder": [
+      "country",
+      "browserType",
+      "deviceBrand"
+    ],
+    "skipStarNodeCreationForDimensions": [],
+    "functionColumnPairs": [
+      "COUNT__*",
+      "SUM__timeSpent",
+      "AVG__timeSpent"
+    ],
+    "maxLeafRecords": 10000
+  }
+],
 ```
 
-## Create topic
+Open your browser to the [Pinot console](http://localhost:9000) and execute the SQL statements below.
 
-```bash
-rpk topic create -p 5 webtraffic
-```
-
-## Run data generator
-
-```bash
-poetry run python datagen.py 2>/dev/null | 
-jq -cr --arg sep ø '[.userID, tostring] | join($sep)' | 
-kcat -P -b localhost:9092 -t webtraffic -Kø
-```
-
-## Create Tables
-
-```bash
-docker run \
-   --network startree-index \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-     -schemaFile /config/base/schema.json \
-     -tableConfigFile /config/base/table.json \
-     -controllerHost "pinot-controller-startree-index" \
-    -exec
-```
-
-```bash
-docker run \
-   --network startree-index \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-     -schemaFile /config/startree/schema.json \
-     -tableConfigFile /config/startree/table.json \
-     -controllerHost "pinot-controller-startree-index" \
-    -exec
-```
-
-```bash
-docker run \
-   --network startree-index \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-     -schemaFile /config/inverted/schema.json \
-     -tableConfigFile /config/inverted/table.json \
-     -controllerHost "pinot-controller-startree-index" \
-    -exec
-```
-
-## Queries
 
 ```sql
 select browserType, count(*)
