@@ -8,11 +8,14 @@ from urllib.parse import urlparse
 import logging
 import typer
 from faker import Faker
+from faker.providers import DynamicProvider
+from difflib import SequenceMatcher
 import pandas as pd
 from confluent_kafka import Producer
 from enum import Enum
 from datetime import datetime
 
+logger = logging.getLogger(__name__)
 clock = ['|', '/', '-', '\\', '|', '/', '-', '\\']
 
 class DataType(Enum):
@@ -81,8 +84,52 @@ class Generator:
         self.cursor = 0
         Faker.seed(0)
         self.faker:Faker = Faker()
+        self.__add_provider__(name='device_types', elements = ['Desktop', 'Laptop', 'Mobile', 'Tablet'])
+        self.__add_provider__(name='device_brands', elements = ['Apple', 'Dell', 'Samsung', 'Lenovo', 'Huawei'])
+        self.__add_provider__(name='device_models', elements = ['iMac 2022', 'Dell XPS Desktop', 'HP Pavilion',
+                                                                'MacBook Pro', 'Dell XPS 15', 'Lenovo ThinkPad X1',
+                                                                'iPhone 13', 'Samsung Galaxy S21', 'Google Pixel 6',
+                                                                'iPad Pro', 'Samsung Galaxy Tab S7', 'Surface Pro X']
+        )
+        self.__add_provider__(name='browser_types', elements = ['Chrome', 'Firefox', 'Safari', 'Edge', 'Opera'])
+        self.__add_provider__(name='browser_versions', elements = ['90.0.4430.93', '91.0.4472.124', '92.0.4515.159',
+                                                                   '89.0.1', '90.0.2', '91.0.2', '13.1.2', '14.0.3', '15.0',
+                                                                   '91.0.864.59', '92.0.902.78', '93.0.961.52',
+                                                                   '76.0.4017.177', '77.0.4054.277', '78.0.4093.147']
+        )
+        self.__add_provider__(name='locales', elements = ['en_US', 'fr_FR', 'de_DE', 'es_ES', 'zh_CN'])
+
+    def __add_provider__(self, name:str, elements=[]):
+        self.faker.add_provider(DynamicProvider(
+            provider_name=name,
+            elements=elements
+        ))
+
+    def __find_generator__(self, col:Column):
+        best_match = (-1.0, None)
+        for m in dir(self.faker):
+            ratio = SequenceMatcher(a=col.name.upper(), b=m.upper()).ratio()
+            if ratio > best_match[0]:
+                try:
+                    best_match = ratio, getattr(self.faker, m)
+                except:
+                    continue
+
+
+        return best_match
 
     def gen(self, col:Column):
+
+        if col.name == "ts":
+            if col.type == DataType.STRING:
+                return datetime.now().__str__()
+            else:
+                return round(time.time() * 1000)
+        
+        dist, method = self.__find_generator__(col=col)
+        if dist > .75: # string matches at least 75% of the name
+            return method()
+        
         match col.type:
             case DataType.INT:
                 return random.randint(0, self.limit)
@@ -93,26 +140,19 @@ class Generator:
             case DataType.FLOAT:
                 return random.uniform(0.01, 99.99)
             case DataType.STRING:
-                if 'NAME' in col.name.upper():
-                    return self.faker.name()
+                if col.name in dir(self.faker):
+                    return getattr(self.faker,col.name)()
+                elif col.name in [m.upper() for m in dir(self.faker)]:
+                    return getattr(self.faker,col.name)()
                 elif 'COMPANY' in col.name.upper():
                     return self.faker.bs()
-                elif 'ADDRESS' in col.name.upper():
-                    return self.faker.address()
-                elif 'CITY' in col.name.upper():
-                    return self.faker.city()
-                elif 'ADDRESS' in col.name.upper():
-                    return self.faker.address()
                 elif 'PHONE' in col.name.upper():
                     return self.faker.phone_number()
-                elif 'COMMENT' in col.name.upper():
+                elif 'COMMENT' in col.name.upper() or 'DESCRIPTION' in col.name.upper():
                     return self.faker.paragraph(nb_sentences=3)
-                elif 'SSN' in col.name.upper():
-                    return self.faker.ssn()
-                elif 'SBN' in col.name.upper():
-                    return self.faker.sbn9()
                 else:
                     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+                
             case DataType.TIMESTAMP:
                 return datetime.now().__str__()
             case DataType.DATE:
@@ -140,32 +180,36 @@ class Generator:
         finally:
             self.cursor += 1
 
-class JSONGenerator(Generator):
-
-    def __init__(self, schema:Schema, limit:int=1000):
-        super().__init__(schema=schema, limit=limit)
-        
-    def next(self):
-        key, record = super().next()
+class Serializer():
+    def JSON(self, key, record:dict):
         data = json.dumps(record)
         return key, data.encode('utf-8')
+    
+    def AVRO(self, key, record):
+        pass
+
 
 class Sink:
-    def __init__(self, gen:Generator) -> None:
+    def __init__(self, gen:Generator, serializer=Serializer().JSON) -> None:
         self.gen = gen
+        self.serializer = serializer
 
     def send(self):
         pass
 
 class StdOut(Sink):
+    def __init__(self, gen:Generator) -> None:
+        super().__init__(gen=gen)
+        
     def send(self):
         while(self.gen.has_next()):
-            key, data = self.gen.next()
-            print(f'key {key} data {data}')  
+            key, record = self.gen.next()
+            data = self.serializer(key, record)
+            logger.debug(f'key {key} data {data}')
 
-class CSV(Sink):
+class CSVFile(Sink):
     def __init__(self, gen: Generator, inputDirURI:str) -> None:
-        super().__init__(gen)
+        super().__init__(gen=gen)
         self.input_dir = inputDirURI
 
     def send(self):
@@ -184,8 +228,8 @@ class CSV(Sink):
 
 class Kafka(Sink):
 
-    def __init__(self, topic:str, gen:Generator, bootstrap:str='localhost:9092') -> None:
-        super().__init__(gen)
+    def __init__(self, topic:str, serializer, gen:Generator, bootstrap:str='localhost:9092') -> None:
+        super().__init__(serializer=serializer, gen=gen)
         self.topic = topic
         self.bootstrap = bootstrap
         self.p = Producer({'bootstrap.servers': bootstrap})
@@ -195,16 +239,17 @@ class Kafka(Sink):
         """ Called once for each message produced to indicate delivery result.
             Triggered by poll() or flush(). """
         if err is not None:
-            print('Message delivery failed: {}'.format(err))
+            logger.error('Message delivery failed: {}'.format(err))
         else:
-            print(f'Streaming to Kafka {msg.topic()} [{msg.partition()}]  {clock[random.randint(0,len(clock) - 1)]}            ', end='\r')
+            print(f'====> Streaming to Kafka {msg.topic()} [{msg.partition()}]  {clock[random.randint(0,len(clock) - 1)]}            ', end='\r')
 
     def send(self):
         while(self.gen.has_next()):
             self.p.poll(0)
-            key, data = self.gen.next()
+            key, record = self.gen.next()
+            _key, data = self.serializer(key, record)
             self.p.produce(
-                key=key,
+                key=_key,
                 topic=self.topic, 
                 value=data, 
                 on_delivery=self.delivery_report)
@@ -232,7 +277,7 @@ def table(table:str, host_port='pinot-controller:9000', timeout:int=60):
     """
     controller(host_port=host_port, timeout=timeout)
     count = 0
-    while count < 5:
+    while count < 10:
         api_url = f'http://{host_port}/tables'
         response = requests.get(api_url).json()['tables']
         if table in response:
@@ -280,7 +325,7 @@ def batch(schema_path:str, job_spec_yaml:str, stdout:bool=False):
         sink = StdOut(gen=gen)
     elif dataFormat.lower() == "csv":
         gen = Generator(schema=schema)
-        sink = CSV(gen=gen, inputDirURI=inputDirURI)
+        sink = CSVFile(gen=gen, inputDirURI=inputDirURI)
     else:
         raise Exception(f'{dataFormat} is not supported.')
 
@@ -294,7 +339,7 @@ def stream(schema_path:str, config_path:str, stdout:bool=False):
     schema = PinotSchema(schema_path=schema_path)
     config = json.load(open(config_path))
 
-    gen = JSONGenerator(schema)
+    gen = Generator(schema)
 
     if stdout:
         sink = StdOut(gen=gen)
@@ -303,8 +348,13 @@ def stream(schema_path:str, config_path:str, stdout:bool=False):
         if table_type == "REALTIME":
             stream_config = config['tableIndexConfig']['streamConfigs']
             topic = stream_config['stream.kafka.topic.name']
+            if 'stream.kafka.decoder.prop.format' in stream_config:
+                format = stream_config['stream.kafka.decoder.prop.format']
+            else:
+                format = "JSON"
+            serializer = Serializer().__getattribute__(format.upper())
             bootstrap = stream_config['stream.kafka.broker.list']
-            sink = Kafka(topic=topic, gen=gen, bootstrap=bootstrap)
+            sink = Kafka(topic=topic, serializer=serializer, gen=gen, bootstrap=bootstrap)
         else:
             raise Exception("table type is not REALTIME")
     sink.send()
