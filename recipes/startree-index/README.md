@@ -1,6 +1,6 @@
-# StarTree Index
+# Using a star-tree index
 
-> In this recipe we'll learn how to use the StarTree index.
+> In this recipe we'll learn how to use the star-tree index.
 
 |Property|Value|
 |-|-|
