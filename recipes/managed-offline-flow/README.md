@@ -1,75 +1,66 @@
 # Managed Offline Flow
 
+Pinot is most commonly used to provide real-time analytics based on streaming data, which can be achieved using a real-time table. However, after running these systems for a while, we'll want to update the data ingested into this table. Perhaps the name of a value in a column has been updated, or we want to remove some duplicate records.
+
+Segments in real-time tables can't be replaced, but we can replace those in offline tables. Managed offline flow is the way that Pinot handles the process of moving the data from real-time to offline tables.
+
 > In this recipe we'll learn how to use Pinot offline managed flow.
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>0.9.3</td>
-  </tr>
-  <tr>
-    <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-</table>
+|Property|Value|
+|-|-|
+|Pinot Version|0.9.3|
+|Schema| [schema](config/schema.json)|
+|Table Config| [Offline](config/table-offline.json)|
+|Table Config| [Realtime](config/table-realtime.json)|
 
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/real-time-offline-job
 
-***
+## Makefile
 
-```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/managed-offline-flow
-```
+```mermaid
+flowchart LR
 
-Spin up a Pinot cluster using Docker Compose:
-
-```bash
-docker-compose up
-```
-
-Add table and schema:
-
-```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-realtime.json   \
-  -schemaFile /config/schema.json -exec
+Producer-->Kafka-->p[Pinot Table]
 ```
 
 ```bash
-docker exec -it pinot-controller-rt bin/pinot-admin.sh AddTable   \
-  -tableConfigFile /config/table-offline.json   \
-  -schemaFile /config/schema.json -exec
+make recipe
 ```
 
-Import messages into Kafka:
+Running this recipe will build the mermaid graph above and start producing data into Kafka.
+
+Run the next Make task:
+
+## Managed Offline Flow
 
 ```bash
-while true; do
-  ts=`date +%s%N | cut -b1-13`;
-  uuid=`cat /proc/sys/kernel/random/uuid | sed 's/[-]//g'`
-  count=$[ $RANDOM % 1000 + 0 ]
-  echo "{\"ts\": \"${ts}\", \"uuid\": \"${uuid}\", \"count\": $count}"
-done |
-docker exec -i kafka-rt /opt/kafka/bin/kafka-console-producer.sh \
-  --bootstrap-server localhost:9092 \
-  --topic events
+make manage_offline_flow
 ```
 
-Run the Real-Time to Offline Job:
+The Make command above will perform these tasks:
 
-```bash
-curl -X POST "http://localhost:9000/tasks/schedule?taskType=RealtimeToOfflineSegmentsTask&tableName=events_REALTIME" \
-  -H "accept: application/json" 2>/dev/null | jq '.'
-```
+- Sets the necessary properties in the Pinot Controller to enable the managed offline flow task: `RealtimeToOfflineSegmentsTask`.`timeoutMs` and `.numConcurrentTasksPerInstance`.
+- Schedule the task to run.
+- Prints logs related to the task.
+- Updates the hybrid table's time boundary so that you can see records that have been move to offline.
 
-Query Pinot:
+
+## View realtime and offline segments
 
 ```sql
-select * 
+select $segmentName, count(*) cnt
 from events
+group by $segmentName
+order by cnt desc
 ```
+
+Run the statement above to see records migrate from REALTIME to OFFLINE by running `make realtime` to generate more data and `make manage_offline_flow` to migrate older data to OFFLINE. See a sample result below:
+
+Before:
+
+![alt](images/before.png)
+
+After:
+
+![alt](images/after.png)
+

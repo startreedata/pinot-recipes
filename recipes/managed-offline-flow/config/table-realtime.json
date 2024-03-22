@@ -20,7 +20,7 @@
     "streamConfigs": {
       "streamType": "kafka",
       "stream.kafka.topic.name": "events",
-      "stream.kafka.broker.list": "kafka-rt:9093",
+      "stream.kafka.broker.list": "kafka:9092",
       "stream.kafka.consumer.type": "lowlevel",
       "stream.kafka.consumer.prop.auto.offset.reset": "smallest",
       "stream.kafka.consumer.factory.class.name": "org.apache.pinot.plugin.stream.kafka20.KafkaConsumerFactory",
