@@ -127,7 +127,7 @@ class Generator:
                 return round(time.time() * 1000)
         
         dist, method = self.__find_generator__(col=col)
-        if dist > .75: # string matches at least 75% of the name
+        if dist > .85: # string matches at least 85% of the name
             return method()
         
         match col.type:
@@ -270,6 +270,28 @@ kafka_check_app = typer.Typer()
 app.add_typer(kafka_app, name="kafka")
 kafka_app.add_typer(kafka_check_app, name="check")
 
+
+@pinot_check_app.command()
+def schema(schema:str, host_port='pinot-controller:9000', timeout:int=60):
+    """
+    Checks and waits for a Pinot schema to appear.
+    """
+    controller(host_port=host_port, timeout=timeout)
+    count = 0
+    while count < timeout:
+        api_url = f'http://{host_port}/schemas'
+        response = requests.get(api_url).json()
+        if schema in response:
+            print(f'Found Pinot schema {schema}                                                ')
+            return
+        else:
+            print(f'Waiting for schema {schema} to appear {clock[count % len(clock)]}', end='\r')
+            count+=1
+            time.sleep(1)
+
+    raise Exception(f'{table} doesn''t exist')
+
+
 @pinot_check_app.command()
 def table(table:str, host_port='pinot-controller:9000', timeout:int=60):
     """
@@ -277,7 +299,7 @@ def table(table:str, host_port='pinot-controller:9000', timeout:int=60):
     """
     controller(host_port=host_port, timeout=timeout)
     count = 0
-    while count < 10:
+    while count < timeout:
         api_url = f'http://{host_port}/tables'
         response = requests.get(api_url).json()['tables']
         if table in response:
@@ -332,14 +354,14 @@ def batch(schema_path:str, job_spec_yaml:str, stdout:bool=False):
     sink.send()
 
 @kafka_app.command()
-def stream(schema_path:str, config_path:str, stdout:bool=False):
+def stream(schema_path:str, config_path:str, limit:int=1000, stdout:bool=False):
     """
     Generate streaming data to Kafka
     """
     schema = PinotSchema(schema_path=schema_path)
     config = json.load(open(config_path))
 
-    gen = Generator(schema)
+    gen = Generator(schema, limit=limit)
 
     if stdout:
         sink = StdOut(gen=gen)
@@ -378,7 +400,7 @@ def broker(bootstrap:str="kafka:9092", timeout:int=60):
             c = socket.socket()
             url = urlparse(f'kafka://{bootstrap}')
             c.connect((url.hostname, url.port))
-            print(f'kafka is up {c}                                        ')
+            print(f'Kafka is up {c}                                        ')
             return
         except:
             print(f'Waiting for Kafka {clock[count % len(clock)]}', end='\r')

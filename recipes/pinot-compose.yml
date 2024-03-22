@@ -48,3 +48,11 @@ services:
     depends_on:
       - pinot-broker
 
+  pinot-minion:
+    image: apachepinot/pinot:1.0.0
+    command: "StartMinion -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-minion"
+    depends_on:
+      - pinot-server
+
