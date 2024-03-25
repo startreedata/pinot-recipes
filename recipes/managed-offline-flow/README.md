@@ -40,7 +40,7 @@ make manage_offline_flow
 The Make command above will perform these tasks:
 
 - Sets the necessary properties in the Pinot Controller to enable the managed offline flow task: `RealtimeToOfflineSegmentsTask`.`timeoutMs` and `.numConcurrentTasksPerInstance`.
-- Schedule the task to run.
+- Schedules the task to run.
 - Prints logs related to the task.
 - Updates the hybrid table's time boundary so that you can see records that have been move to offline.
 
