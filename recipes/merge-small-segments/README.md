@@ -2,56 +2,16 @@
 
 > In this recipe we'll learn how to merge small segments in offline tables.
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>1.0.0</td>
-  </tr>
-  <tr>
-    <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-      <tr>
-    <td>Ingestion Job</td>
-    <td><a href="config/job-spec.yml">config/job-spec.yml</a></td>
-  </tr>
-</table>
 
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/merge-small-segments
 
-***
 
-Clone this repository and navigate to this recipe:
-
-```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/merge-small-segments
-```
-
-Spin up a Pinot cluster using Docker Compose:
+## Makefile
 
 ```bash
-docker-compose up
+make recipe
 ```
 
-Add tables and schema:
-
-```bash
-docker run \
-   --network querysegment \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-     -schemaFile /config/schema.json \
-     -tableConfigFile /config/table.json \
-     -controllerHost "pinot-controller-querysegment" \
-    -exec
-```
-
-Import messages into Kafka:
 
 ```bash
 python datagen.py --sleep 0.0001 2>/dev/null |
