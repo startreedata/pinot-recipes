@@ -31,7 +31,7 @@ tables:
 realtime:
 	@docker run -it \
 		--network recipes_default \
-		--volume ${PWD}/config:/code/config \
+		--volume $(shell pwd)/config:/code/config \
 		startree/helper \
 		python helper.py kafka stream config/schema.json config/table-realtime.json \
 		--limit 20000

@@ -8,6 +8,13 @@ infra: helper
 
 up: helper infra check
 
+topic:
+	-@docker exec kafka \
+		kafka-topics.sh \
+		--bootstrap-server localhost:9092 \
+		--create \
+		--topic webtraffic
+
 tables:
 	@docker cp ./config pinot-controller:/opt/pinot/config/
 
@@ -44,8 +51,8 @@ tables:
 realtime:
 	@docker run -it \
 		--network recipes_default \
-		--volume ${PWD}/config:/code/config \
+		--volume $(shell pwd)/config:/code/config \
 		startree/helper \
 		python helper.py kafka stream config/base/schema.json config/base/table.json
 
-recipe: up tables realtime
+recipe: up topic tables realtime
