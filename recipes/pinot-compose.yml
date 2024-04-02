@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   pinot-controller:
-    image: apachepinot/pinot:1.0.0
+    image: apachepinot/pinot:1.1.0
     command: "StartController -zkAddress pinot-zookeeper:2181"
     container_name: pinot-controller
     hostname: pinot-controller
@@ -25,7 +25,7 @@ services:
       - pinot-zookeeper
 
   pinot-broker:
-    image: apachepinot/pinot:1.0.0
+    image: apachepinot/pinot:1.1.0
     command: "StartBroker -zkAddress pinot-zookeeper:2181"
     restart: unless-stopped
     container_name: "pinot-broker"
@@ -37,7 +37,7 @@ services:
       - pinot-controller
 
   pinot-server:
-    image: apachepinot/pinot:1.0.0
+    image: apachepinot/pinot:1.1.0
     command: "StartServer -zkAddress pinot-zookeeper:2181"
     restart: unless-stopped
     container_name: "pinot-server"
@@ -49,7 +49,7 @@ services:
       - pinot-broker
 
   pinot-minion:
-    image: apachepinot/pinot:1.0.0
+    image: apachepinot/pinot:1.1.0
     command: "StartMinion -zkAddress pinot-zookeeper:2181"
     restart: unless-stopped
     container_name: "pinot-minion"

@@ -19,3 +19,18 @@ clean:
 		-f ../pinot-compose.yml \
 		-f ../postgres-compose.yml \
 		down
+
+validate:
+	@echo "VALIDATION HAS NOT BEEN IMPLEMENTED"
+
+test: recipe validate clean
+
+test_all:
+	make test -C debezium-cdc/
+	make test -C full-upserts/
+	make test -C ingest-json-files-kafka/
+	make test -C lookup-joins/
+	make test -C startree-index/
+	make test -C time-boundary-hybrid-table/
+	make test -C managed-offline-flow/
+

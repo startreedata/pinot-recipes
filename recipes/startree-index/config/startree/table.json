@@ -3,7 +3,7 @@
     "tableType": "REALTIME",
     "segmentsConfig": {
         "timeColumnName": "ts",
-        "schemaName": "webtraffic",
+        "schemaName": "webtraffic_stree",
         "replication": "1",
         "replicasPerPartition": "1"
     },

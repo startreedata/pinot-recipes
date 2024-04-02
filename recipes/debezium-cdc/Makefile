@@ -1,3 +1,4 @@
+include ../Makefile
 
 infra:
 	docker compose \
@@ -55,7 +56,7 @@ tables:
 		-schemaFile rental.json \
 		-exec
 
-recipe: infra kafka postgres connect tables
+recipe: infra check kafka postgres connect tables
 
 clean:
 	-rm dvdrental*
