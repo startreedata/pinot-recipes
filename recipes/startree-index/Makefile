@@ -32,20 +32,9 @@ tables:
 		-realtimeTableConfigFile config/startree/table.json \
 		-exec
 
-	@docker run -it \
-		--network recipes_default \
-		startree/helper \
-		python helper.py pinot check table webtraffic
-
-	@docker run -it \
-		--network recipes_default \
-		startree/helper \
-		python helper.py pinot check table webtraffic_inverted
-
-	@docker run -it \
-		--network recipes_default \
-		startree/helper \
-		python helper.py pinot check table webtraffic_stree
+	@TABLE=webtraffic make check_table
+	@TABLE=webtraffic_inverted make check_table
+	@TABLE=webtraffic_stree make check_table
 
 
 realtime:

@@ -1,6 +1,6 @@
 include ../Makefile
 
-infra:
+infra: helper
 	docker compose \
 		-f ../pinot-compose.yml \
 		-f ../kafka-compose.yml \
@@ -55,6 +55,8 @@ tables:
 		-tableConfigFile rental.table.config.json \
 		-schemaFile rental.json \
 		-exec
+
+	@TABLE=rental make check_table
 
 recipe: infra check kafka postgres connect tables
 

@@ -23,10 +23,7 @@ tables:
 		-schemaFile config/schema.json \
 		-exec
 
-	@docker run -it \
-		--network recipes_default \
-		startree/helper \
-		python helper.py pinot check table events
+	@TABLE=events make check_table
 
 realtime:
 	@docker run -it \

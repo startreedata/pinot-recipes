@@ -2,19 +2,30 @@
 helper:
 	docker build ../docker/helper/ -t startree/helper
 
-check:
-	@docker run -it \
-		--network recipes_default \
-		startree/helper \
-		python helper.py pinot check controller
-
+check_kafka:
 	@docker run -it \
 		--network recipes_default \
 		startree/helper \
 		python helper.py kafka check broker
 
+check_pinot:
+	@docker run -it \
+		--network recipes_default \
+		startree/helper \
+		python helper.py pinot check controller
+
+check: check_pinot check_kafka
+
+check_table:
+	@# USAGE:
+	@# TABLE=my_table make check_table
+	@docker run -it \
+		--network recipes_default \
+		startree/helper \
+		python helper.py pinot check table ${TABLE}
+
 clean:
-	docker compose \
+	@docker compose \
 		-f ../kafka-compose.yml \
 		-f ../pinot-compose.yml \
 		-f ../postgres-compose.yml \
@@ -33,4 +44,5 @@ test_all:
 	make test -C startree-index/
 	make test -C time-boundary-hybrid-table/
 	make test -C managed-offline-flow/
+	make test -C merge-small-segments/
 
