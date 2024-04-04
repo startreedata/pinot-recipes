@@ -29,6 +29,7 @@ clean:
 		-f ../kafka-compose.yml \
 		-f ../pinot-compose.yml \
 		-f ../postgres-compose.yml \
+		-f ../pulsar-compose.yml \
 		down
 
 validate:

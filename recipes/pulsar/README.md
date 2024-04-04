@@ -2,66 +2,35 @@
 
 > In this recipe we'll learn how to ingest data from Apache Pulsar.
 
-<table>
-  <tr>
-    <td>Pinot Version</td>
-    <td>1.0.0</td>
-  </tr>
-  <tr>
-    <td>Schema</td>
-    <td><a href="config/schema.json">config/schema.json</a></td>
-  </tr>
-    <tr>
-    <td>Table Config</td>
-    <td><a href="config/table.json">config/table.json</a></td>
-  </tr>
-</table>
-
 This is the code for the following recipe: https://dev.startree.ai/docs/pinot/recipes/pulsar
 
 ***
 
-```bash
-git clone git@github.com:startreedata/pinot-recipes.git
-cd pinot-recipes/recipes/pulsar
-```
-
-Download the appropriate version of the Pulsar plugin from https://central.sonatype.com/artifact/org.apache.pinot/pinot-pulsar/versions and copy it into the `plugins` directory
-
-Spin up a Pinot cluster using Docker Compose:
+## Makefile
 
 ```bash
-docker compose up
+make recipe
 ```
 
-Add table and schema:
+To produce data to Pulsar, you can use the Python code below.
 
-```bash
-docker run \
-   --network pulsar \
-   -v $PWD/config:/config \
-   apachepinot/pinot:1.0.0 AddTable \
-   -schemaFile /config/schema.json \
-   -tableConfigFile /config/table.json \
-   -controllerHost "pinot-controller-pulsar" \
-   -exec
-```
+```python
+import pulsar
+import json
+import time
+import random
+import uuid
 
-Import message into Pulsar:
+client = pulsar.Client('pulsar://localhost:6650')
+producer = client.create_producer('events')
 
-```bash
-python -m venv .venv
-source .venv/bin/active
-pip install pulsar-client
-```
+  message = {
+    "ts": int(time.time() * 1000.0),
+    "uuid": str(uuid.uuid4()).replace("-", ""),
+    "count": random.randint(0, 1000)
+}
+payload = json.dumps(message, ensure_ascii=False).encode('utf-8')
+producer.send(payload)
+client.close()
 
-```bash
-python producer.py
-```
-
-Query Pinot:
-
-```sql
-select * 
-from events
 ```

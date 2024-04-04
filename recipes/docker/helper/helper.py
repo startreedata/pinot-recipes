@@ -14,6 +14,7 @@ import pandas as pd
 from confluent_kafka import Producer
 from enum import Enum
 from datetime import datetime
+import pulsar
 
 logger = logging.getLogger(__name__)
 clock = ['|', '/', '-', '\\', '|', '/', '-', '\\']
@@ -259,6 +260,27 @@ class Kafka(Sink):
             self.p.flush()
         print(f'Finished stream                                                           ')
 
+class Pulsar(Sink):
+
+    def __init__(self, topic:str, serializer, gen:Generator, bootstrap:str='pulsar://pulsar:6650') -> None:
+        super().__init__(serializer=serializer, gen=gen)
+        self.topic = topic
+        self.bootstrap = bootstrap
+        self.p = pulsar.Client(service_url=bootstrap, logger=None)
+
+    def delivery_report(self, res, msg_id):
+        print(f'====> Streaming to Pulsar res={res} {msg_id}  {clock[random.randint(0,len(clock) - 1)]}            ', end='\r')            
+
+    def send(self):
+        while(self.gen.has_next()):
+            producer = self.p.create_producer(self.topic)
+            key, record = self.gen.next()
+            _key, data = self.serializer(key, record)
+            producer.send_async(partition_key=_key, content=data, callback=self.delivery_report)
+
+        self.p.close()
+
+        print(f'Finished stream                                                           ')
 
 app = typer.Typer()
 pinot_app = typer.Typer()
@@ -269,14 +291,45 @@ kafka_app = typer.Typer()
 kafka_check_app = typer.Typer()
 app.add_typer(kafka_app, name="kafka")
 kafka_app.add_typer(kafka_check_app, name="check")
+pulsar_app = typer.Typer()
+pulsar_check_app = typer.Typer()
+app.add_typer(pulsar_app, name="pulsar")
+pulsar_app.add_typer(pulsar_check_app, name="check")
 
+@pulsar_app.command(name='stream')
+def pulsar_stream(schema_path:str, config_path:str, limit:int=1000, stdout:bool=False):
+
+    schema = PinotSchema(schema_path=schema_path)
+    config = json.load(open(config_path))
+    stream_config = config['tableIndexConfig']['streamConfigs']
+
+    if config['tableType'] != 'REALTIME':
+        raise Exception("table type is not REALTIME")
+    if stream_config['streamType'] != 'pulsar':
+        s_type = stream_config['streamType']
+        raise Exception(f'the table configuration is not for pulsar {s_type}')
+
+    gen = Generator(schema, limit=limit)
+
+    if stdout:
+        sink = StdOut(gen=gen)
+    else:
+        topic = stream_config['stream.pulsar.topic.name']
+        if 'stream.kafka.decoder.prop.format' in stream_config:
+            format = stream_config['stream.kafka.decoder.prop.format']
+        else:
+            format = "JSON"
+        serializer = Serializer().__getattribute__(format.upper())
+        bootstrap = stream_config['stream.pulsar.bootstrap.servers']
+        sink = Pulsar(topic=topic, serializer=serializer, gen=gen, bootstrap=bootstrap)
+
+    sink.send()
 
 @pinot_check_app.command()
 def schema(schema:str, host_port='pinot-controller:9000', timeout:int=60):
     """
     Checks and waits for a Pinot schema to appear.
     """
-    controller(host_port=host_port, timeout=timeout)
     count = 0
     while count < timeout:
         api_url = f'http://{host_port}/schemas'
@@ -297,7 +350,6 @@ def table(table:str, host_port='pinot-controller:9000', timeout:int=60):
     """
     Checks and waits for a Pinot table to appear.
     """
-    controller(host_port=host_port, timeout=timeout)
     count = 0
     while count < timeout:
         api_url = f'http://{host_port}/tables'

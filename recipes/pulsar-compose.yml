@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+
+  pulsar:
+    image: apachepulsar/pulsar
+    command: "bin/pulsar standalone"
+    restart: unless-stopped
+    container_name: "pulsar"
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+
