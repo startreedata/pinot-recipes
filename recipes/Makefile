@@ -46,4 +46,5 @@ test_all:
 	make test -C time-boundary-hybrid-table/
 	make test -C managed-offline-flow/
 	make test -C merge-small-segments/
+	make test -C pulsar/
 

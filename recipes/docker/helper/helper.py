@@ -15,6 +15,7 @@ from confluent_kafka import Producer
 from enum import Enum
 from datetime import datetime
 import pulsar
+from pinotdb import connect
 
 logger = logging.getLogger(__name__)
 clock = ['|', '/', '-', '\\', '|', '/', '-', '\\']
@@ -343,6 +344,19 @@ def schema(schema:str, host_port='pinot-controller:9000', timeout:int=60):
             time.sleep(1)
 
     raise Exception(f'{table} doesn''t exist')
+
+
+@pinot_check_app.command()
+def results(sql:str, aggregation:int, host='pinot-broker', port=8099, scheme='http'):
+    """
+    Validates the results in Pinot
+    """
+    conn = connect(host=host, port=port, path='/query/sql', scheme=scheme)
+    curs = conn.cursor()
+    curs.execute(sql)
+    val = curs.next()[0]
+    if val != aggregation:
+        raise Exception(f'{val} != {aggregation}')
 
 
 @pinot_check_app.command()

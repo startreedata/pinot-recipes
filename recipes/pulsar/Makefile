@@ -27,5 +27,10 @@ realtime:
 
 recipe: infra check_pinot table realtime
 
-validate:
-	
+validate: helper
+	@docker run -it \
+		--network recipes_default \
+		startree/helper \
+		python helper.py pinot check results 'select count(*) from events' 1000
+	@echo 'results are valid'
+
