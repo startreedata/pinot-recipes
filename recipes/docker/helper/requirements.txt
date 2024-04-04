@@ -6,3 +6,4 @@ typer
 pyyaml
 requests
 pinotdb
+pulsar-client

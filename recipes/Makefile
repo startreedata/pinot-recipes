@@ -29,6 +29,7 @@ clean:
 		-f ../kafka-compose.yml \
 		-f ../pinot-compose.yml \
 		-f ../postgres-compose.yml \
+		-f ../pulsar-compose.yml \
 		down
 
 validate:
@@ -45,4 +46,5 @@ test_all:
 	make test -C time-boundary-hybrid-table/
 	make test -C managed-offline-flow/
 	make test -C merge-small-segments/
+	make test -C pulsar/
 
