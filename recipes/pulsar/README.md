@@ -12,7 +12,7 @@ This is the code for the following recipe: https://dev.startree.ai/docs/pinot/re
 make recipe
 ```
 
-To produce data to Pulsar, you can use the Python code below.
+To produce data into Pulsar, use the Python code below.
 
 ```python
 import pulsar
