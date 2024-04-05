@@ -14,7 +14,7 @@ services:
   pinot-controller:
     image: apachepinot/pinot:1.0.0
     command: "StartController -zkAddress manual-zookeeper-minio:2181"
-    container_name: "manual-pinot-controller-minio"
+    container_name: "manual-pinot-controller"
     volumes:
       - ./config:/config
       - ./data:/data

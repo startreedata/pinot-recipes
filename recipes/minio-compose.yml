@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  minio:
+    image: minio/minio
+    container_name: "minio"
+    hostname: minio
+    command: "server /data --console-address ':9001'"
+    environment:
+      MINIO_CONFIG_ENV_FILE: "/etc/config.env"
+    ports:
+      - "9100:9000"
+      - "9001:9001"
+    volumes:
+      - $PWD/../docker/minio.env:/etc/config.env
+
+  pinot-controller:
+    extends:
+      file: pinot-compose.yml
+      service: pinot-controller
+    command: "StartController -zkAddress pinot-zookeeper:2181 -configFileName conf/controller.conf"
+    hostname: pinot-controller
+    container_name: pinot-controller
+    volumes:
+      - $PWD/../docker/minio-controller.conf:/opt/pinot/conf/controller.conf
+    depends_on:
+      - pinot-zookeeper
+      - minio
+
+  pinot-server:
+    extends:
+      file: pinot-compose.yml
+      service: pinot-server
+    command: "StartServer -zkAddress pinot-zookeeper:2181 -configFileName conf/server.conf"
+    container_name: "pinot-server"
+    hostname: pinot-server
+    volumes:
+      - $PWD/../docker/minio-server.conf:/opt/pinot/conf/server.conf
+    depends_on:
+      - pinot-broker
+

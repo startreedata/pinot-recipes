@@ -23,7 +23,7 @@ recordReaderSpec:
 tableSpec:
   tableName: 'transcript'
 pinotClusterSpecs:
-  - controllerURI: 'http://manual-pinot-controller-minio:9000'
+  - controllerURI: 'http://manual-pinot-controller:9000'
 pushJobSpec:
   pushAttempts: 2
   pushRetryIntervalMillis: 1000

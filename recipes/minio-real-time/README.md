@@ -57,7 +57,7 @@ docker run \
    apachepinot/pinot:1.0.0 AddTable \
      -schemaFile /config/schema.json \
      -tableConfigFile /config/table-realtime.json \
-     -controllerHost "pinot-controller-minio" \
+     -controllerHost "pinot-controller" \
     -exec
 ```
 

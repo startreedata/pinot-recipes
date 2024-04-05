@@ -391,12 +391,14 @@ def controller(host_port='pinot-controller:9000', timeout:int=60):
             r = requests.get(f'http://{host_port}/tables')
             r.json()
             print(f'Pinot is up 🍷 status {r.status_code}                         ')
-            time.sleep(5)
+            time.sleep(2)
             return True
         except:
             print(f'====> Waiting for 🍷 {clock[count % len(clock)]}            ', end='\r')
             count += 1
             time.sleep(1)
+
+    raise Exception(f'Pinot failed to start after {timeout} seconds')
 
 @pinot_app.command()
 def batch(schema_path:str, job_spec_yaml:str, stdout:bool=False):
@@ -475,7 +477,7 @@ def broker(bootstrap:str="kafka:9092", timeout:int=60):
         finally:
             c.close()
             
-    raise Exception(f'Could not connect to Kafka in {timeout} ms')
+    raise Exception(f'Could not connect to Kafka in {timeout} seconds')
 
 if __name__ == "__main__":
     app()

@@ -30,6 +30,7 @@ clean:
 		-f ../pinot-compose.yml \
 		-f ../postgres-compose.yml \
 		-f ../pulsar-compose.yml \
+		-f ../minio-compose.yml \
 		down
 
 validate:
@@ -47,4 +48,5 @@ test_all:
 	make test -C managed-offline-flow/
 	make test -C merge-small-segments/
 	make test -C pulsar/
+	make test -C minio-real-time/
 

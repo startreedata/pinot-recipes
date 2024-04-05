@@ -63,7 +63,7 @@ docker run \
    apachepinot/pinot:1.0.0 AddTable \
    -schemaFile /config/schema.json \
    -tableConfigFile /config/table.json \
-   -controllerHost "manual-pinot-controller-minio" \
+   -controllerHost "manual-pinot-controller" \
    -exec
 ```
 
