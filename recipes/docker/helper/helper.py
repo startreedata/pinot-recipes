@@ -391,7 +391,7 @@ def controller(host_port='pinot-controller:9000', timeout:int=60):
             r = requests.get(f'http://{host_port}/tables')
             r.json()
             print(f'Pinot is up 🍷 status {r.status_code}                         ')
-            time.sleep(2)
+            time.sleep(5)
             return True
         except:
             print(f'====> Waiting for 🍷 {clock[count % len(clock)]}            ', end='\r')

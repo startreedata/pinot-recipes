@@ -1,47 +1,52 @@
 include ../Makefile
 
+AWS_ACCESS_KEY_ID=miniodeepstorage
+AWS_SECRET_ACCESS_KEY=miniodeepstorage
+
 infra: helper
-	PWD=$(shell pwd) docker compose \
+	PWD=$(shell pwd) AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} docker compose \
 		-f ../pinot-compose.yml \
 		-f ../minio-compose.yml \
 		up -d
 
+logger:
+	@docker exec pinot-controller \
+		curl -X PUT -H "accept: application/json" \
+		http://localhost:9000/loggers/root?level=DEBUG \
+		| jq
+
 myminio:
-	docker logs minio
-	docker exec -it minio mc alias set 'myminio' 'http://minio:9000' 'miniodeepstorage' 'miniodeepstorage'
-	docker exec -it minio mc admin info myminio
-	docker exec -it minio mc mb myminio/deepstore
-	docker exec -it minio mc ls myminio
+	@docker logs minio
+	@docker exec -it minio mc alias set 'myminio' 'http://minio:9000' ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY}
+	@docker exec -it minio mc admin info myminio
+	@-docker exec -it minio mc mb myminio/deepstore
+	@-docker exec -it minio mc mb myminio/pinot-transcript-input
+	@-docker exec -it minio mc mb myminio/pinot-transcript-output
+	@docker cp data/transcript.csv minio:.
+	@docker exec minio mc cp transcript.csv myminio/pinot-transcript-input
+	@docker exec -it minio mc ls myminio
+	@docker exec -it minio mc ls myminio//pinot-transcript-input
 
-deepstore:
-	@echo "Setting managed offline flow properties in contorller"
-	@curl -X POST "http://localhost:9000/cluster/configs" -H "accept: application/json" \
-		-d @$(shell pwd)/config/cluster-conf.json | jq
-
-	@curl http://localhost:9000/cluster/configs | jq
-
-
-table:
-	@docker exec -it pinot-controller rm -rf config
+files:
 	@docker cp ./config pinot-controller:/opt/pinot/config/
+	@docker cp ./data pinot-controller:/data
+	-@docker exec pinot-controller mkdir /out
 
+table: files
 	@docker exec pinot-controller ./bin/pinot-admin.sh AddTable \
 		-schemaFile config/schema.json \
-		-realtimeTableConfigFile config/table-realtime.json \
+		-realtimeTableConfigFile config/table.json \
 		-exec
 	
-	@TABLE=events make check_table
+	@TABLE=transcript make check_table
 
+batch:
+	docker exec -it \
+		pinot-controller ./bin/pinot-admin.sh LaunchDataIngestionJob   \
+		-jobSpecFile ./config/job-spec.yml \
+		-values ACCESS_KEY=${AWS_ACCESS_KEY_ID} SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
 
-realtime:
-	@docker run -it \
-		--network recipes_default \
-		--volume $(shell pwd)/config:/code/config \
-		startree/helper \
-		python helper.py kafka stream config/schema.json config/table-realtime.json --limit 1000
-
-
-recipe: infra myminio check_pinot topic table realtime
+recipe: infra myminio check_pinot logger table batch
 
 validate:
 	@test $(shell docker exec minio mc ls myminio/deepstore/events | wc -l | xargs) -gt 1 && \

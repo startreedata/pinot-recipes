@@ -15,14 +15,6 @@ myminio:
 	docker exec -it minio mc mb myminio/deepstore
 	docker exec -it minio mc ls myminio
 
-deepstore:
-	@echo "Setting managed offline flow properties in contorller"
-	@curl -X POST "http://localhost:9000/cluster/configs" -H "accept: application/json" \
-		-d @$(shell pwd)/config/cluster-conf.json | jq
-
-	@curl http://localhost:9000/cluster/configs | jq
-
-
 topic:
 	-@docker exec kafka \
 		kafka-topics.sh \
