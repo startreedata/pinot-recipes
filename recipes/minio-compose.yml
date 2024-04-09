@@ -37,6 +37,8 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: miniodeepstorage
       AWS_SECRET_ACCESS_KEY: miniodeepstorage
+      # JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:9015"
     volumes:
       - $PWD/../docker/minio-server.conf:/opt/pinot/conf/server.conf
     depends_on:
