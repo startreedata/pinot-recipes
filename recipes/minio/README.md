@@ -7,7 +7,7 @@
 Clone this repository and navigate to this recipe:
 
 ```bash
-makre recipe
+make recipe
 ```
 
 ## Validate
