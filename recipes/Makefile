@@ -12,7 +12,7 @@ check_pinot:
 	@docker run -it \
 		--network recipes_default \
 		startree/helper \
-		python helper.py pinot check controller
+		python helper.py pinot check controller --sleep 10
 
 check: check_pinot check_kafka
 

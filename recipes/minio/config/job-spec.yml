@@ -3,8 +3,8 @@ executionFrameworkSpec:
   segmentGenerationJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentGenerationJobRunner'
   segmentTarPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentTarPushJobRunner'
   segmentUriPushJobRunnerClassName: 'org.apache.pinot.plugin.ingestion.batch.standalone.SegmentUriPushJobRunner'
-jobType: SegmentCreationAndUriPush
-inputDirURI: 's3://pinot-transcript-input/'
+jobType: SegmentCreationAndTarPush
+inputDirURI: '/data'
 includeFileNamePattern: 'glob:**/transcript.csv'
 outputDirURI: 's3://pinot-transcript-output/'
 overwriteOutput: true

@@ -379,7 +379,7 @@ def table(table:str, host_port='pinot-controller:9000', timeout:int=60):
     raise Exception(f'{table} doesn''t exist')
             
 @pinot_check_app.command()
-def controller(host_port='pinot-controller:9000', timeout:int=60):
+def controller(host_port='pinot-controller:9000', timeout:int=60, sleep:int=5):
     """
     Checks and waits for the Pinot controller come up
     """
@@ -391,7 +391,7 @@ def controller(host_port='pinot-controller:9000', timeout:int=60):
             r = requests.get(f'http://{host_port}/tables')
             r.json()
             print(f'Pinot is up 🍷 status {r.status_code}                         ')
-            time.sleep(5)
+            time.sleep(sleep)
             return True
         except:
             print(f'====> Waiting for 🍷 {clock[count % len(clock)]}            ', end='\r')
