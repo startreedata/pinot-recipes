@@ -28,6 +28,7 @@ myminio:
 	@docker exec -it minio mc ls myminio//pinot-transcript-input
 
 files:
+	@docker exec pinot-controller rm -rf /opt/pinot/config/
 	@docker cp ./config pinot-controller:/opt/pinot/config/
 	@docker cp ./data pinot-controller:/data
 	-@docker exec pinot-controller mkdir /out
@@ -50,8 +51,20 @@ recipe: infra myminio check_pinot logger table batch
 
 validate:
 	@test $(shell docker exec minio mc ls myminio/deepstore/events | wc -l | xargs) -gt 1 && \
+	# docker exec minio mc mv myminio/deepstore/transcript/transcript_OFFLINE_0 myminio/deepstore/transcript/transcript_OFFLINE_0.tar.gz
+
+recipe: infra myminio check_pinot logger table batch
+
+validate:
+	@test $(shell docker exec minio mc ls myminio/deepstore/transcript | wc -l | xargs) -gt 0 && \
 		echo 'success: segments found in deepstore' || \
 		echo 'no segments in deepstore' \
 		exit 1
+
+	@docker run -it \
+		--network recipes_default \
+		startree/helper \
+		python helper.py pinot check results 'select count(*) from transcript' 4
+	@echo 'results are valid'
 
 
