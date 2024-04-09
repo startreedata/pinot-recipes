@@ -5,6 +5,7 @@ services:
   pinot-zookeeper:
     image: zookeeper:latest
     container_name: pinot-zookeeper
+    hostname: pinot-zookeeper
     ports:
       - "2181:2181"
     environment:
@@ -27,6 +28,7 @@ services:
   pinot-broker:
     image: apachepinot/pinot:1.1.0
     command: "StartBroker -zkAddress pinot-zookeeper:2181"
+    hostname: pinot-broker
     restart: unless-stopped
     container_name: "pinot-broker"
     ports:
@@ -41,8 +43,10 @@ services:
     command: "StartServer -zkAddress pinot-zookeeper:2181"
     restart: unless-stopped
     container_name: "pinot-server"
+    hostname: pinot-server
     ports:
       - "8098:8098"
+      - "9015:9015"
     environment:
       JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"
     depends_on:
@@ -53,6 +57,7 @@ services:
     command: "StartMinion -zkAddress pinot-zookeeper:2181"
     restart: unless-stopped
     container_name: "pinot-minion"
+    hostname: pinot-minion
     depends_on:
       - pinot-server
 

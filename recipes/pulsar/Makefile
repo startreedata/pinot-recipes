@@ -27,7 +27,7 @@ realtime:
 
 recipe: infra check_pinot table realtime
 
-validate: helper
+validate:
 	@docker run -it \
 		--network recipes_default \
 		startree/helper \

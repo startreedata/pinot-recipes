@@ -13,17 +13,22 @@ pinotFSSpecs:
     className: org.apache.pinot.plugin.filesystem.S3PinotFS
     configs:
       region: 'us-east-1'
-      endpoint: 'https://play.min.io:9000'
-      accessKey: ${ACCESS_KEY}
-      secretKey: ${SECRET_KEY}
+      endpoint: 'http://minio:9000'
+      accessKey: miniodeepstorage
+      secretKey: miniodeepstorage
 recordReaderSpec:
   dataFormat: 'csv'
   className: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReader'
   configClassName: 'org.apache.pinot.plugin.inputformat.csv.CSVRecordReaderConfig'
+  configs:
+    delimiter: ','
 tableSpec:
   tableName: 'transcript'
+  schemaURI: 'http://pinot-controller:9000/tables/transcript/schema'
+  tableConfigURI: 'http://pinot-controller:9000/tables/transcript'
 pinotClusterSpecs:
-  - controllerURI: 'http://manual-pinot-controller-minio:9000'
+  - controllerURI: 'http://pinot-controller:9000'
 pushJobSpec:
   pushAttempts: 2
   pushRetryIntervalMillis: 1000
+
