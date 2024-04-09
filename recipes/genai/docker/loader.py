@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup as Soup
 
 from confluent_kafka import Producer
 
+clock = ['>', '=>', '==>', '===>', '====>', '=====>', '======>', '=======>']
+
 class Writer:
     def __init__(self) -> None:
         pass
@@ -30,6 +32,7 @@ class Kafka(Writer):
     def __init__(self, config:dict) -> None:
         super().__init__()
         self.p = Producer(config)
+        self.count = 0
 
     
     def delivery_report(self, err, msg):
@@ -38,7 +41,8 @@ class Kafka(Writer):
         if err is not None:
             print('Message delivery failed: {}'.format(err))
         else:
-            print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
+            print(f'====> Streaming to Kafka {msg.topic()} [{msg.partition()}]  {clock[self.count % len(clock)]}            ', end='\r')
+            self.count += 1
 
 
     def write(self, data: dict):
@@ -63,7 +67,7 @@ class Loader:
 
     def run(self):
         loader = RecursiveUrlLoader(
-            url=self.url, max_depth=5, extractor=lambda x: Soup(x, "html.parser").text
+            url=self.url, use_async=True, max_depth=5, extractor=lambda x: Soup(x, "html.parser").text
         )
         docs = loader.load()
 

@@ -22,7 +22,7 @@ Answer the question based on the above context: {question}
 
 class PinotVector():
 
-    def __init__(self, host, port=8000, path='/query/sql', scheme='http', model='text-embedding-ada-002') -> None:
+    def __init__(self, host, port=8099, path='/query/sql', scheme='http', model='text-embedding-ada-002') -> None:
         self.conn = connect(host=host, port=port, path=path, scheme=scheme)
         self.client = OpenAI()
         self.model = model
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     query_text = sys.argv[1]
     # Prepare the DB.
-    db = PinotVector(host="pinot")
+    db = PinotVector(host="pinot-broker")
 
     # Search the DB.
     results = db.similarity_search(query_text, dist=.5)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         response_text = model.invoke(prompt)
 
         sources = [doc.metadata.get("source", None) for doc in results]
-        print("response:")
+        print("response:                                                                     ")
         print(f'{response_text.content} \n')
         [print(f' - {source}') for source in sources]
 

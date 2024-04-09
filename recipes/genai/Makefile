@@ -1,28 +1,27 @@
 include ../Makefile
 
-infra: helper
+URL=https://www.rtasummit.com/agenda
+QUERY='when and where does kishore speak'
+
+clients:
+	docker build docker -t startree/genai
+
+infra: clients helper
 	docker compose \
 		-f ../pinot-compose.yml \
 		-f ../kafka-compose.yml \
-		-f ../flink-compose.yml \
-		-f docker-compose.yml \
 		up -d
 
 topics:
-	-docker exec kafka kafka-topics.sh \
+	-@docker exec kafka kafka-topics.sh \
 		--bootstrap-server localhost:9092 \
 		--create \
 		--topic documentation
 
-	-docker exec kafka kafka-topics.sh \
-		--bootstrap-server localhost:9092 \
-		--create \
-		--topic doc_embeddings
-
 tables:
-	docker cp config/ pinot-controller:/opt/pinot/
+	@docker cp config/ pinot-controller:/opt/pinot/
 
-	docker exec pinot-controller ./bin/pinot-admin.sh \
+	@docker exec pinot-controller ./bin/pinot-admin.sh \
 		AddTable \
 		-tableConfigFile config/table.json \
 		-schemaFile config/schema.json \
@@ -30,21 +29,23 @@ tables:
 
 	@TABLE=documentation make check_table
 
-recipe: build infra topic tables
+recipe: infra check topics tables
 
 loader:
 	@docker run -it \
-	 	--network rag_default \
-		genai \
-		python loader.py $(URL)
+		--network recipes_default \
+		--volume $(shell pwd)/config:/code/config \
+		-e OPENAI_API_KEY=${OPENAI_API_KEY} \
+		startree/genai \
+		python loader.py ${URL}
 
 question:
 	@docker run -it \
-	 	--network rag_default \
-		genai \
-		python genai.py
+	 	--network recipes_default \
+		-e OPENAI_API_KEY=${OPENAI_API_KEY} \
+		startree/genai \
+		python genai.py ${QUERY}
 
 
-
-recipe: infra check kafka postgres connect tables
-
+validate: loader question
+	@echo 'passed'

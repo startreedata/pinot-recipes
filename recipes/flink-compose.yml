@@ -6,6 +6,10 @@ services:
     ports:
       - "8081:8081"
     command: jobmanager
+    hostname: jobmanager
+    container_name: jobmanager
+    depends_on:
+      - kafka
     environment:
       - |
         FLINK_PROPERTIES=
@@ -16,6 +20,8 @@ services:
     depends_on:
       - jobmanager
     command: taskmanager
+    container_name: taskmanager
+    hostname: taskmanager
     scale: 1
     environment:
       - |
@@ -26,6 +32,8 @@ services:
   sql-client:
     image: flink:1.19.0-scala_2.12
     command: bin/sql-client.sh
+    container_name: sql-client
+    hostname: sql-client
     depends_on:
       - jobmanager
     environment:
