@@ -50,4 +50,7 @@ test_all:
 	make test -C merge-small-segments/
 	make test -C pulsar/
 	make test -C minio-real-time/
+	make test -C minio/
+	make test -C genai/
+	
 
