@@ -31,6 +31,7 @@ clean:
 		-f ../postgres-compose.yml \
 		-f ../pulsar-compose.yml \
 		-f ../minio-compose.yml \
+		-f ../flink-compose.yml \
 		down
 
 validate:
