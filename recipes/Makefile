@@ -12,7 +12,7 @@ check_pinot:
 	@docker run -it \
 		--network recipes_default \
 		startree/helper \
-		python helper.py pinot check controller
+		python helper.py pinot check controller --sleep 10
 
 check: check_pinot check_kafka
 
@@ -31,6 +31,7 @@ clean:
 		-f ../postgres-compose.yml \
 		-f ../pulsar-compose.yml \
 		-f ../minio-compose.yml \
+		-f ../flink-compose.yml \
 		down
 
 validate:
@@ -49,4 +50,7 @@ test_all:
 	make test -C merge-small-segments/
 	make test -C pulsar/
 	make test -C minio-real-time/
+	make test -C minio/
+	make test -C genai/
+	
 

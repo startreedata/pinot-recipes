@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  jobmanager:
+    image: flink:1.19.0-scala_2.12
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    hostname: jobmanager
+    container_name: jobmanager
+    depends_on:
+      - kafka
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+
+  taskmanager:
+    image: flink:1.19.0-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    container_name: taskmanager
+    hostname: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+
+  sql-client:
+    image: flink:1.19.0-scala_2.12
+    command: bin/sql-client.sh
+    container_name: sql-client
+    hostname: sql-client
+    depends_on:
+      - jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        rest.address: jobmanager    

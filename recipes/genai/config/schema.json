@@ -1,0 +1,33 @@
+{
+    "schemaName": "documentation",
+    "dimensionFieldSpecs": [
+        {
+            "name": "source",
+            "dataType": "STRING"
+        },
+        {
+            "name": "content",
+            "dataType": "STRING"
+        },
+        {
+            "name": "metadata",
+            "dataType": "JSON"
+        },
+        {
+          "name": "embedding",
+          "dataType": "FLOAT",
+          "singleValueField": false
+        }
+    ],
+    "dateTimeFieldSpecs": [
+        {
+            "name": "last_updated_min",
+            "dataType": "LONG",
+            "format": "EPOCH",
+            "granularity": "1:MINUTES"
+        }
+    ],
+    "primaryKeyColumns": [
+        "source"
+    ]
+}

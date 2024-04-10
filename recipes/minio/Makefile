@@ -20,18 +20,14 @@ myminio:
 	@docker exec -it minio mc alias set 'myminio' 'http://minio:9000' ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY}
 	@docker exec -it minio mc admin info myminio
 	@-docker exec -it minio mc mb myminio/deepstore
-	@-docker exec -it minio mc mb myminio/pinot-transcript-input
 	@-docker exec -it minio mc mb myminio/pinot-transcript-output
-	@docker cp data/transcript.csv minio:.
-	@docker exec minio mc cp transcript.csv myminio/pinot-transcript-input
 	@docker exec -it minio mc ls myminio
-	@docker exec -it minio mc ls myminio//pinot-transcript-input
 
 files:
 	@docker exec pinot-controller rm -rf /opt/pinot/config/
+	@docker exec pinot-controller rm -rf /data/*
 	@docker cp ./config pinot-controller:/opt/pinot/config/
 	@docker cp ./data pinot-controller:/data
-	-@docker exec pinot-controller mkdir /out
 
 table: files
 	@docker exec pinot-controller ./bin/pinot-admin.sh AddTable \
@@ -41,13 +37,11 @@ table: files
 	
 	@TABLE=transcript make check_table
 
-batch:
+batch: files
 	docker exec -it \
 		pinot-controller ./bin/pinot-admin.sh LaunchDataIngestionJob   \
 		-jobSpecFile ./config/job-spec.yml \
 		-values ACCESS_KEY=${AWS_ACCESS_KEY_ID} SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
-
-	# docker exec minio mc mv myminio/deepstore/transcript/transcript_OFFLINE_0 myminio/deepstore/transcript/transcript_OFFLINE_0.tar.gz
 
 recipe: infra myminio check_pinot logger table batch
 
@@ -62,7 +56,5 @@ validate:
 		startree/helper \
 		python helper.py pinot check results 'select count(*) from transcript' 4
 	@echo 'results are valid'
-
-	
 
 

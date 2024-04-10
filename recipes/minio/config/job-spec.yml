@@ -9,6 +9,8 @@ includeFileNamePattern: 'glob:**/transcript.csv'
 outputDirURI: 's3://pinot-transcript-output/'
 overwriteOutput: true
 pinotFSSpecs:
+  - scheme: file
+    className: org.apache.pinot.spi.filesystem.LocalPinotFS
   - scheme: s3
     className: org.apache.pinot.plugin.filesystem.S3PinotFS
     configs:
