@@ -52,5 +52,7 @@ test_all:
 	make test -C minio-real-time/
 	make test -C minio/
 	make test -C genai/
+	make test -C vector/
+	make test -C video/
 	
 
