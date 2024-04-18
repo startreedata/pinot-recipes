@@ -117,7 +117,7 @@ def video(threshold:.7):
         
             cv2.imshow("frame", frame)
             cv2.waitKey(1)
-            
+
     except Exception as e:
         print(e)
     finally:
@@ -125,5 +125,5 @@ def video(threshold:.7):
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-#    video(sys.argv[1])
-    video(.7)
+   video(sys.argv[1])
+
