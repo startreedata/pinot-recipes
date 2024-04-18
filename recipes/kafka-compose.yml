@@ -8,6 +8,7 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+      - "29092:29092"
     environment:
       # KRaft settings
       - KAFKA_CFG_NODE_ID=0

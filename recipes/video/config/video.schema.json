@@ -1,0 +1,30 @@
+{
+    "schemaName": "video",
+    "dimensionFieldSpecs": [
+        {
+            "name": "frame",
+            "dataType": "INT"
+        },
+        {
+            "name": "person",
+            "dataType": "STRING"
+        },
+        {
+            "name": "description",
+            "dataType": "STRING"
+        },
+        {
+          "name": "embedding",
+          "dataType": "FLOAT",
+          "singleValueField": false
+        }
+    ],
+    "dateTimeFieldSpecs": [
+        {
+            "name": "ts",
+            "dataType": "LONG",
+            "format": "EPOCH",
+            "granularity": "1:MINUTES"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "schemaName": "people",
+    "dimensionFieldSpecs": [
+        {
+            "name": "name",
+            "dataType": "STRING"
+        },
+        {
+            "name": "path",
+            "dataType": "STRING"
+        },
+        {
+          "dataType": "FLOAT",
+          "name": "embedding",
+          "singleValueField": false
+        }
+    ],
+    "metricFieldSpecs": [
+    ],
+    "primaryKeyColumns": [
+        "name"
+    ]
+  }

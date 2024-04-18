@@ -1,0 +1,6 @@
+opencv-python
+pinotdb
+sentence_transformers
+pdf2image
+pandas
+confluent_kafka

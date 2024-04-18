@@ -1,0 +1,20 @@
+{
+    "schemaName": "images",
+    "dimensionFieldSpecs": [
+        {
+            "name": "id",
+            "dataType": "INT"
+        },
+        {
+            "name": "path",
+            "dataType": "STRING"
+        },
+        {
+          "dataType": "FLOAT",
+          "name": "embedding",
+          "singleValueField": false
+        }
+    ],
+    "metricFieldSpecs": [
+    ]
+  }

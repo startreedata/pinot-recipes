@@ -1,0 +1,37 @@
+{
+  "tableName": "images",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
+    "schemaName": "images",
+    "replication": "1"
+  },
+  "tenants": {
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "noDictionaryColumns": [
+
+    ],
+    "invertedIndexColumns": [
+    ]
+  },
+  "metadata": {
+    "customConfigs": {
+    }
+  },
+  "fieldConfigList": [
+    {
+      "encodingType": "RAW",
+      "indexType": "VECTOR",
+      "name": "embedding",
+      "properties": {
+        "vectorIndexType": "HNSW",
+        "vectorDimension": 512,
+        "vectorDistanceFunction": "COSINE",
+        "version": 1
+      }
+    }
+  ]
+}
