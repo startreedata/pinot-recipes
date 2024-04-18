@@ -1,0 +1,6 @@
+pinotdb
+sentence_transformers
+pdf2image
+pandas
+pyarrow
+streamlit

@@ -44,8 +44,6 @@ class PinotVector():
                 cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
             from documentation
             having cosine < {dist}
-            order by cosine asc
-            limit {limit}
             """
         
         curs.execute(sql)

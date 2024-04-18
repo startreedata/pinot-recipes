@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  vector:
+    build: docker
+    container_name: "vector"
+    hostname: vector
+    command: "server /data --console-address ':9001'"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    volumes:
+      - $PWD/images:./images
