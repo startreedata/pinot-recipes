@@ -24,7 +24,8 @@ class PinotVector():
             ToDateTime(ts,'h', 'America/Los_Angeles') as hr, 
             count(frame) as "count"
         from video
-        where person <> 'none'
+        where person <> 'none' and
+            ts > ago('PT12H') 
         group by person, hr
         order by hr
         """
