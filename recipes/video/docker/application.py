@@ -23,13 +23,13 @@ class PinotVector():
         sql = f"""
         select 
             person, 
-            ToDateTime(ts,'h', 'America/Los_Angeles') as hr, 
+            ToDateTime(ts,'hh', 'America/Los_Angeles') as hr, 
             count(frame) as "count"
         from video
         where person <> 'none' and
             ts > ago('PT12H') 
         group by person, hr
-        order by hr
+        order by hr asc
         """
         curs.execute(sql)
         return pd.DataFrame(curs, columns=[item[0] for item in curs.description])
@@ -74,7 +74,7 @@ class PinotVector():
         {question}
         """
 
-        query_text = 'Summarize what has been happening at the booths'
+        query_text = 'Summarize what has been happening at the booths in one sentence'
         logs = [f'frame: [{log[0]}] - person [{log[1]}]: {log[2]}' for log in results]
         context_text = "\n\n---\n\n".join(logs)
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
@@ -113,7 +113,7 @@ while True:
             st.dataframe(df)
 
         with genai:
-            st.markdown("### Real-Time GenAI Evaluation of what is happening at the booth for the last 15mins:")
+            st.markdown("### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins:")
             st.write(f'{ai.content}\n\n**Source Frames**\n\n{' '.join([str(f) for f in frames])}')
         
         time.sleep(5)

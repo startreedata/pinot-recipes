@@ -70,15 +70,14 @@ def find_people(embedding:list[float], distance=.25, host='localhost', port=8099
     finally:
         curs.close()
 
-def capture_frames(kafka:Kafka, threshold, people, iframe, frame_number, ts):
+def capture_frames(kafka:Kafka, threshold, iframe, frame_number, ts):
     img_emb = model.encode(iframe).tolist()
-    cos_scores = util.cos_sim(img_emb, [p[1] for p in people])[0]
-    indexes = find_high_scores(cos_scores, threshold)
-    found = [people[i][0] for i in indexes]
+    # cos_scores = util.cos_sim(img_emb, [p[1] for p in people])[0]
+    # indexes = find_high_scores(cos_scores, threshold)
+    # found = [people[i][0] for i in indexes]
 
-    # people = find_people(img_emb)
+    found = find_people(img_emb, distance=threshold)
     if len(found) != 0:
-        print(cos_scores)
         for person in found:
             print(f'found {person} in frame [{frame_number}]')
             video = {
@@ -99,11 +98,11 @@ def capture_frames(kafka:Kafka, threshold, people, iframe, frame_number, ts):
         }
         kafka.send(frame_number, json.dumps(video))
 
-def video(threshold=.7):
+def video(threshold=.3):
     video = cv2.VideoCapture(0)
     pool = ThreadPool(processes=10)
     kafka =  Kafka('video')
-    people = load_people()
+    # people = load_people()
     try:
         frame_number = 0
         while True:
@@ -114,7 +113,6 @@ def video(threshold=.7):
                 pool.apply_async(capture_frames, (
                     kafka, 
                     threshold,
-                    people,
                     iframe, 
                     frame_number, 
                     round(time.time() * 1000)
