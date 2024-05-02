@@ -74,7 +74,7 @@ class PinotVector():
         {question}
         """
 
-        query_text = 'Summarize what has been happening at the booths?'
+        query_text = 'Summarize what has been happening at the booths'
         logs = [f'frame: [{log[0]}] - person [{log[1]}]: {log[2]}' for log in results]
         context_text = "\n\n---\n\n".join(logs)
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
