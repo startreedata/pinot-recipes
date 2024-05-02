@@ -74,7 +74,6 @@ class PinotVector():
         {question}
         """
 
-        query_text = 'Summarize what has been happening at the booths in one sentence'
         logs = [f'frame: [{log[0]}] - person [{log[1]}]: {log[2]}' for log in results]
         context_text = "\n\n---\n\n".join(logs)
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
@@ -86,7 +85,7 @@ class PinotVector():
 ##############
 db = PinotVector(host="localhost")
 df = db.booth_activity()
-query_text = 'Summarize what has been happening at the booths in two sentences?'
+query_text = 'Summarize what has been happening at the booths in one sentence'
 ai, frames = db.booth_activity_genai(query_text=query_text)
 ##############
 
@@ -101,19 +100,21 @@ placeholder = st.empty()
 while True:
     df = db.booth_activity()
     ai, frames = db.booth_activity_genai(query_text=query_text)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
     with placeholder.container():
         timeline, raw, genai = st.columns(3)
         with timeline:
-            st.markdown("### Video Frames")
+            st.markdown(f'### Video Frames {current_time}')
             st.line_chart(df, x="hr", y='count', color='person')
 
         with raw:
-            st.markdown("### Video Frames Raw")
+            st.markdown(f'### Video Frames Raw {current_time}')
             st.dataframe(df)
 
         with genai:
-            st.markdown("### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins:")
+            st.markdown(f'### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins: {current_time}')
             st.write(f'{ai.content}\n\n**Source Frames**\n\n{' '.join([str(f) for f in frames])}')
         
         time.sleep(10)
