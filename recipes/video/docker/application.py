@@ -21,7 +21,7 @@ class PinotVector():
         sql = f"""
         select 
             person, 
-            ToDateTime(ts,'h:mm', 'America/Los_Angeles') as hr_mm, 
+            ToDateTime(ts,'h', 'America/Los_Angeles') as hr, 
             count(frame) as "count"
         from video
         where person <> 'none'
@@ -58,7 +58,7 @@ db = PinotVector(host="localhost")
 df = db.booth_activity()
 st.write("Video Frames")
 # st.write(df)
-st.line_chart(df, x="hr_mm", y='count', color='person')
+st.line_chart(df, x="hr", y='count', color='person')
 
 df
 
