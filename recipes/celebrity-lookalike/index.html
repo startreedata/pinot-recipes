@@ -1,0 +1,151 @@
+<html>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+<!-- The buttons to control the stream -->
+<div class="button-group">
+	<button id="btn-start" type="button" class="button">Start Streaming</button>
+	<button id="btn-stop" type="button" class="button">Stop Streaming</button>
+	<button id="btn-capture" type="button" class="button">Capture Image</button>
+</div>
+
+<!-- Video Element & Canvas -->
+<div class="play-area">
+	<div class="play-area-sub">
+		<h3>The Stream</h3>
+		<video id="stream" width="320" height="240"></video>
+	</div>
+	<div class="play-area-sub">
+		<h3>The Capture</h3>
+		<P>The embedding model creates a 512 size vector which does causes some precision loss</P>
+		<canvas id="capture" width="320" height="240"></canvas>
+		<div id="snapshot"></div>
+	</div>
+</div>
+</body>
+
+<script>
+	// The buttons to start & stop stream and to capture the image
+	var btnStart = document.getElementById("btn-start");
+	var btnStop = document.getElementById("btn-stop");
+	var btnCapture = document.getElementById("btn-capture");
+
+	// The stream & capture
+	var stream = document.getElementById("stream");
+	var capture = document.getElementById("capture");
+	var snapshot = document.getElementById("snapshot");
+
+	// The video stream
+	var cameraStream = null;
+
+	// Attach listeners
+	btnStart.addEventListener("click", startStreaming);
+	btnStop.addEventListener("click", stopStreaming);
+
+
+	// Start Streaming
+	function startStreaming() {
+		var mediaSupport = 'mediaDevices' in navigator;
+		if (mediaSupport && null == cameraStream) {
+			navigator.mediaDevices.getUserMedia({ video: true })
+				.then(function (mediaStream) {
+					cameraStream = mediaStream;
+					stream.srcObject = mediaStream;
+					stream.play();
+				})
+				.catch(function (err) {
+					console.log("Unable to access camera: " + err);
+				});
+		}
+		else {
+			alert('Your browser does not support media devices.');
+			return;
+		}
+	}
+
+
+	// Stop Streaming
+	function stopStreaming() {
+		if (null != cameraStream) {
+			var track = cameraStream.getTracks()[0];
+			track.stop();
+			stream.load();
+			cameraStream = null;
+		}
+	}
+
+
+	btnCapture.addEventListener("click", captureSnapshot);
+
+	function captureSnapshot() {
+		if (null != cameraStream) {
+			var ctx = capture.getContext('2d');
+			var img = new Image();
+			ctx.drawImage(stream, 0, 0, capture.width, capture.height);
+			img.src = capture.toDataURL("image/png");
+			img.width = 240;
+			snapshot.innerHTML = '';
+			snapshot.appendChild(img);
+			getCelebrity()
+		}
+	}
+
+	function getCelebrity() {
+		var request = new XMLHttpRequest();
+		request.open("POST", "/upload", true);
+		var data = new FormData();
+		var dataURI = snapshot.firstChild.getAttribute("src");
+		var imageData = dataURItoBlob(dataURI);
+		data.append("image", imageData, "myimage");
+		request.send(data);
+
+		request.onreadystatechange = function() { 
+			// If the request completed, close the extension popup
+			if (request.readyState == 4)
+				if (request.status == 200)
+					snapshot.innerHTML = '';
+
+					image_score = JSON.parse(request.responseText)
+					let i = 0
+					while (i < image_score.length) {
+						var celeb = new Image();
+						img = image_score[i][0]
+						cosine = image_score[i][1]
+						l2 = image_score[i][2]
+						l1 = image_score[i][3]
+
+						score = "cosine("+cosine+") L2("+l2+") L1("+l1+")";
+						celeb.src = "images/"+img;
+						
+						var div = document.createElement('div');
+						celeb.width = '200'
+						celeb.height = '200'
+						var span = document.createElement('span');
+						span.textContent = score
+						div.appendChild(celeb);
+						div.appendChild(span)
+						snapshot.appendChild(div);
+						i++;
+					}
+					
+		};
+	}
+
+	function dataURItoBlob(dataURI) {
+		var byteString = atob(dataURI.split(',')[1]);
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+		var buffer = new ArrayBuffer(byteString.length);
+		var data = new DataView(buffer);
+		for (var i = 0; i < byteString.length; i++) {
+			data.setUint8(i, byteString.charCodeAt(i));
+		}
+		return new Blob([buffer], { type: mimeString });
+	}
+
+
+
+</script>
+
+
+</html>

@@ -1,7 +1,7 @@
 include ../Makefile
 
 URL=https://www.rtasummit.com/agenda
-QUERY='when and where does kishore speak'
+QUERY='when and where does kishore speak in rtasummit'
 
 clients:
 	docker build docker -t startree/genai
@@ -39,7 +39,7 @@ loader:
 		startree/genai \
 		python loader.py ${URL}
 
-question:
+question: clients
 	@docker run -it \
 	 	--network recipes_default \
 		-e OPENAI_API_KEY=${OPENAI_API_KEY} \

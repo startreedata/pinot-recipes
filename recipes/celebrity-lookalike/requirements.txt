@@ -1,0 +1,12 @@
+pinotdb
+matplotlib
+pdf2image
+opencv-python
+pandas
+pyarrow
+sentence_transformers
+tqdm
+typer
+flask
+openface
+

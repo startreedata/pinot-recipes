@@ -89,8 +89,17 @@ def capture_frames(kafka:Kafka, threshold, people, iframe, frame_number, ts):
                 "ts": ts
             }
             kafka.send(frame_number, json.dumps(video))
+    else:
+        video = {
+            "frame": frame_number,
+            "person": 'none',
+            "description": captioner(iframe)[0]['generated_text'],
+            "embedding":img_emb,
+            "ts": ts
+        }
+        kafka.send(frame_number, json.dumps(video))
 
-def video(threshold:.7):
+def video(threshold=.7):
     video = cv2.VideoCapture(0)
     pool = ThreadPool(processes=10)
     kafka =  Kafka('video')
@@ -101,19 +110,17 @@ def video(threshold:.7):
             success, frame = video.read()
             iframe = Image.fromarray(frame)
 
-            pool.apply_async(capture_frames, (
-                kafka, 
-                threshold,
-                people,
-                iframe, 
-                frame_number, 
-                round(time.time() * 1000)
-            ))
-            frame_number += 1
+            if frame_number % 100 == 0 and success:
+                pool.apply_async(capture_frames, (
+                    kafka, 
+                    threshold,
+                    people,
+                    iframe, 
+                    frame_number, 
+                    round(time.time() * 1000)
+                ))
 
-            if frame_number % 1000 == 0:
-                print(f'frame {frame_number}')
-                people = load_people()
+            frame_number += 1
         
             cv2.imshow("frame", frame)
             cv2.waitKey(1)
@@ -125,5 +132,5 @@ def video(threshold:.7):
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-   video(sys.argv[1])
+   video()
 
