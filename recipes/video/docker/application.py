@@ -5,6 +5,8 @@ from openai import OpenAI
 from langchain_community.document_loaders import DataFrameLoader
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+import time
+from datetime import datetime
 
 class PinotVector():
     def __init__(self, host, port=8099, path='/query/sql', scheme='http', model='text-embedding-ada-002') -> None:
@@ -32,7 +34,7 @@ class PinotVector():
         curs.execute(sql)
         return pd.DataFrame(curs, columns=[item[0] for item in curs.description])
 
-    def similarity_search(self, query_text:str):
+    def booth_activity_genai(self, query_text:str):
 
         search_embedding = self.get_embedding(query_text)
         
@@ -51,60 +53,83 @@ class PinotVector():
             """
         
         curs.execute(sql)
-        return [row for row in curs]
+        results = [row for row in curs]
+        frames = [row[0] for row in results]
+
+        PROMPT_TEMPLATE = """
+        Below are video logs for the last 15 minutes. They contain descriptions 
+        of video frames and the name of a person that was found in the frame if
+        one was identified.
+
+        No logs indicates the video stream has just started.
+
+        Answer the question based on this log:
+        ----
+
+        {context}
+
+        ----
+        Based on the above video frame descriptions, answer this question:
+
+        {question}
+        """
+
+        query_text = 'Summarize what has been happening at the booths?'
+        logs = [f'frame: [{log[0]}] - person [{log[1]}]: {log[2]}' for log in results]
+        context_text = "\n\n---\n\n".join(logs)
+        prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+        prompt = prompt_template.format(context=context_text, question=query_text)
+        model = ChatOpenAI()
+        return model.invoke(prompt), frames
         
 
+##############
 db = PinotVector(host="localhost")
-
 df = db.booth_activity()
-st.write("Video Frames")
-# st.write(df)
-st.line_chart(df, x="hr", y='count', color='person')
-
-df
-
-PROMPT_TEMPLATE = """
-Below are video logs for the last 15 minutes. They contain descriptions 
-of video frames and the name of a person that was found in the frame if
-one was identified.
-
-No logs indicates the video stream has just started.
-
-Answer the question based on this log:
-----
-
-{context}
-
-----
-Based on the above video frame descriptions, answer this question:
-
-{question}
-"""
-
 query_text = 'Summarize what has been happening at the booths?'
+ai, frames = db.booth_activity_genai(query_text=query_text)
+##############
 
-results = db.similarity_search(query_text)
-logs = [f'frame: [{log[0]}] - person [{log[1]}]: {log[2]}' for log in results]
-context_text = "\n\n---\n\n".join(logs)
-prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-prompt = prompt_template.format(context=context_text, question=query_text)
+st.set_page_config(
+    page_title="Real-Time Booth Duty Dashboard",
+    layout="wide",
+)
+placeholder = st.empty()
 
-print(prompt)
+########
 
-model = ChatOpenAI()
-response_text = model.invoke(prompt)
+while True:
+    df = db.booth_activity()
+    ai, frames = db.booth_activity_genai(query_text=query_text)
 
-frames = [row[0] for row in results]
+    with placeholder.container():
+        timeline, raw, genai = st.columns(3)
+        with timeline:
+            st.markdown("### Video Frames")
+            st.line_chart(df, x="hr", y='count', color='person')
 
+        with raw:
+            st.markdown("### Video Frames Raw")
+            st.dataframe(df)
 
-st.markdown("""
-    ***Real-Time GenAI Evaluation of what is happening at the booth for the last 15mins:***
-""")
+        with genai:
+            st.markdown("### Real-Time GenAI Evaluation of what is happening at the booth for the last 15mins:")
+            st.write(f'{ai.content}\n\n**Source Frames**\n\n{' '.join([str(f) for f in frames])}')
+        
+        time.sleep(5)
 
-response_text.content
+    # now = datetime.now()
+    # current_time = now.strftime("%H:%M:%S")
+    # st.markdown(f'Current Time = {current_time}')
+    
+    # st.write("Video Frames")
+    # # st.write(df)
+    # st.line_chart(df, x="hr", y='count', color='person')
 
-st.markdown("**Frames:**")
-frames
+    # df
+
+    
+
 
 
 # select
