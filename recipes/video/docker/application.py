@@ -116,7 +116,7 @@ while True:
             st.markdown("### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins:")
             st.write(f'{ai.content}\n\n**Source Frames**\n\n{' '.join([str(f) for f in frames])}')
         
-        time.sleep(5)
+        time.sleep(10)
 
     # now = datetime.now()
     # current_time = now.strftime("%H:%M:%S")
