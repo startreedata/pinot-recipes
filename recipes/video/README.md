@@ -55,7 +55,7 @@ source .venv/bin/activate
 python video.py
 ```
 
-Notice the `.8` argument passed. This is the threshold provided to the application to tune the algorithm. The quality of the image greatly affects the accuracy of the algorithm. The value should be between -1 to 1. The closer to 1, the more positively accurate the score. Lower scores will cause it to be more lenient. The better the camera and images captured, the closer you want to be 1, but not equal to 1.
+The quality of the image greatly affects the accuracy of the algorithm. 
 
 Run this to view a Streamlit app showing the Dashboard.
 
