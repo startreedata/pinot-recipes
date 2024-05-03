@@ -1,10 +1,10 @@
 import cv2
 from transformers import pipeline
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import SentenceTransformer
 from PIL import Image
 from multiprocessing.pool import ThreadPool
 from confluent_kafka import Producer
-import time, json, sys
+import time, json
 from pinotdb import connect
 
 model = SentenceTransformer('clip-ViT-B-32')
@@ -25,27 +25,6 @@ class Kafka():
             self.p.flush()
         except Exception as e:
             print(e)
-
-def load_people(host='localhost', port=8099, scheme='http'):
-    conn = connect(host=host, port=port, path='/query/sql', scheme=scheme)
-    curs = conn.cursor()
-    sql = f"""
-        select name, embedding from people
-    """
-    try:
-        curs.execute(sql)
-        return [row for row in curs]
-    except Exception as e:
-        print(e)
-    finally:
-        curs.close()
-
-def find_high_scores(array, threshold):
-  indexes = []
-  for i in range(0, len(array)):
-    if array[i] > threshold:
-      indexes.append(i)
-  return indexes
 
 def find_people(embedding:list[float], distance=.25, host='localhost', port=8099, scheme='http'):
     conn = connect(host=host, port=port, path='/query/sql', scheme=scheme)
@@ -72,10 +51,6 @@ def find_people(embedding:list[float], distance=.25, host='localhost', port=8099
 
 def capture_frames(kafka:Kafka, threshold, iframe, frame_number, ts):
     img_emb = model.encode(iframe).tolist()
-    # cos_scores = util.cos_sim(img_emb, [p[1] for p in people])[0]
-    # indexes = find_high_scores(cos_scores, threshold)
-    # found = [people[i][0] for i in indexes]
-
     found = find_people(img_emb, distance=threshold)
     if len(found) != 0:
         for person in found:
@@ -102,7 +77,6 @@ def video(threshold=.3):
     video = cv2.VideoCapture(0)
     pool = ThreadPool(processes=10)
     kafka =  Kafka('video')
-    # people = load_people()
     try:
         frame_number = 0
         while True:

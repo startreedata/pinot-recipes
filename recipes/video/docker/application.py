@@ -2,7 +2,6 @@ from pinotdb import connect
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
-from langchain_community.document_loaders import DataFrameLoader
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 import time
@@ -115,26 +114,8 @@ while True:
 
         with genai:
             st.markdown(f'### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins: {current_time}')
-            st.write(f'{ai.content}\n\n**Source Frames**\n\n{' '.join([str(f) for f in frames])}')
+            frame_str = ' '.join([str(f) for f in frames])
+            st.write(f'{ai.content}\n\n**Source Frames**\n\n{frame_str}')
         
         time.sleep(10)
 
-    # now = datetime.now()
-    # current_time = now.strftime("%H:%M:%S")
-    # st.markdown(f'Current Time = {current_time}')
-    
-    # st.write("Video Frames")
-    # # st.write(df)
-    # st.line_chart(df, x="hr", y='count', color='person')
-
-    # df
-
-    
-
-
-
-# select
-# 	person, 
-# 	hr,
-# 	count (frame) over (PARTITION BY person ORDER BY hr ) as c
-# from (select frame, ToDateTime(ts,'h', 'America/Los_Angeles') as hr, person from video)
