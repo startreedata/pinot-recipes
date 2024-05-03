@@ -85,7 +85,6 @@ class PinotVector():
 db = PinotVector(host="localhost")
 df = db.booth_activity()
 query_text = 'Summarize what has been happening at the booths in one sentence'
-ai, frames = db.booth_activity_genai(query_text=query_text)
 ##############
 
 st.set_page_config(
