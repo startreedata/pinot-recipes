@@ -47,7 +47,7 @@ class PinotVector():
             where 
                 ts > ago('PT15M') 
                 -- and where VECTOR_SIMILARITY(embedding, ARRAY{search_embedding}, 10)
-            order by frame desc
+            order by ts desc
             limit 50
             """
         
@@ -83,7 +83,6 @@ class PinotVector():
 
 ##############
 db = PinotVector(host="localhost")
-df = db.booth_activity()
 query_text = 'Summarize what has been happening at the booths in one sentence'
 ##############
 
