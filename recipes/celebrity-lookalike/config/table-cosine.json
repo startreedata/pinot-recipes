@@ -1,0 +1,51 @@
+{
+  "tableName": "celebrities_cosine",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
+    "schemaName": "celebrities_cosine",
+    "replication": "1"
+  },
+  "tenants": {
+  },
+  "ingestionConfig": {
+    "batchIngestionConfig": {
+      "segmentIngestionType": "APPEND",
+      "segmentIngestionFrequency": "DAILY",
+      "batchConfigMaps": [
+        {
+          "input.fs.className": "org.apache.pinot.plugin.filesystem.S3PinotFS",
+          "input.fs.prop.region": "$AWS_REGION",
+          "input.fs.prop.secretKey": "$AWS_SECRET_ACCESS_KEY",
+          "input.fs.prop.accessKey": "$AWS_ACCESS_KEY_ID",
+          "inputDirURI": "$S3_BUCKET",
+          "includeFileNamePattern": "glob:**/*.parquet",
+          "inputFormat": "parquet"
+        }
+      ]
+    }
+  },
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "noDictionaryColumns": [],
+    "invertedIndexColumns": []
+  },
+  "metadata": {
+    "customConfigs": {
+    }
+  },
+  "fieldConfigList": [
+    {
+      "encodingType": "RAW",
+      "indexType": "VECTOR",
+      "name": "embedding",
+      "properties": {
+        "vectorIndexType": "HNSW",
+        "vectorDimension": 512,
+        "vectorDistanceFunction": "COSINE",
+        "version": 1
+      }
+    }
+  ]
+}

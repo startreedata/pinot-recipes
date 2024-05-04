@@ -1,0 +1,16 @@
+{
+    "schemaName": "celebrities_l2",
+    "dimensionFieldSpecs": [
+        {
+            "name": "name",
+            "dataType": "STRING"
+        },
+        {
+          "dataType": "FLOAT",
+          "name": "embedding",
+          "singleValueField": false
+        }
+    ],
+    "metricFieldSpecs": [
+    ]
+  }

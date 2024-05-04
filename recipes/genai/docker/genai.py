@@ -21,7 +21,6 @@ Answer the question based on the above context: {question}
 """
 
 class PinotVector():
-
     def __init__(self, host, port=8099, path='/query/sql', scheme='http', model='text-embedding-ada-002') -> None:
         self.conn = connect(host=host, port=port, path=path, scheme=scheme)
         self.client = OpenAI()
@@ -31,10 +30,10 @@ class PinotVector():
         text = text.replace("\n", " ")
         return self.client.embeddings.create(input = [text], model=self.model).data[0].embedding
     
-    def similarity_search(self, query_text:str, dist:int=1, limit:int=10):
+    def similarity_search(self, query_text:str, dist:int=.3, limit:int=10):
 
         search_embedding = self.get_embedding(query_text)
-
+        
         curs = self.conn.cursor()
         sql = f"""
             SELECT 
@@ -44,6 +43,8 @@ class PinotVector():
                 cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
             from documentation
             having cosine < {dist}
+            order by cosine asc
+            limit 3
             """
         
         curs.execute(sql)
