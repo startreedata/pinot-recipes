@@ -22,13 +22,31 @@ class PinotVector():
         sql = f"""
         select 
             person, 
-            ToDateTime(ts,'hh', 'America/Los_Angeles') as hr, 
+            ToDateTime(ts, 'M/d HH') as hr, 
             count(frame) as "count"
         from video
-        where person <> 'none' and
-            ts > ago('PT12H') 
-        group by person, hr
-        order by hr asc
+        where 
+            person <> 'none' 
+            --and person <> 'hubert' 
+        group by hr, person
+        order by hr desc
+        """
+        curs.execute(sql)
+        rows = [row for row in curs]
+        return pd.DataFrame(rows, columns=[item[0] for item in curs.description])
+    
+    def total_booth_activity(self):
+        curs = self.conn.cursor()
+        sql = f"""
+            select 
+                person, 
+                count(frame) as "count"
+            from video
+            where 
+                person <> 'none' 
+                --and person <> 'hubert' 
+            group by person
+            order by "count" desc
         """
         curs.execute(sql)
         return pd.DataFrame(curs, columns=[item[0] for item in curs.description])
@@ -46,6 +64,7 @@ class PinotVector():
             from video
             where 
                 ts > ago('PT15M') 
+                and person <> 'hubert'
                 -- and where VECTOR_SIMILARITY(embedding, ARRAY{search_embedding}, 10)
             order by ts desc
             limit 50
@@ -96,24 +115,23 @@ placeholder = st.empty()
 
 while True:
     df = db.booth_activity()
+    totals = db.total_booth_activity()
     ai, frames = db.booth_activity_genai(query_text=query_text)
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
     with placeholder.container():
-        timeline, raw, genai = st.columns(3)
+        timeline, genai = st.columns(2)
         with timeline:
             st.markdown(f'### Video Frames {current_time}')
-            st.line_chart(df, x="hr", y='count', color='person')
-
-        with raw:
-            st.markdown(f'### Video Frames Raw {current_time}')
-            st.dataframe(df)
+            st.bar_chart(df, x="hr", y='count', color='person')
+            st.markdown(f'### Video Frames Total {current_time}')
+            st.dataframe(totals)
 
         with genai:
             st.markdown(f'### Real-Time GenAI Evaluation of what is happening at the booth for the last 15 mins: {current_time}')
             frame_str = ' '.join([str(f) for f in frames])
             st.write(f'{ai.content}\n\n**Source Frames**\n\n{frame_str}')
         
-        time.sleep(10)
+        time.sleep(15)
 
