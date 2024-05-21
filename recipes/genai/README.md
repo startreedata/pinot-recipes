@@ -46,7 +46,7 @@ This will start Pinot and Kafka.
 Run the command below to load Pinot with embeddings from your document site by providing a URL. The loader will recursively read the document site, generate embeddings, and write them into Pinot.
 
 ```bash
-make loader URL=https://rtasummit.com/agenda
+make loader URL=https://docs.pinot.apache.org/basics/data-import
 ```
 
 If you have a large document site, this loader will take longer. You will see confirmations on the screen as each embedding is sent to Kafka and Pinot.

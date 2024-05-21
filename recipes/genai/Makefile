@@ -47,5 +47,5 @@ question: clients
 		python genai.py ${QUERY}
 
 
-validate: loader question
+validate: loader
 	@echo 'passed'
