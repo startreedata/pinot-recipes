@@ -5,6 +5,8 @@ This repository is a Retrieval-Augmented Generation (RAG) example using Apache P
 ```mermaid
 flowchart LR
 
+Website-->ie
+
 subgraph ie[Embeddings]
 LangChain
 OpenAI
@@ -16,7 +18,6 @@ k-->p[Apache Pinot]
 subgraph GenAI
 Search-->p
 end
-
 ```
 
 This RAG example uses LangChain's `RecursiveUrlLoader`. It accepts a URL, recursively loads pages, and converts them into `documents`. These documents are converted into embeddings, submitted to a Kafka topic, and consumed by Apache Pinot.
