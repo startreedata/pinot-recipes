@@ -66,3 +66,21 @@ Run the command below and ask a question that the documentation you loaded can a
 ```bash
 make question
 ```
+
+In [genai.py](docker/genai.py), you will see the below statement. The `VECTOR_SIMILARITY` function takes the embedding column and the search query embedding and returns the top `10` most similar vectors.
+
+```sql
+with DIST as (
+    SELECT 
+        source, 
+        content, 
+        metadata,
+        cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
+    from documentation
+    where VECTOR_SIMILARITY(embedding, ARRAY{search_embedding}, 10)
+)
+select * from DIST
+where cosine < {dist}
+order by cosine asc
+limit {limit}
+```
