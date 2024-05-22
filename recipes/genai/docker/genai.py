@@ -30,50 +30,55 @@ class PinotVector():
         text = text.replace("\n", " ")
         return self.client.embeddings.create(input = [text], model=self.model).data[0].embedding
     
-    def similarity_search(self, query_text:str, dist:int=.3, limit:int=10):
+    def similarity_search(self, query_text:str, dist:int=.3, limit:int=5):
 
         search_embedding = self.get_embedding(query_text)
         
         curs = self.conn.cursor()
         sql = f"""
-            SELECT 
-                source, 
-                content, 
-                metadata,
-                cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
-            from documentation
-            having cosine < {dist}
+            with DIST as (
+                SELECT 
+                    source, 
+                    content, 
+                    metadata,
+                    cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
+                from documentation
+                where VECTOR_SIMILARITY(embedding, ARRAY{search_embedding}, 10)
+            )
+            select * from DIST
+            where cosine < {dist}
             order by cosine asc
-            limit 3
+            limit {limit}
             """
         
-        curs.execute(sql)
+        curs.execute(sql, queryOptions="useMultistageEngine=true")
         df = pd.DataFrame(curs, columns=[item[0] for item in curs.description])
         loader = DataFrameLoader(df, page_content_column="content")
         return loader.load()
 
 
 if __name__ == "__main__":
-
-    query_text = sys.argv[1]
-    # Prepare the DB.
     db = PinotVector(host="pinot-broker")
+    while True:
+        query_text = input("\nAsk a question: ")
+        if query_text != 'stop':
+            # Search the DB.
+            results = db.similarity_search(query_text, dist=.5)
+            if len(results) == 0:
+                print(f"Unable to find matching results.")
+            else:
+                context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
+                prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+                prompt = prompt_template.format(context=context_text, question=query_text)
 
-    # Search the DB.
-    results = db.similarity_search(query_text, dist=.5)
-    if len(results) == 0:
-        print(f"Unable to find matching results.")
-    else:
-        context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
-        prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-        prompt = prompt_template.format(context=context_text, question=query_text)
+                model = ChatOpenAI()
+                response_text = model.invoke(prompt)
 
-        model = ChatOpenAI()
-        response_text = model.invoke(prompt)
-
-        sources = [doc.metadata.get("source", None) for doc in results]
-        print("response:                                                                     ")
-        print(f'{response_text.content} \n')
-        [print(f' - {source}') for source in sources]
+                sources = [doc.metadata.get("source", None) for doc in results]
+                print(f'response:                                                                     ')
+                print(f'{response_text.content} \n')
+                [print(f' - {source}') for source in sources]
+        else:
+            break
 
 

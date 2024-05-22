@@ -5,6 +5,8 @@ This repository is a Retrieval-Augmented Generation (RAG) example using Apache P
 ```mermaid
 flowchart LR
 
+Website-->ie
+
 subgraph ie[Embeddings]
 LangChain
 OpenAI
@@ -16,7 +18,6 @@ k-->p[Apache Pinot]
 subgraph GenAI
 Search-->p
 end
-
 ```
 
 This RAG example uses LangChain's `RecursiveUrlLoader`. It accepts a URL, recursively loads pages, and converts them into `documents`. These documents are converted into embeddings, submitted to a Kafka topic, and consumed by Apache Pinot.
@@ -46,7 +47,7 @@ This will start Pinot and Kafka.
 Run the command below to load Pinot with embeddings from your document site by providing a URL. The loader will recursively read the document site, generate embeddings, and write them into Pinot.
 
 ```bash
-make loader URL=https://rtasummit.com/agenda
+make loader URL=https://docs.pinot.apache.org/basics/data-import
 ```
 
 If you have a large document site, this loader will take longer. You will see confirmations on the screen as each embedding is sent to Kafka and Pinot.
@@ -65,4 +66,22 @@ Run the command below and ask a question that the documentation you loaded can a
 
 ```bash
 make question
+```
+
+In [genai.py](docker/genai.py), you will see the below statement. The `VECTOR_SIMILARITY` function takes the embedding column and the search query embedding and returns the top `10` most similar vectors.
+
+```sql
+with DIST as (
+    SELECT 
+        source, 
+        content, 
+        metadata,
+        cosine_distance(embedding, ARRAY{search_embedding}) AS cosine
+    from documentation
+    where VECTOR_SIMILARITY(embedding, ARRAY{search_embedding}, 10)
+)
+select * from DIST
+where cosine < {dist}
+order by cosine asc
+limit {limit}
 ```
