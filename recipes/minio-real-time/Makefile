@@ -51,3 +51,16 @@ validate:
 		exit 1
 
 
+
+list: 
+	docker exec -it pinot-server ls -lFR /tmp/pinot-tmp/server/index/
+
+delete:
+	docker exec -it pinot-server rm -rf /tmp/pinot-tmp/server/index/events_REALTIME
+
+restart:
+	PWD=$(shell pwd) docker compose \
+		-f ../kafka-compose.yml \
+		-f ../pinot-compose.yml \
+		-f ../minio-compose.yml \
+		restart pinot-server
