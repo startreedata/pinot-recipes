@@ -39,23 +39,20 @@ docker-compose up
 Add some data:
 
 ```bash
-cd data
-wget https://data.gharchive.org/2021-07-21-9.json.gz
-gunzip *.json.gz
+cp /data/* /opt/pinot/data
 /opt/pinot/bin/pinot-admin.sh LaunchDataIngestionJob -jobSpecFile /config/jobspec.yaml
 ```
 
 Query Pinot:
 
 ```sql
-SELECT * FROM github_events WHERE JSON_MATCH(actor_json, 'REGEXP_LIKE("$.[login]", ''Boj*'')')
-
+SELECT * FROM github_events WHERE JSON_MATCH(actor_json, 'REGEXP_LIKE("$.login", ''maria(.)*'')')
 ```
 
 ```sql
-SELECT * FROM github_events WHERE JSON_MATCH(actor_json, '"$.[id]" > 35560568')
+SELECT * FROM github_events WHERE JSON_MATCH(actor_json, '"$.id" > ''35560568''')
 ```
 
 ```sql
-SELECT commit_author_names, isJson(commit_author_names) from github_events limit 10
+SELECT payload_commits, isJson(payload_commits) from github_events limit 10
 ```
