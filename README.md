@@ -64,7 +64,7 @@ This repository contains Apache Pinot recipes, many referenced in StarTree devel
 * [JSON indexes](recipes/json-index)
 * [Update JSON index](recipes/update-json-index)
 * [StarTree Index](recipes/startree-index)🍷
-* [REgEx in JSON indexes](recipes/jason-regex)
+* [RegEx and IsJson in JSON indexes](recipes/jason-regex)
 
 ## Merge and Rollup
 
