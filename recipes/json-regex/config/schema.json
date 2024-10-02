@@ -1,0 +1,54 @@
+{
+  "schemaName": "github_events",
+  "dimensionFieldSpecs": [
+    {
+      "name": "id",
+      "dataType": "STRING"
+    },
+    {
+      "name": "type",
+      "dataType": "STRING"
+    },
+    {
+      "name": "repo_name",
+      "dataType": "STRING"
+    },
+    {
+      "name": "repo_name_fst",
+      "dataType": "STRING"
+    },
+    {
+      "name": "actor_json",
+      "dataType": "JSON"
+    },
+    {
+      "name": "payload_commits",
+      "dataType": "STRING",
+      "maxLength": 2147483647
+    },
+    {
+      "name": "payload_pull_request",
+      "dataType": "STRING",
+      "maxLength": 2147483647
+    },
+    {
+      "name": "commit_author_names",
+      "dataType": "STRING",
+      "singleValueField": false
+    },
+    {
+      "name": "label_ids",
+      "dataType": "LONG",
+      "singleValueField": false
+    }
+  ],
+  "dateTimeFieldSpecs": [
+    {
+      "name": "created_at",
+      "dataType": "STRING",
+      "format": "1:SECONDS:SIMPLE_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss'Z'",
+      "granularity": "1:HOURS"
+    }
+  ]
+}
+  

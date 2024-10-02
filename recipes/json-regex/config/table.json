@@ -1,0 +1,93 @@
+{
+  "tableName": "github_events",
+  "tableType": "OFFLINE",
+  "segmentsConfig": {
+    "retentionTimeUnit": "DAYS",
+    "retentionTimeValue": "1",
+    "segmentPushType": "APPEND",
+    "segmentAssignmentStrategy": "BalanceNumSegmentAssignmentStrategy",
+    "schemaName": "github_events",
+    "replication": "1"
+  },
+  "tenants": {
+  },
+  "ingestionConfig": {
+    "transformConfigs": [
+      {
+        "columnName": "repo_name",
+        "transformFunction": "jsonPathString(repo, '$.name', 'null')"
+      },
+      {
+        "columnName": "repo_name_fst",
+        "transformFunction": "jsonPathString(repo, '$.name', 'null')"
+      },
+      {
+        "columnName": "actor_json",
+        "transformFunction": "jsonFormat(actor)"
+      },
+      {
+        "columnName": "payload_commits",
+        "transformFunction": "jsonPathString(payload, '$.commits', 'null')"
+      },
+      {
+        "columnName": "payload_pull_request",
+        "transformFunction": "jsonPathString(payload, '$.pull_request', 'null')"
+      },
+      {
+        "columnName": "commit_author_names",
+        "transformFunction": "jsonPathArrayDefaultEmpty(payload, '$.commits[*].author.name')"
+      },
+      {
+        "columnName": "label_ids",
+        "transformFunction": "jsonPathArrayDefaultEmpty(payload, '$.pull_request.labels[*].id')"
+      }
+    ]
+  },
+  "fieldConfigList": [
+    {
+      "name": "payload_commits",
+      "encodingType": "RAW",
+      "indexType": "TEXT"
+    },
+    {
+      "name": "payload_pull_request",
+      "encodingType": "RAW",
+      "indexType": "TEXT"
+    },
+    {
+      "name": "repo_name_fst",
+      "encodingType": "DICTIONARY",
+      "indexType": "FST"
+    }
+  ],
+  "tableIndexConfig": {
+    "loadMode": "MMAP",
+    "sortedColumn": [
+      "created_at"
+    ],
+    "invertedIndexColumns": [
+      "id",
+      "type",
+      "repo_name",
+      "commit_author_names",
+      "label_ids"
+    ],
+    "bloomFilterColumns": [
+      "id",
+      "commit_author_names",
+      "label_ids"
+    ],
+    "jsonIndexColumns": [
+      "actor_json",
+      "payload_commits"
+    ],
+    "noDictionaryColumns": [
+      "payload_commits",
+      "payload_pull_request"
+    ]
+  },
+  "metadata": {
+    "customConfigs": {
+    }
+  }
+}
