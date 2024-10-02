@@ -6,6 +6,7 @@ from multiprocessing.pool import ThreadPool
 from confluent_kafka import Producer
 import time, json
 from pinotdb import connect
+import math
 
 model = SentenceTransformer('clip-ViT-B-32')
 captioner = pipeline("image-to-text",model="Salesforce/blip-image-captioning-base")
@@ -26,7 +27,7 @@ class Kafka():
         except Exception as e:
             print(e)
 
-def find_people(embedding:list[float], distance=.25, host='localhost', port=8099, scheme='http'):
+def find_people(embedding:list[float], distance=.3, host='localhost', port=8099, scheme='http'):
     conn = connect(host=host, port=port, path='/query/sql', scheme=scheme)
     curs = conn.cursor()
     sql = f"""
@@ -51,29 +52,30 @@ def find_people(embedding:list[float], distance=.25, host='localhost', port=8099
 
 def capture_frames(kafka:Kafka, threshold, iframe, frame_number, ts):
     img_emb = model.encode(iframe).tolist()
-    found = find_people(img_emb, distance=threshold)
-    if len(found) != 0:
-        for person in found:
-            print(f'found {person} in frame [{frame_number}]')
+    if math.isnan(img_emb[0]) is False:
+        found = find_people(img_emb, distance=threshold)
+        if len(found) != 0:
+            for person in found:
+                print(f'found {person} in frame [{frame_number}]')
+                video = {
+                    "frame": frame_number,
+                    "person": person,
+                    "description": captioner(iframe)[0]['generated_text'],
+                    "embedding":img_emb,
+                    "ts": ts
+                }
+                kafka.send(frame_number, json.dumps(video))
+        else:
             video = {
                 "frame": frame_number,
-                "person": person,
+                "person": 'none',
                 "description": captioner(iframe)[0]['generated_text'],
                 "embedding":img_emb,
                 "ts": ts
             }
             kafka.send(frame_number, json.dumps(video))
-    else:
-        video = {
-            "frame": frame_number,
-            "person": 'none',
-            "description": captioner(iframe)[0]['generated_text'],
-            "embedding":img_emb,
-            "ts": ts
-        }
-        kafka.send(frame_number, json.dumps(video))
 
-def video(threshold=.3):
+def video(threshold=.32):
     video = cv2.VideoCapture(0)
     pool = ThreadPool(processes=10)
     kafka =  Kafka('video')
