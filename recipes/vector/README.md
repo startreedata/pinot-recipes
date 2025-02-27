@@ -1,7 +1,7 @@
 # Similarity Search with Apache Pinot Vector Index
 
 
-## Build a Pre-released version of Apache Pinot
+## Build Apache Pinot
 
 ```bash
 # Clone a repo
